@@ -1,0 +1,29 @@
+<div class="sponsor-wrapper">
+  <div class="sponsor-button">
+    <div class="sponsor-icon {{ if .Site.Params.sponsor.icon.rotate }}rotate{{ end }}"></div>
+    <div class="sponsor-title">{{ i18n "sponsor" }}</div>
+    <div class="sponsor-icon {{ if .Site.Params.sponsor.icon.rotate }}rotate{{ end }}"></div>
+  </div>
+  {{- $languageCode := .Site.Language.LanguageCode -}}
+  {{- $tip := .Site.Params.sponsor.tip -}}
+  {{- $realTip := "" -}}
+  {{- if reflect.IsMap $tip -}}
+    {{- $realTip = index $tip $languageCode -}}
+    {{- if not $realTip -}}
+      {{- $realTip = index $tip "en" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $realTip = $tip -}}
+  {{- end -}}
+  <div class="sponsor-tip">{{ $realTip }}</div>
+  {{- if .Site.Params.sponsor.qr -}}
+    <div class="sponsor-qr">
+      {{- range .Site.Params.sponsor.qr -}}
+        <div class="sponsor-qr-image-wrapper">
+          <img src="{{ .src | relURL }}" alt="{{ .name }}" width="200" />
+          <p class="sponsor-qr-name">{{ .name }}</p>
+        </div>
+      {{- end -}}
+    </div>
+  {{- end -}}
+</div>

@@ -1,0 +1,35 @@
+{{- define "main" -}}
+  <div
+    class="archives-outer-wrap"
+    data-aos="{{ .Site.Params.animation.options.archive.whole }}"
+  >
+    <div
+      class="{{ if eq .Name "Tags" }}
+        tag-wrap
+      {{ else }}
+        category-wrap
+      {{ end }}"
+    >
+      {{- range .Pages -}}
+        <div
+          class="{{ if eq $.Name "Tags" }}
+            archives-tag-list-item
+          {{ else }}
+            archives-category-list-item
+          {{ end }}"
+          data-aos="{{ $.Site.Params.animation.options.archive.tag }}"
+        >
+          <a
+            class="{{ if eq $.Name "Tags" }}
+              archives-tag-list-link
+            {{ else }}
+              archives-category-list-link
+            {{ end }}"
+            href="{{ .RelPermalink }}"
+            >{{ .LinkTitle }}</a
+          >
+        </div>
+      {{- end -}}
+    </div>
+  </div>
+{{- end -}}

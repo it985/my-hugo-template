@@ -1,0 +1,13 @@
+{{- $items := .item -}}
+{{- if not (reflect.IsSlice $items) -}}
+  {{- $items = slice $items -}}
+{{- end -}}
+{{- $result := slice -}}
+{{- range $items -}}
+  {{- $integrity := false -}}
+  {{- if reflect.IsMap . -}}
+    {{- $integrity = .integrity -}}
+  {{- end -}}
+  {{- $result = $result | append $integrity -}}
+{{- end -}}
+{{- return $result -}}

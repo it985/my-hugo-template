@@ -1,0 +1,24 @@
+<div class="tag-wrap">
+  {{- range .Site.Taxonomies.tags -}}
+    <div
+      class="archives-tag-list-item"
+      data-aos="{{ $.Site.Params.animation.options.archive.tag }}"
+    >
+      <a class="archives-tag-list-link" href="{{ .Page.RelPermalink }}"
+        >{{ .Page.Title }}</a
+      >
+    </div>
+  {{- end -}}
+</div>
+<div class="category-wrap">
+  {{- range .Site.Taxonomies.categories -}}
+    <div
+      class="archives-category-list-item"
+      data-aos="{{ $.Site.Params.animation.options.archive.category }}"
+    >
+      <a class="archives-category-list-link" href="{{ .Page.RelPermalink }}"
+        >{{ .Page.Title }}</a
+      >
+    </div>
+  {{- end -}}
+</div>

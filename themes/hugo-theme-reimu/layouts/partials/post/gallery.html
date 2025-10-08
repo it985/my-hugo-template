@@ -1,0 +1,11 @@
+{{- if and .Params.photos (len .Params.photos) -}}
+  <div class="article-gallery">
+    <div class="article-gallery-photos">
+      {{- range .Params.photos -}}
+        <a class="article-gallery-img article-gallery-item" href="{{ . | relURL }}" target="_blank">
+          <img src="{{ . | relURL }}" itemprop="image" alt="gallery" onload="this.parentNode.dataset.pswpWidth = this.naturalWidth;this.parentNode.dataset.pswpHeight = this.naturalHeight;" >
+        </a>
+      {{- end -}}
+    </div>
+  </div>
+{{- end -}}

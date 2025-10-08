@@ -1,0 +1,30 @@
+{{- $items := .item -}}
+{{- $site := .ctx -}}
+{{- if not (reflect.IsSlice $items) -}}
+  {{- $items = slice $items -}}
+{{- end -}}
+{{- $result := slice -}}
+{{- range $items -}}
+  {{- $src := . -}}
+  {{- if reflect.IsMap . -}}
+    {{- $src = .src -}}
+  {{- end -}}
+  {{- if strings.Contains $src "|" -}}
+    {{- $contentToken := split $src "|" -}}
+    {{- if ne (len $contentToken) 2 -}}
+      {{- errorf "invalid vendor format: %s" $src -}}
+    {{- end -}}
+
+    {{- $cdn := index $contentToken 0 -}}
+    {{- $path := index $contentToken 1 -}}
+
+    {{- $vendorConfig := index $site.Data.vendor $cdn -}}
+    {{- if not $vendorConfig -}}
+      {{- errorf "invalid cdn: %s" $src -}}
+    {{- end -}}
+    {{- $result = $result | append (printf "%s%s" $vendorConfig $path) -}}
+  {{- else -}}
+    {{- $result = $result | append ($src | absURL) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $result -}}

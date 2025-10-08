@@ -1,0 +1,67 @@
+{{- define "main" -}}
+  {{- $ctx := . -}}
+  {{- $paginator := .Paginate (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
+  {{- $sort_config := .Site.Params.sort_order.home -}}
+  {{- if and (eq 1 $paginator.PageNumber) ($ctx.Site.Params.home_categories.enable) -}}
+    <div class="post-categories-wrapper" data-aos="{{ $ctx.Site.Params.animation.options.home.post }}">
+      {{- range $k, $v := $ctx.Site.Params.home_categories.content -}}
+        {{- if $v.categories -}}
+          <div class="post-categories-wrap">
+            <a class="post-link" href="{{ (printf "%s%s" "categories/" (urlize $v.categories)) | relLangURL }}" aria-label="{{ $v.categories }}" title="{{ $v.categories }}"></a>
+            <div class="post-categories-cover">
+              {{- if $v.cover -}}
+                <img
+                  data-src="{{ $v.cover | relURL }}"
+                  data-sizes="auto"
+                  alt="{{ $v.categories }}"
+                  class="lazyload"
+                />
+              {{- else -}}
+                {{- $cover := partial "helpers/randomCover.html" $ctx -}}
+                {{- if $cover -}}
+                  <img
+                    data-src="{{ $cover }}"
+                    data-sizes="auto"
+                    alt="{{ $v.categories }}"
+                    class="lazyload"
+                  />
+                {{- else -}}
+                  <img
+                    data-src="{{ $ctx.Site.Params.banner | relURL }}"
+                    data-sizes="auto"
+                    alt="{{ $v.categories }}"
+                    class="lazyload"
+                  />
+                {{- end -}}
+              {{- end -}}
+              <h2>{{ $v.categories }}</h2>
+              <h3>{{ i18n "home_categories.count" (len (index $ctx.Site.Taxonomies.categories (lower $v.categories))) }}</h3>
+            </div>
+          </div>
+        {{- end -}}
+      {{- end -}}
+    </div>
+  {{- end -}}
+  {{- if eq $sort_config "weight" -}}
+    {{- range $k, $v := $paginator.Pages.ByWeight -}}
+      {{- partial "post.html"  (dict "index" $k "ctx" . "page" $v ) -}}
+    {{- end -}}
+  {{- else if eq $sort_config "weight-reverse" -}}
+    {{- range $k, $v := $paginator.Pages.ByWeight.Reverse -}}
+      {{- partial "post.html"  (dict "index" $k "ctx" . "page" $v ) -}}
+    {{- end -}}
+  {{- else if eq $sort_config "date" -}}
+    {{- range $k, $v := $paginator.Pages.ByDate -}}
+      {{- partial "post.html" (dict "index" $k "ctx" . "page" $v ) -}}
+    {{- end -}}
+  {{- else if eq $sort_config "date-reverse" -}}
+    {{- range $k, $v := $paginator.Pages.ByDate.Reverse -}}
+      {{- partial "post.html" (dict "index" $k "ctx" . "page" $v ) -}}
+    {{- end -}}
+  {{- else if eq $sort_config "default" -}}
+    {{- range $k, $v := $paginator.Pages -}}
+      {{- partial "post.html"  (dict "index" $k "ctx" . "page" $v ) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- partial "pagination.html" . -}}
+{{- end -}}

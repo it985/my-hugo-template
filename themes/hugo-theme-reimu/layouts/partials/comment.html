@@ -1,0 +1,56 @@
+{{- $params := .Site.Params -}}
+
+{{- $commentSystems := dict 
+  "valine" (cond (and $params.valine.enable $params.valine.appId $params.valine.appKey) true false)
+  "waline" (cond (and $params.waline.enable $params.waline.serverURL) true false)
+  "twikoo" (cond (and $params.twikoo.enable $params.twikoo.envId) true false)
+  "gitalk" (cond (and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret) true false)
+  "giscus" (cond $params.giscus.enable true false)
+-}}
+
+{{- $activeSystems := slice -}}
+{{- range $key, $value := $commentSystems -}}
+  {{- if $value -}}
+    {{- $activeSystems = $activeSystems | append $key -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (not (eq .Params.comments false)) (len $activeSystems) -}}
+<section id="comments" data-aos="{{ $params.animation.options.article.whole }}">
+<div class="comment-header">
+  {{- $languageCode := .Site.Language.LanguageCode -}}
+  {{- $commentTitle := $params.comment.title -}}
+  {{- $realTitle := "" -}}
+  {{- if reflect.IsMap $commentTitle -}}
+    {{- $realTitle = index $commentTitle $languageCode -}}
+    {{- if not $realTitle -}}
+      {{- $realTitle = index $commentTitle "en" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $realTitle = $commentTitle -}}
+  {{- end -}}
+  <h2 class="comment-title">{{ $realTitle }}</h2>
+  <div class="comment-selector">
+    <div class="comment-selector-wrap">
+      {{- range $name, $enabled := $commentSystems -}}
+        {{- if $enabled -}}
+        <div class="selector-item" data-selector="{{ $name }}">
+          <span>{{ $name }}</span>
+        </div>
+        {{- end -}}
+      {{- end -}}
+    </div>
+  </div>
+</div>
+
+<div class="comment-content">
+  {{- range $name, $enabled := $commentSystems -}}
+    {{- if $enabled -}}
+    <div class="comment {{ $name }}-comment" data-aos="{{ $params.animation.options.article.whole }}"
+     {{ if eq $name "gitalk" }}id="gitalk-comment"{{ end }}>
+    </div>
+    {{- end -}}
+  {{- end -}}
+</div>
+</section>
+{{- end -}}

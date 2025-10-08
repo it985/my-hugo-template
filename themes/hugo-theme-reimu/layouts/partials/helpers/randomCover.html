@@ -1,0 +1,3 @@
+{{- $covers := .Site.Data.covers -}}
+{{- $cover := index $covers (math.Rand | mul (len $covers) | math.Floor | int) -}}
+{{- return $cover -}}

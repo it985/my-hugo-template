@@ -1,0 +1,81 @@
+{{- $authorEmail := site.Params.email }}
+{{- $authorName := site.Params.author }}
+
+{{- $showFullContent := .Site.Params.rss.showFullContent | default false }}
+{{- $showCopyright := .Site.Params.rss.showCopyright | default false }}
+{{- $currentLanguage := .Language.Lang | default "en" }}
+{{- $copyright := i18n "article_copyright.license_content" (.Site.Params.article_copyright.content.license_type | upper) -}}
+
+{{- /* 确定页面上下文 */ -}}
+{{- $pctx := . }}
+{{- if .IsHome }}{{ $pctx = .Site }}{{ end }}
+{{- $pages := $pctx.RegularPages }}
+{{- $mainSections := .Site.MainSections }}
+{{- $pages = where $pages "Section" "in" $mainSections }}
+{{- if hugo.IsMultilingual }}
+  {{- $pages = where $pages "Language.Lang" $currentLanguage }}
+{{- end }}
+
+{{- $pages = $pages.ByLastmod.Reverse }}
+{{- $limit := .Site.Params.rss.limit | default 10 }}
+{{- if ge $limit 1 }}
+  {{- $pages = $pages | first $limit }}
+{{- end }}
+
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} on {{ end }}{{ .Site.Title }}{{ end }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>Recent content from {{ .Site.Title }}</description>
+    <generator>Hugo</generator>
+    <language>{{ site.Language.LanguageCode }}</language>
+    {{ with $authorEmail }}
+    <managingEditor>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</managingEditor>
+    <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>
+    {{ end }}
+    <copyright>{{ $copyright }}</copyright>
+    {{ if not .Date.IsZero }}
+    <lastBuildDate>{{ (index $pages 0).Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    {{ end }}
+    {{ with .OutputFormats.Get "RSS" }}
+    <atom:link href="{{ .Permalink }}" rel="self" type="{{ .MediaType }}" />
+    {{ end }}
+
+    {{ range $pages }}
+    {{- /* 构建多语言文章头部 */ -}}
+    {{- $articleHeaderI18n := i18n "rss.author" (dict "name" $authorName "email" $authorEmail) -}}
+    {{- $articleHeader := printf "<![CDATA[<h1>%s</h1><p>%s</p>" .Title $articleHeaderI18n -}}
+
+    {{- /* 构建多语言文章尾部 */ -}}
+    {{- $articleFooterContent := printf "<a href='%s'>%s</a>" .Site.BaseURL .Site.Title -}}
+    {{- $articleFooterI18n := i18n "rss.date" (dict "pubDate" (.Date.Format "2006-01-02") "lastmod" (.Lastmod.Format "2006-01-02") "content" ($articleFooterContent | safeHTML)) -}}
+    {{- $articleFooter := printf "<hr><p>%s</p>" $articleFooterI18n -}}
+
+    {{- if $showCopyright }}
+      {{ $articleFooter = printf "%s<p>%s</p>" $articleFooter $copyright }}
+    {{- end }}
+    {{ $articleFooter = printf "%s]]>" $articleFooter }}
+
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+      {{ with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
+      <guid>{{ .Permalink }}</guid>
+      <description>
+        {{ $articleHeader | safeHTML }}
+        {{ if $showFullContent }}
+          {{ .Content | safeHTML }}
+        {{ else }}
+          {{ .Summary | safeHTML }}
+        {{ end }}
+        {{ $articleFooter | safeHTML }}
+      </description>
+      {{ with .Params.categories }}
+        {{ range . }}<category>{{ . }}</category>{{ end }}
+      {{ end }}
+    </item>
+    {{ end }}
+  </channel>
+</rss>

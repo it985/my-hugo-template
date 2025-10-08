@@ -1,0 +1,77 @@
+{{- if .Site.Params.preloader.enable -}}
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi {{ if .Site.Params.preloader.rotate }}rotate{{ end }}">
+        {{- if .Site.Params.preloader.icon -}}
+          <img src="{{ .Site.Params.preloader.icon | relURL }}" alt="loading" />
+        {{- else -}}
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        {{- end -}}
+      </div>
+      {{- $languageCode := .Site.Language.LanguageCode -}}
+      {{- $text := .Site.Params.preloader.text -}}
+      {{- $realText := "" -}}
+      {{- if reflect.IsMap $text -}}
+        {{- $realText = index $text $languageCode -}}
+        {{- if not $realText -}}
+          {{- $realText = index $text "en" -}}
+        {{- end -}}
+      {{- else -}}
+        {{- $realText = $text -}}
+      {{- end -}}
+      <div class="loading-word">{{ $realText }}</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+{{- end -}}
+
+<div id="copy-tooltip"></div>
+<div id="lang-tooltip">
+{{ i18n "multi_language.not_found" }}
+</div>
+<div id="heatmap-tooltip"></div>
+
+{{- if .Site.Params.service_worker.enable -}}
+  <div class="notification-wrapper">
+    <h1>{{ i18n "service_worker.title" }}</h1>
+    <p>{{ i18n "service_worker.content" }}</p>
+    <div class="notification-btn">
+      <button id="notification-update-btn">{{ i18n "service_worker.confirm" }}</button>
+      <button id="notification-close-btn">{{ i18n "service_worker.cancel" }}</button>
+    </div>
+  </div>
+{{- end -}}

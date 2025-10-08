@@ -1,0 +1,421 @@
+{{- $site := .Site -}}
+{{- $params := .Site.Params -}}
+{{- $js := .Site.Data.vendor.js -}}
+{{- $css := .Site.Data.vendor.css -}}
+
+{{- partial "helpers/js.html" (dict "raw" $js.lazysizes "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.lazysizes "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.lazysizes)) 0)) -}}
+{{- partial "helpers/js.html" (dict "raw" $js.clipboard "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.clipboard "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.clipboard)) 0)) -}}
+
+{{- if $params.material_theme.enable -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.material_theme "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.material_theme "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.material_theme)) 0)) -}}
+{{- end -}}
+
+{{- partial "helpers/ts.html" (dict "source" "js/main.ts" "ctx" .) -}}
+
+{{- if $params.animation.enable -}}
+  {{- partial "helpers/ts.html" (dict "source" "js/aos.ts" "ctx" .) -}}
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+{{- end -}}
+
+{{- partial "helpers/ts.html" (dict "source" "js/pjax_main.ts" "pjax" true "ctx" .) -}}
+
+{{- if $params.algolia_search.enable -}}
+  <script>
+    var ALGOLIA_CONFIG = {
+      logo: '{{ "images/algolia_logo.svg" | relURL }}',
+      algolia: {
+        applicationID: "{{ $params.algolia_search.appID }}",
+        apiKey: "{{ $params.algolia_search.apiKey }}",
+        indexName: "{{ $params.algolia_search.indexName }}",
+        hits: {
+          "per_page": parseInt("{{ $params.algolia_search.hits.per_page }}")
+        },
+        labels: {
+          "input_placeholder": '{{ i18n "algolia.input_placeholder" }}',
+          "hits_empty": '{{ i18n "algolia.hits_empty" }}',
+          "hits_stats": '{{ i18n "algolia.hits_stats" }}'
+        }
+      }
+    };
+  </script>
+  {{- partial "helpers/js.html" (dict "raw" $js.algolia "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.algolia "ctx" $site)) 0) "defer" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.algolia)) 0)) -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.instantsearch "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.instantsearch "ctx" $site)) 0) "defer" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.instantsearch)) 0)) -}}
+  {{- partial "helpers/ts.html" (dict "source" "js/algolia_search.ts" "ctx" .) -}}
+{{- end -}}
+
+{{- if $params.firework.enable -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.firework "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.firework "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.firework)) 0)) -}}
+<script>
+  if (window.firework) {
+    const options = JSON.parse({{ $params.firework.options | jsonify }});
+    options.excludeElements = options.excludeelements;
+    delete options.excludeelements;
+    window.firework(options);
+  }
+</script>
+{{- end -}}
+
+{{- if $params.pjax.enable -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.pjax "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.pjax "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.pjax)) 0)) -}}
+  {{- partial "helpers/ts.html" (dict "source" "js/pjax.ts" "ctx" .) -}}
+{{- end -}}
+
+{{- if $params.live2d.enable -}}
+<script>
+  function initLive2d() {
+    live2d.init('{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d.base "ctx" $site)) 0 }}', {themeTipsPath: ""});
+  }
+</script> {{- partial "helpers/js.html" (dict "raw" $js.live2d.js "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d.js "ctx" $site)) 0) "async" true "onload" "initLive2d()") -}}
+{{- else if $params.live2d_widgets.enable -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.live2d_widgets "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d_widgets "ctx" $site)) 0) "defer" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.live2d_widgets)) 0)) -}}
+{{- end -}}
+
+{{- if $params.quicklink.enable -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.quicklink "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.quicklink "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.quicklink)) 0)) -}}
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: {{ $params.quicklink.timeout }},
+      priority: {{ $params.quicklink.priority }},
+      ignores: JSON.parse({{ $params.quicklink.ignores | jsonify }})
+    });
+  </script>
+{{ end }}
+
+<div id="lazy-script">
+  <div>
+    {{- if .Permalink -}}
+      {{- $desc := "" -}}
+      {{- if .Params.description -}}
+        {{- $desc = .Params.description | plainify | truncate 300 -}}
+      {{- else if .Summary -}}
+        {{- $desc = .Summary  | plainify | truncate 300 -}}
+      {{- else -}}
+        {{- $desc = .RawContent | truncate 300 -}}
+      {{- end -}}
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "{{ $params.author }}",
+          title: "{{ .Title }}",
+          url: "{{ .Permalink }}",
+          description: "{{ $desc }}",
+          cover: {{ if and .Params.cover (not (strings.HasPrefix .Params.cover "rgb")) }}"{{ .Params.cover | absURL }}"{{ else }}"{{ .Site.Params.banner | absURL }}"{{ end }},
+        };
+      </script>
+    {{- end -}}
+    {{- if and (.Store.Get "hasMermaid") .Params.mermaid -}}
+      {{- partial "helpers/js.html" (dict "raw" $js.mermaid "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.mermaid "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.mermaid)) 0)) -}}
+      {{- partial "helpers/js.html" (dict "raw" $js.dompurify "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.dompurify "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.dompurify)) 0)) -}}
+      {{- if $params.mermaid.zoom -}}
+        {{- partial "helpers/js.html" (dict "raw" $js.svg_pan_zoom "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.svg_pan_zoom "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.svg_pan_zoom)) 0)) -}}
+      {{- end -}}
+      <script data-pjax>
+        if (window.mermaid) {
+          // https://github.com/mermaid-js/mermaid/issues/1945
+          const elementCode = '.mermaid'
+          const processElements = (callback) => {
+            const els = _$$(elementCode);
+            if (!els.length) return Promise.resolve();
+            
+            return new Promise((resolve, reject) => {
+              try {
+                els.forEach(callback);
+                resolve();
+              } catch (error) {
+                reject(error);
+              }
+            });
+          };
+          const saveOriginalData = () => processElements(el => {
+            if (!el.getAttribute('data-original-code')) {
+              el.setAttribute('data-original-code', el.innerHTML);
+            }
+          });
+
+          const resetProcessed = () => processElements(el => {
+            const originalCode = el.getAttribute('data-original-code');
+            if (originalCode) {
+              el.removeAttribute('data-processed');
+              el.innerHTML = DOMPurify.sanitize(originalCode);
+            }
+          });
+          const loadMermaid = async (theme) => {
+            window.mermaid.initialize({theme, startOnLoad: false})
+            await window.mermaid.run({querySelector: elementCode, suppressErrors: true})
+            if (window.svgPanZoom) {
+              window.__panZoomList?.forEach(panZoom => {try {panZoom.destroy()} catch {}});
+              window.__panZoomList = [];
+              _$$('.mermaid > svg').forEach(el => {
+                const bbox = el.getBBox();
+                el.setAttribute('height', Math.max(bbox.height, 80));
+                window.__panZoomList.push(window.svgPanZoom(el, {
+                  zoomEnabled: true,
+                  controlIconsEnabled: true,
+                  fit: true,
+                  center: true
+                }));
+              });
+              if (window.__resizeMermaidSvg) {
+                window.removeEventListener('resize', window.__resizeMermaidSvg);
+              }
+              window.__resizeMermaidSvg = () => {
+                try {
+                  window.__panZoomList.forEach(panZoom => {
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                  });
+                } catch {
+                  window.removeEventListener('resize', window.__resizeMermaidSvg);
+                  window.__panZoomList = [];
+                }
+              }
+              window.addEventListener('resize', window.__resizeMermaidSvg);
+            }
+          }
+          const initMermaid = async (theme) => {
+            try {
+              await saveOriginalData();
+              await resetProcessed();
+              await loadMermaid(theme);
+            } catch (error) {
+              console.error(error);
+            }
+          };
+          
+          document.body.addEventListener('dark-theme-set', () => initMermaid('dark'));
+          document.body.addEventListener('light-theme-set', () => initMermaid('default'));
+
+          const mode = localStorage.getItem('dark_mode');
+          if (mode === 'auto') {
+            const osMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            initMermaid(osMode ? 'dark' : 'default');
+          } else {
+            initMermaid(mode === 'true' ? 'dark' : 'default');
+          }
+        }
+      </script>
+    {{- end -}}
+    {{- if not .IsHome -}}
+      {{- partial "helpers/ts.html" (dict "source" "js/insert_highlight.ts" "pjax" true "ctx" .) -}}
+      {{- $photoswipe_lightbox := index (partial "helpers/vendorCdn.html" (dict "item" $js.photoswipe_lightbox "ctx" $site)) 0 -}}
+      {{- $photoswipe_lightbox_integrity := index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.photoswipe_lightbox)) 0 -}}
+      {{- $photoswipe := index (partial "helpers/vendorCdn.html" (dict "item" $js.photoswipe "ctx" $site)) 0 -}}
+      {{- $photoswipe_integrity := index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.photoswipe)) 0 -}}
+      <script type="module" data-pjax>
+        {{- if (partial "helpers/vendorLocalCheck.html" $js.photoswipe_lightbox) -}}
+        import PhotoSwipeLightbox from '{{ $photoswipe_lightbox }}';
+        {{- else -}}
+        const PhotoSwipeLightbox = (await safeImport("{{ $photoswipe_lightbox }}", "{{ $photoswipe_lightbox_integrity }}")).default;
+        {{- end -}}
+        const initPswp = (gallery, children) => {
+          if (_$$(`${gallery} ${children}`).length > 0) {
+            new PhotoSwipeLightbox({
+              gallery,
+              children,
+              {{- if (partial "helpers/vendorLocalCheck.html" $js.photoswipe) -}}
+              pswpModule: () => import('{{ $photoswipe }}'),
+              {{- else -}}
+              pswpModule: () => safeImport("{{ $photoswipe }}", "{{ $photoswipe_integrity }}")
+              {{- end -}}
+            }).init();
+          }
+        }
+        const pswp = () => {
+          initPswp('.article-entry', 'a.article-gallery-item');
+          initPswp('.article-gallery', 'a.article-gallery-item');
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      {{- partial "post/comment.html" . -}}
+      {{- if and (reflect.IsSlice .Site.Params.share) (in .Site.Params.share "weixin") -}}
+        {{- partial "helpers/js.html" (dict "raw" $js.qrcode "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.qrcode "ctx" $site)) 0) "pjax" true "defer" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.qrcode)) 0)) -}}
+        {{- partial "helpers/js.html" (dict "raw" $js.snapdom "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.snapdom "ctx" $site)) 0) "pjax" true "defer" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.snapdom)) 0)) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if .Params.math -}}
+      {{- if .Site.Params.math.katex.enable -}}
+        {{- partial "helpers/js.html" (dict "raw" $js.katex "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.katex "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.katex)) 0)) -}}
+        {{- partial "helpers/js.html" (dict "raw" $js.katex_auto_render "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.katex_auto_render "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.katex_auto_render)) 0)) -}}
+        <script data-pjax>
+          var renderMath = () => {
+            if (!window.renderMathInElement) return;
+            window.renderMathInElement(_$("article"), {
+              delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "\\[", right: "\\]", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+              ],
+            });
+          };
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", renderMath, { once: true });
+          } else {
+            renderMath();
+          }
+        </script>
+      {{- end -}}
+      {{- if .Site.Params.math.mathjax.enable -}}
+        <script data-pjax>
+          window.MathJax = JSON.parse({{ .Site.Params.math.mathjax.options | jsonify }})[0];
+        </script>
+        {{- partial "helpers/js.html" (dict "raw" $js.mathjax "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.mathjax "ctx" $site)) 0) "defer" true "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.mathjax)) 0)) -}}
+      {{- end -}}
+    {{- end -}}
+  </div>
+</div>
+
+{{- if $params.outdate.enable -}}
+  <script data-pjax>
+    var updateTime = _$('#post-update-time')?.innerHTML;
+
+    if (updateTime) {
+      const update = new Date(updateTime);
+      const now = new Date();
+      const diff = now - update;
+      const days = diff / 86400000;
+      const { daysago: daysAgo, message: template } = window.siteConfig.outdate;
+      if (days >= daysAgo) {
+        let message = `This article was last updated on ${updateTime}. Please note that the content may no longer be applicable.`;
+        if (typeof template === 'string') {
+          message = template.replace(/{time}/, updateTime);
+        } else if (typeof template === 'object') {
+          const lang = document.documentElement.lang;
+          const messageKey = Object.keys(template).find(key => key.toLowerCase() === lang.toLowerCase());
+          if (messageKey && template[messageKey]) {
+            message = template[messageKey].replace(/{time}/, updateTime);
+          }
+        }
+        const blockquote = _$('#outdate-blockquote');
+        if (blockquote) {
+          blockquote.querySelectorAll('p')[1].innerText = message;
+          blockquote.style.display = 'flow-root';
+        }
+      }
+    }
+  </script>
+{{- end -}}
+
+{{- if $params.footer.busuanzi -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.busuanzi "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.busuanzi "ctx" $site)) 0) "async" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.busuanzi)) 0)) -}}
+{{- end -}}
+
+{{- if $params.service_worker.enable -}}
+  {{- partial "helpers/ts.html" (dict "source" "js/sw.ts" "ctx" . "inline" false "target" "sw.js") -}}
+  {{- partial "helpers/ts.html" (dict "source" "js/service_worker.ts" "ctx" .) -}}
+{{- else -}}
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
+{{- end -}}
+
+<script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script>
+
+{{- if $params.player.aplayer.enable -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.aplayer "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.aplayer "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.aplayer)) 0)) -}}
+  {{- if not $params.player.meting.enable -}}
+    <script>
+      if (window.matchMedia('(max-width: 959px)').matches) {
+      const aplayer = _$('#aplayer');
+        if (aplayer) {
+          const aside = aplayer.parentNode?.parentNode;
+          if (aside?.tagName === 'ASIDE') {
+            aplayer.removeAttribute('data-aos');
+            aside.parentNode.removeChild(aplayer);
+            document.body.appendChild(aplayer);
+          }
+        }
+      }
+      const ap = new APlayer({
+          theme: "var(--color-link)",
+          container: document.getElementById('aplayer'),
+          audio: JSON.parse({{ $params.player.aplayer.options.audio | jsonify }}) || [],
+          fixed: isMobile ? true : ({{ $params.player.aplayer.options.fixed }} || false),
+          autoplay: {{ $params.player.aplayer.options.autoplay }} || false,
+          loop: '{{ $params.player.aplayer.options.loop }}' || 'all',
+          order: '{{ $params.player.aplayer.options.order }}' || 'list',
+          preload: '{{ $params.player.aplayer.options.preload }}' || 'auto',
+          volume: {{ $params.player.aplayer.options.volume }} || 0.7,
+          mutex: {{ $params.player.aplayer.options.mutex }} || true,
+          listFolded: {{ $params.player.aplayer.options.listFolded }} || false,
+          lrcType: {{ $params.player.aplayer.options.lrcType }} || 0,
+      });
+    </script>
+  {{- end -}}
+{{- end -}}
+
+{{- if $params.player.meting.enable -}}
+  {{- if $params.player.meting.meting_api -}}
+    <script>
+      var meting_api = '{{ $params.player.meting.meting_api }}';
+    </script>
+  {{- end -}}
+  <script>
+    if (window.matchMedia('(max-width: 959px)').matches) {
+      const meting = _$('meting-js');
+      if (meting) {
+        meting.setAttribute('fixed', 'true');
+        const aside = meting.parentNode?.parentNode;
+        if (aside?.tagName === 'ASIDE') {
+          meting.parentNode.removeChild(meting);
+          document.body.appendChild(meting);
+        }
+      }
+    }
+  </script>
+  {{- partial "helpers/js.html" (dict "raw" $js.meting "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.meting "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.meting)) 0)) -}}
+{{- end -}}
+
+{{- if .Site.Params.pangu.enable -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.pangu "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.pangu "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.pangu)) 0)) -}}
+  <script data-pjax>
+    if (document.readyState === "loading") {
+      document.addEventListener('DOMContentLoaded', () => {
+        pangu?.spacingPage();
+      });
+    } else {
+      pangu?.spacingPage();
+    }
+  </script>
+{{- end -}}

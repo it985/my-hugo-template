@@ -1,0 +1,142 @@
+// Colors
+:root {
+  --red-0: #{$light-red-0};
+  --red-1: #{$light-red-1};
+  --red-2: #{$light-red-2};
+  --red-3: #{$light-red-3};
+  --red-4: #{$light-red-4};
+  --red-5: #{$light-red-5};
+  --red-5-5: #{$light-red-5-5};
+  --red-6: #{$light-red-6};
+
+  --grey-9: #888;
+  --grey-7: var(--color-default);
+
+  --color-archive-year: black;
+  --color-default: #555;
+  --color-border: var(--red-3);
+  --color-link: var(--red-1);
+  --color-background: #eee;
+  --color-code-background: #f8f8f8;
+  --color-header-background: rgba(255, 255, 255, 0.9);
+  --color-footer-background: #fff;
+  --color-mobile-nav-background: #fff;
+  --color-wrap: #fff;
+  --color-sticky: #fff;
+
+  --color-h2-border: #eee;
+  --color-meta-shadow: var(--red-6);
+  --color-hover-shadow: rgba(120, 120, 120, 0.15);
+  --color-h2-after: var(--red-1);
+  --color-red-6-shadow: #{$light-color-red-6-shadow};
+  --color-red-3-shadow: #{$light-color-red-3-shadow};
+
+  --highlight-nav: #{$light-highlight-nav};
+  --highlight-scrollbar: #{$light-highlight-scrollbar};
+  --highlight-background: #{$light-highlight-background};
+  --highlight-current-line: #{$light-highlight-current-line};
+  --highlight-selection: #{$light-highlight-selection};
+  --highlight-foreground: #{$light-highlight-foreground};
+  --highlight-comment: #{$light-highlight-comment};
+  --highlight-red: #{$light-highlight-red};
+  --highlight-orange: #{$light-highlight-orange};
+  --highlight-yellow: #{$light-highlight-yellow};
+  --highlight-green: #{$light-highlight-green};
+  --highlight-aqua: #{$light-highlight-aqua};
+  --highlight-blue: #{$light-highlight-blue};
+  --highlight-purple: #{$light-highlight-purple};
+
+    
+  --shadow-meta: 0 0 5px 2px var(--color-meta-shadow);
+  --shadow-meta-hover: 0 0 6px 4px var(--color-meta-shadow);
+
+  --shadow-card: 0 0 10px 2px var(--color-hover-shadow);
+  --shadow-card-hover: 0 0 10px 4px var(--color-hover-shadow);
+
+  --shadow-red-6-shadow: 0 0 8px var(--color-red-6-shadow);
+}
+
+[data-theme="dark"] {
+  &:root {
+    --red-0: var(--red-1);
+    --red-4: #{$dark-red-4};
+    --red-5: #{$dark-red-5};
+    --red-5-5: #{$dark-red-5-5};
+    --red-6: #{$dark-red-6};
+
+    --color-archive-year: #999;
+    --color-default: #999;
+    --color-border: var(--red-5);
+    --color-background: #21252b;
+    --color-code-background: rgba(232, 232, 232, 0.1);
+    --color-header-background: #222222;
+    --color-footer-background: #21252b;
+    --color-mobile-nav-background: #21252b;
+    --color-wrap: #272b30;
+
+    --color-h2-border: #47474a;
+    --color-meta-shadow: rgba(0, 0, 0, 0.2);
+    --color-hover-shadow: rgba(0, 0, 0, 0.2);
+
+    --highlight-nav: #{$dark-highlight-nav};
+    --highlight-scrollbar: #{$dark-highlight-scrollbar};
+    --highlight-background: #{$dark-highlight-background};
+    --highlight-current-line: #{$dark-highlight-current-line};
+    --highlight-selection: #{$dark-highlight-selection};
+    --highlight-foreground: #{$dark-highlight-foreground};
+    --highlight-comment: #{$dark-highlight-comment};
+    --highlight-red: #{$dark-highlight-red};
+    --highlight-orange: #{$dark-highlight-orange};
+    --highlight-yellow: #{$dark-highlight-yellow};
+    --highlight-green: #{$dark-highlight-green};
+    --highlight-aqua: #{$dark-highlight-aqua};
+    --highlight-blue: #{$dark-highlight-blue};
+    --highlight-purple: #{$dark-highlight-purple};
+  }
+
+  img {
+    filter: brightness(70%);
+  }
+
+  // 排除 lightbox
+  .pswp__img {
+    opacity: 1;
+    filter: none;
+    animation: none;
+  }
+
+  img.lazyloaded {
+    opacity: 1;
+    animation: blur-darken 0.8s ease-in-out forwards !important;
+  }
+}
+
+// Fonts
+$font-basic: $custom-basic-families, $basic-families, $local-basic-families;
+$font-code: $custom-code-families, $code-families, $local-code-families;
+
+$font-size: 14px;
+$line-height: 1.67;
+$line-height-title: 1.2em;
+
+// Header
+$logo-size: 40px;
+$subtitle-size: 18px;
+$banner-height: 35vh;
+
+// Layout
+$article-padding: 20px;
+$mobile-nav-width: 280px;
+
+// Media queries
+$mq-mobile: "screen and (max-width: 479px)";
+$no-mobile: "screen and (min-width: 480px)";
+$mq-tablet: "screen and (min-width: 480px) and (max-width: 767px)";
+$mq-normal: "screen and (min-width: 768px)";
+$mg-normal: "screen and (max-width: 767px)";
+$mq-large: "screen and (min-width: 960px)";
+$mg-large: "screen and (max-width: 959px)";
+$mq-extra-large: "screen and (min-width: 1242px)";
+$mg-extra-large: "screen and (max-width: 1241px)";
+$post-radius: 10px;
+$tag-radius: 8px;

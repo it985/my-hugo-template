@@ -1,0 +1,10 @@
+<div class="article-category">
+  {{- range .Params.categories -}}
+    <a
+      class="article-category-link"
+      href="{{ "categories/" | relLangURL }}{{ . | urlize | lower }}"
+      data-aos="zoom-in"
+      >{{- .  | upper -}}</a
+    >
+  {{- end -}}
+</div>

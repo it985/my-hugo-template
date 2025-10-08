@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.LanguageCode }}" 
+{{ if eq .Site.Params.dark_mode.enable true -}}
+  data-theme-mode="true"
+{{ else if eq .Site.Params.dark_mode.enable false -}}
+  data-theme-mode="false"
+{{ else if eq .Site.Params.dark_mode.enable "auto" -}}
+  data-theme-mode="auto"
+{{ end }}>
+<head>
+  {{- if .Site.Params.injector.head_begin -}}
+    {{- .Site.Params.injector.head_begin | safeHTML -}}
+  {{- end -}}
+  {{- partial "head.html" . -}}
+  {{- if .Site.Params.injector.head_end -}}
+    {{- .Site.Params.injector.head_end | safeHTML -}}
+  {{- end -}}
+</head>
+<body>
+  {{- if .Site.Params.injector.body_begin -}}
+    {{- .Site.Params.injector.body_begin | safeHTML -}}
+  {{- end -}}
+  <div id="container">
+    <div id="wrap">
+      {{ partial "header.html" (merge (dict "Page" .) (dict "Site" .Site) (dict "Type" "404")) }}
+    </div>
+  </div>
+  
+  {{- if .Site.Params.algolia_search.enable -}}
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <div class="reimu-search-input-icon"></div>
+          <div id="reimu-search-input"></div>
+          <div class="popup-btn-close"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+        <img class="reimu-bg" src="{{ "images/reimu.png" | relURL }}"/>
+      </div>
+    </div>
+  {{- end -}}
+  {{- partial "afterFooter.html" . -}}
+  {{- if .Site.Params.injector.body_end -}}
+    {{- .Site.Params.injector.body_end | safeHTML -}}
+  {{- end -}}
+</body>
+</html>

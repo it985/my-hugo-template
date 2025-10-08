@@ -1,0 +1,20 @@
+{{- if len .Site.Pages -}}
+  {{- $recentPosts := (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) | first .Site.Params.recent_posts_limits -}}
+  <div class="widget-wrapper">
+    <div
+      class="widget-wrap"
+      data-aos="{{ .Site.Params.animation.options.home.widget }}"
+    >
+      <h3 class="widget-title">{{ i18n "recent_posts" }}</h3>
+      <div class="widget">
+        <ul>
+          {{- range $recentPosts -}}
+            <li>
+              <a href="{{ .Permalink | relURL }}" title="{{ .Title }}">{{ .Title }}</a>
+            </li>
+          {{- end -}}
+        </ul>
+      </div>
+    </div>
+  </div>
+{{- end -}}

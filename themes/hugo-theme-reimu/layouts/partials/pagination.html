@@ -1,0 +1,37 @@
+{{- $pag := .Paginator -}}
+{{- $tps := $pag.TotalPages -}}
+
+{{- $begin := sub $pag.PageNumber  2 -}}
+{{- $end := add $pag.PageNumber  2 -}}
+
+{{- if lt $begin 0 -}}
+  {{- $end := sub $end $begin -}}
+{{- end -}}
+
+{{- $over := sub  $tps $end -}}
+
+{{- if lt $over 0 -}}
+  {{- $begin := add $begin $over -}}
+{{- end -}}
+<nav id="page-nav" aria-label="Pagination navigation" data-aos="{{ .Site.Params.animation.options.archive.nav }}">
+  {{- if $pag.HasPrev -}}
+    <a class="extend prev" rel="prev" href="{{ $pag.Prev.URL | relURL }}">
+      &laquo;
+      {{ i18n "prev" -}}
+    </a>
+  {{- end -}}
+  {{- range $p := $pag.Pagers -}}
+    {{- if and (ge $p.PageNumber $begin) (le $p.PageNumber $end) -}}
+      {{- if eq $p $pag -}}
+        <span class="page-number current">{{ $p.PageNumber }}</span>
+      {{- else -}}
+        <a class="page-number" href="{{ $p.URL | relURL }}">{{ $p.PageNumber }}</a>
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if $pag.HasNext -}}
+    <a class="extend next" rel="next" href="{{ $pag.Next.URL | relURL }}">
+      {{ i18n "next" }} &raquo;
+    </a>
+  {{- end -}}
+</nav>

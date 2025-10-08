@@ -1,0 +1,35 @@
+{{- define "main" -}}
+  {{- $type := .Type -}}
+
+  {{- $sort_config := "date-reverse" -}}
+  {{- if eq $type "categories" -}}
+    {{- $sort_config = .Site.Params.sort_order.taxonomy.category -}}
+  {{- else if eq $type "tags" -}}
+    {{- $sort_config = .Site.Params.sort_order.taxonomy.tag -}}
+  {{- end -}}
+
+  {{- $paginator := .Paginator.Pages.GroupByDate .Site.Params.yearFormat "desc" -}}
+  {{- if eq $sort_config "weight" -}}
+    {{- $paginator = .Paginator.Pages.ByWeight -}}
+  {{- else if eq $sort_config "weight-reverse" -}}
+    {{- $paginator = .Paginator.Pages.ByWeight.Reverse -}}
+  {{- else if eq $sort_config "date" -}}
+    {{- $paginator = .Paginator.Pages.GroupByDate .Site.Params.yearFormat "asc" -}}
+  {{- else if eq $sort_config "default" -}}
+    {{- $paginator = .Paginator.Pages -}}
+  {{- end -}}
+  <div
+    class="archives-outer-wrap"
+    data-aos="{{ .Site.Params.animation.options.archive.whole }}"
+  >
+    {{- if .Site.Params.only_show_capsule_in_index -}}
+      {{- if eq .Paginator.PageNumber 1 -}}
+        {{- partialCached "archives.html" . -}}
+      {{- end -}}
+    {{- else -}}
+      {{- partialCached "archives.html" . -}}
+    {{- end -}}
+    {{- partial "list.html" (dict "paginator" $paginator "ctx" .) -}}
+  </div>
+  {{- partial "pagination.html" . -}}
+{{- end -}}

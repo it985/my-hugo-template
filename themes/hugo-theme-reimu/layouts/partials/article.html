@@ -1,0 +1,141 @@
+<article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="{{ .Site.Params.animation.options.article.whole }}"
+  >
+    <div class="article-meta">
+      {{- partial "post/date.html" . -}}
+      {{- partial "post/category.html" . -}}
+    </div>
+    {{- partial "post/summary.html" . -}}
+    <div class="hr-line"></div>
+    {{- partial "post/gallery.html" . -}}
+    <div class="e-content article-entry" itemprop="articleBody">
+      {{- if .Params.outdated -}}
+        <blockquote class="alert-blockquote warning">
+          <p class="alert-heading">WARNING</p>
+          <p>
+            {{ $msg := index .Site.Params.outdate.message $.Language.Lang | default "This article was last updated on {time}. Please note that the content may no longer be applicable." }}
+            {{ replace $msg "{time}" ($.Lastmod.Format $.Site.Params.dateFormat) }}
+          </p>
+        </blockquote>
+      {{- else if .Site.Params.outdate.enable -}}
+        <blockquote
+          class="alert-blockquote warning"
+          id="outdate-blockquote"
+          style="display: none;"
+        >
+          <p class="alert-heading">WARNING</p>
+          <p></p>
+        </blockquote>
+      {{- end -}}
+      {{- if and .Params.excerpt .Params.link -}}
+        <p>{{ .Params.excerpt | safeHTML }}</p>
+        <p class="article-more-link">
+          <a
+            href="{{ .Params.link }}"
+            target="_blank"
+            itemprop="url"
+            rel="noopener nofollow noreferrer"
+            >{{ .Site.Params.excerpt_link | default "Read More" }}</a
+          >
+        </p>
+      {{- else -}}
+        {{ .Content | safeHTML }}
+      {{- end -}}
+    </div>
+    <footer class="article-footer">
+      {{- if or (eq .Params.copyright true) (and (not (eq .Params.copyright false)) .Site.Params.article_copyright.enable) -}}
+        {{- partial "post/copyright.html" . -}}
+      {{- end -}}
+
+      {{- if or (eq .Params.sponsor true) (and (not (eq .Params.sponsor false)) .Site.Params.sponsor.enable) -}}
+        {{- partial "post/sponsor.html" . -}}
+      {{- end -}}
+
+      {{- if reflect.IsSlice .Site.Params.share -}}
+        {{- partial "post/share.html" . -}}
+      {{- end -}}
+
+      {{- if and (not (eq .Params.comments false)) .Site.Params.valine.enable .Site.Params.valine.appId .Site.Params.valine.appKey -}}
+        <a
+          data-aos="{{ .Site.Params.animation.options.article.comment }}"
+          href="{{ .Permalink | relURL }}#comments"
+          class="article-comment-link"
+        >
+          <span
+            class="post-comments-count valine-comment-count"
+            data-xid="{{ .Permalink | urlize }}"
+            itemprop="commentCount"
+          ></span>
+          {{ i18n "comment" }}
+        </a>
+      {{- end -}}
+
+      {{- if and (not (eq .Params.comments false)) .Site.Params.waline.enable .Site.Params.waline.serverURL -}}
+        <a
+          data-aos="{{ .Site.Params.animation.options.article.comment }}"
+          href="{{ .Permalink | relURL }}#comments"
+          class="article-comment-link"
+        >
+          <span
+            class="post-comments-count waline-comment-count"
+            data-path="{{ .Permalink | urlize }}"
+            itemprop="commentCount"
+          ></span>
+          {{ i18n "comment" }}
+        </a>
+      {{- end -}}
+
+      {{- if and (not (eq .Params.comments false)) .Site.Params.twikoo.enable .Site.Params.twikoo.envId -}}
+        <a
+          data-aos="{{ .Site.Params.animation.options.article.comment }}"
+          href="{{ .Permalink | relURL }}#comments"
+          class="article-comment-link"
+        >
+          <span
+            class="post-comments-count twikoo-comment-count"
+            data-path="{{ .Permalink | urlize }}"
+            itemprop="commentCount"
+          ></span>
+          {{ i18n "comment" }}
+        </a>
+      {{- end -}}
+
+      {{- if and (not (eq .Params.comments false)) .Site.Params.valine.enable .Site.Params.valine.appId .Site.Params.valine.appKey .Site.Params.valine.visitor -}}
+        <span
+          data-aos="{{ .Site.Params.animation.options.article.reading }}"
+          id="{{ .Permalink | relURL }}"
+          class="leancloud_visitors article-visitor-link"
+          data-flag-title="{{ .Title }}"
+        >
+          <span class="leancloud-visitors-count">0</span>
+          <em class="post-meta-item-text">{{ i18n "reading" }}</em>
+        </span>
+      {{- end -}}
+
+      {{- if and (not (eq .Params.comments false)) .Site.Params.waline.enable .Site.Params.waline.serverURL .Site.Params.waline.pageview -}}
+        <span
+          data-aos="{{ .Site.Params.animation.options.article.reading }}"
+          class="article-visitor-link"
+        >
+          <span
+            class="waline-pageview-count"
+            data-path="{{ .Permalink | relURL }}"
+            >0</span
+          >
+          <em class="post-meta-item-text">{{ i18n "reading" }}</em>
+        </span>
+      {{- end -}}
+      {{- partial "post/tag.html" . -}}
+    </footer>
+  </div>
+  {{- if in .Site.Params.mainSections .Type -}}
+    {{- partial "post/nav.html" . -}}
+  {{- end -}}
+</article>
+{{- partial "comment.html" . -}}

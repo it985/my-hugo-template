@@ -1,0 +1,29 @@
+{{- $fontDisplay := "&display=swap" -}}
+{{- $fontStyles := ":400,400italic,700,700italic" -}}
+{{- $fontHost := "https://fonts.googleapis.com" -}}
+
+{{- $basicConfigFontFamilies := (.Site.Params.font.article) | append (.Site.Params.font.code) -}}
+
+{{- $fontFamilies := "" -}}
+{{- range $index, $element := $basicConfigFontFamilies -}}
+  {{- if not $element -}}
+    {{- continue -}}
+  {{- end -}}
+  {{- $fontFamilies = printf "%s%s%s" $fontFamilies $element $fontStyles -}}
+  {{- if ne (add $index 1) (len $basicConfigFontFamilies) -}}
+    {{- $fontFamilies = printf "%s|" $fontFamilies -}}
+  {{- end -}}
+{{- end -}}
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="preload"
+  as="style"
+  href="{{ printf "%s/css?family=%s%s" $fontHost $fontFamilies $fontDisplay }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ printf "%s/css?family=%s%s" $fontHost $fontFamilies $fontDisplay }}"
+  media="print"
+  onload="this.media='all'"
+/>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html
+  lang="{{ .Site.Language.LanguageCode }}" 
+  {{ if eq .Site.Params.dark_mode.enable true -}}
+    data-theme-mode="true"
+  {{ else if eq .Site.Params.dark_mode.enable false -}}
+    data-theme-mode="false"
+  {{ else if eq .Site.Params.dark_mode.enable "auto" -}}
+    data-theme-mode="auto"
+  {{ end -}}
+>
+  <head>
+    {{- if .Site.Params.injector.head_begin -}}
+      {{- .Site.Params.injector.head_begin | safeHTML -}}
+    {{- end -}}
+    {{- partial "head.html" . -}}
+    {{- if .Site.Params.injector.head_end -}}
+      {{- .Site.Params.injector.head_end | safeHTML -}}
+    {{- end -}}
+  </head>
+  <body>
+    {{- if .Site.Params.injector.body_begin -}}
+      {{- .Site.Params.injector.body_begin | safeHTML -}}
+    {{- end -}}
+    {{- partialCached "loader.html" . -}}
+    <div id="container">
+      <div id="wrap">
+        {{- partial "header.html" . -}}
+        <div id="content"
+          aria-label="Page content"
+          {{ if or (and (eq .Site.Params.sidebar "left") (eq .Params.sidebar nil)) (eq .Params.sidebar "left") }}class="sidebar-left"{{ end }}
+          {{ if or (and (eq .Site.Params.sidebar "right") (eq .Params.sidebar nil)) (eq .Params.sidebar "right") }}class="sidebar-right"{{ end }}  >
+          {{- partial "sidebar.html" . -}}
+          <section id="main" aria-label="Main content">{{ block "main" . }}{{ end }}</section>
+        </div>
+        {{- partialCached "footer.html" . -}}
+        {{- if .Site.Params.top.enable -}}
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi {{ if .Site.Params.top.icon.rotate }}rotate{{ end }}"></div>
+            <div class="arrow-up"></div>
+          </div>
+        {{- end -}}
+        <div id="mask" class="hide"></div>
+      </div>
+      {{- partial "mobilebar.html" . -}}
+    </div>
+    {{- if .Site.Params.algolia_search.enable -}}
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="{{ "images/reimu.png" | relURL }}" />
+        </div>
+      </div>
+    {{- end -}}
+    {{- if and .Site.Params.player.aplayer.enable (not .Site.Params.player.meting.enable) .Site.Params.player.aplayer.options.fixed -}}
+      <div id="aplayer" theme="var(--color-link)"></div>
+    {{- end -}}
+    {{- if and .Site.Params.player.meting.enable .Site.Params.player.aplayer.options.fixed -}}
+      <meting-js
+        theme="var(--color-link)"
+        {{ if ne .Site.Params.player.meting.options.id nil }}id="{{ .Site.Params.player.meting.options.id }}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.server nil }}server="{{ .Site.Params.player.meting.options.server }}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.type nil }}type="{{ .Site.Params.player.meting.options.type }}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.auto nil }}auto="{{ .Site.Params.player.meting.options.auto }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.fixed nil }}fixed="{{ .Site.Params.player.aplayer.options.fixed }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.autoplay nil }}autoplay="{{ .Site.Params.player.aplayer.options.autoplay }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.loop nil }}loop="{{ .Site.Params.player.aplayer.options.loop }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.order nil }}order="{{ .Site.Params.player.aplayer.options.order }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.preload nil }}preload="{{ .Site.Params.player.aplayer.options.preload }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.volume nil }}volume="{{ .Site.Params.player.aplayer.options.volume }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.mutex nil }}mutex="{{ .Site.Params.player.aplayer.options.mutex }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.listFolded nil }}list-folded="{{ .Site.Params.player.aplayer.options.listFolded }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.lrcType nil }}lrc-type="{{ .Site.Params.player.aplayer.options.lrcType }}"{{ end -}}
+        >
+      </meting-js>
+    {{- end -}}
+    {{- partial "afterFooter.html" . -}}
+    {{- if .Site.Params.injector.body_end -}}
+      {{- .Site.Params.injector.body_end | safeHTML -}}
+    {{- end -}}
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{{- $items := . -}}
+{{- if not (reflect.IsSlice $items) -}}
+  {{- $raw := index $items "raw" -}}
+  {{- if reflect.IsMap $raw -}}
+    {{- $raw = $raw.src -}}
+  {{- end -}}
+  {{- $src := index $items "src" -}}
+  {{- $defer := index $items "defer" -}}
+  {{- $async := index $items "async" -}}
+  {{- $pjax := index $items "pjax" -}}
+  {{- $integrity := index $items "integrity" -}}
+  {{- $onload := index $items "onload" -}}
+  <script
+    src="{{ $src }}"
+    {{ if $defer }}defer{{ end -}}
+    {{ if $async }}async{{ end -}}
+    {{ if $pjax }}data-pjax{{ end -}}
+    {{ if $onload }}onload="{{ $onload | safeJS }}"{{ end -}}
+    {{ if and $integrity (not (hasPrefix $raw "local|")) }}integrity="{{ $integrity }}" crossorigin="anonymous"{{ end -}}
+  ></script>
+{{- else -}}
+  {{- range $items -}}
+    <script src="{{ . }}"></script>
+  {{- end -}}
+{{- end -}}

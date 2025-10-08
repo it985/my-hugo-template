@@ -1,0 +1,9 @@
+{{- if .Site.Params.baidu_analytics -}}
+  {{- partial "analytics/baidu.html" . -}}
+{{- end -}}
+{{- if .Site.Params.clarity -}}
+  {{- partial "analytics/clarity.html" . -}}
+{{- end -}}
+{{- if .Site.Params.google_analytics -}}
+  {{- partial "analytics/google.html" . -}}
+{{- end -}}

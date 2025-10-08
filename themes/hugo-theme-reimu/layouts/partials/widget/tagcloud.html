@@ -1,0 +1,29 @@
+{{- if len .Site.Taxonomies.tags -}}
+<div class="widget-wrapper">
+  <div
+    class="widget-wrap"
+    data-aos="{{ .Site.Params.animation.options.home.widget }}"
+  >
+    <h3 class="widget-title">{{ i18n "tagcloud" }}</h3>
+    {{- $posts := (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
+    <div class="widget tagcloud">
+      {{- $counter := 0 -}}
+      {{- range .Site.Taxonomies.tags -}}
+        {{- if lt $counter $.Site.Params.tagcloud_limits -}}
+          {{- $weight := 10 -}}
+          {{- if gt (len $posts) 0 -}}
+            {{- $weight = add 10 (mul 10 (div .Count (len $posts))) -}}
+          {{- end -}}
+          <a
+            style="font-size:{{ $weight }}px"
+            href="{{ .Page.RelPermalink }}"
+            aria-label="{{ i18n "tag" }}: {{ .Page.Title }}"
+            >{{ .Page.Title }}</a
+          >
+          {{- $counter = add $counter 1 -}}
+        {{- end -}}
+      {{- end -}}
+    </div>
+  </div>
+</div>
+{{- end -}}

@@ -1,0 +1,381 @@
+:root {
+  --font-icon: "Font Awesome 7 Free", "Font Awesome 7 Brands", "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 5 Free", "Font Awesome 5 Brands", "FontAwesome";
+}
+
+.archives-tag-list-link:before {
+  font-family: var(--font-icon);
+  content: "\f02b";
+}
+
+.archives-category-list-link:before {
+  font-family: var(--font-icon);
+  content: "\f02e";
+}
+
+.article-date-link:before {
+  font-family: var(--font-icon);
+  content: "\f017";
+  font-weight: 900;
+}
+
+.article-category-link:before {
+  font-family: var(--font-icon);
+  content: "\f02e";
+  font-weight: 900;
+}
+
+.article-tag-list-link:before {
+  font-family: var(--font-icon);
+  content: "\f02b";
+}
+
+.article-comment-link:before {
+  font-family: var(--font-icon);
+  content: "\f075";
+  font-weight: 900;
+}
+
+.icon-copyright:before {
+  font-family: var(--font-icon);
+  content: "\f1f9";
+}
+
+.icon-brush:before {
+  font-family: var(--font-icon);
+  content: "\f1fc";
+}
+
+.icon-coffee:before {
+  font-family: var(--font-icon);
+  content: "\f0f4";
+}
+
+.icon-eye:before {
+  font-family: var(--font-icon);
+  content: "\f06e";
+  font-weight: 900;
+}
+
+.icon-user:before {
+  font-family: var(--font-icon);
+  content: "\f007";
+  font-weight: 900;
+}
+
+#main-nav-toggle:before {
+  font-family: var(--font-icon);
+  content: "\f0c9";
+}
+
+#nav-rss-link:before {
+  font-family: var(--font-icon);
+  content: "\f09e";
+}
+
+#nav-search-btn:before {
+  font-family: var(--font-icon);
+  content: "\f002";
+}
+
+#nav-sun-btn:before {
+  font-family: var(--font-icon);
+  content: "\f185";
+  font-weight: 900;
+}
+
+#nav-moon-btn:before {
+  font-family: var(--font-icon);
+  content: "\f186";
+  font-weight: 900;
+}
+
+#nav-circle-half-stroke-btn:before {
+  font-family: var(--font-icon);
+  content: "\f042";
+}
+
+#nav-language-btn:before {
+  font-family: var(--font-icon);
+  content: "\f1ab";
+}
+
+.icon-copy:before {
+  font-family: var(--font-icon);
+  content: "\f0c5";
+}
+
+.icon-chevron-down:before {
+  font-family: var(--font-icon);
+  content: "\f078";
+}
+
+.icon-check:before {
+  font-family: var(--font-icon);
+  content: "\f00c";
+}
+
+.icon-times:before {
+  font-family: var(--font-icon);
+  content: "\f00d";
+}
+
+.icon-calendar:before {
+  font-family: var(--font-icon);
+  content: "\f133";
+  font-weight: 900;
+}
+
+.icon-calendar-plus:before {
+  font-family: var(--font-icon);
+  content: "\f271";
+  font-weight: 900;
+}
+
+.icon-pencil:before {
+  font-family: var(--font-icon);
+  content: "\f5ad";
+}
+
+.icon-clock:before {
+  font-family: var(--font-icon);
+  content: "\f252";
+  font-weight: 900;
+}
+
+.post-sticky:before {
+  font-family: var(--font-icon);
+  content: "\f164";
+  font-weight: 900;
+}
+
+.popup-btn-close:before {
+  font-family: var(--font-icon);
+  content: "\f057";
+  font-weight: 900;
+}
+
+.reimu-search-input-icon:before {
+  font-family: var(--font-icon);
+  content: "\f002";
+}
+
+.ais-pagination--item__previous a:before {
+  font-family: var(--font-icon);
+  content: "\f104";
+}
+
+.ais-pagination--item__next a:before {
+  font-family: var(--font-icon);
+  content: "\f105";
+}
+
+@if index($social-keys, "github") {
+  .icon-github:before {
+    content: "\f09b";
+  }
+}
+
+@if index($social-keys, "google") {
+  .icon-google:before {
+    content: "\f0d5";
+  }
+}
+
+@if index($social-keys, "facebook") or index($share-keys, "facebook") {
+  .icon-facebook:before {
+    content: "\f09a";
+  }
+}
+
+@if index($social-keys, "twitter") or index($share-keys, "twitter") {
+  .icon-twitter:before {
+    content: "\e61b";
+  }
+}
+
+@if index($social-keys, "instagram") {
+  .icon-instagram:before {
+    content: "\f16d";
+  }
+}
+
+@if index($social-keys, "linkedin") or index($share-keys, "linkedin") {
+  .icon-linkedin:before {
+    content: "\f08c";
+  }
+}
+
+@if index($social-keys, "pinterest") {
+  .icon-pinterest:before {
+    content: "\f0d2";
+  }
+}
+
+@if index($social-keys, "youtube") {
+  .icon-youtube:before {
+    content: "\f167";
+  }
+}
+
+@if index($social-keys, "vimeo") {
+  .icon-vimeo:before {
+    content: "\f194";
+  }
+}
+
+@if index($social-keys, "flickr") {
+  .icon-flickr:before {
+    content: "\f16e";
+  }
+}
+
+@if index($social-keys, "dribbble") {
+  .icon-dribbble:before {
+    content: "\f17d";
+  }
+}
+
+@if index($social-keys, "behance") {
+  .icon-behance:before {
+    content: "\f1b4";
+  }
+}
+
+@if index($social-keys, "bilibili") {
+  .icon-bilibili:before {
+    content: "\e3d9";
+  }
+}
+
+@if index($social-keys, "weibo") or index($share-keys, "weibo") {
+  .icon-weibo:before {
+    content: "\f18a";
+  }
+}
+
+@if index($social-keys, "zhihu") {
+  .icon-zhihu:before {
+    content: "\f63f";
+  }
+}
+
+@if index($social-keys, "reddit") or index($share-keys, "reddit") {
+  .icon-reddit:before {
+    content: "\f1a1";
+  }
+}
+
+@if index($social-keys, "tumblr") {
+  .icon-tumblr:before {
+    content: "\f173";
+  }
+}
+
+@if index($social-keys, "medium") {
+  .icon-medium:before {
+    content: "\f23a";
+  }
+}
+
+@if index($social-keys, "deviantart") {
+  .icon-deviantart:before {
+    content: "\f1bd";
+  }
+}
+
+@if index($social-keys, "stackoverflow") {
+  .icon-stackoverflow:before {
+    content: "\f16c";
+  }
+}
+
+@if index($social-keys, "keybase") {
+  .icon-keybase:before {
+    content: "\f4f5";
+  }
+}
+
+@if index($social-keys, "telegram") {
+  .icon-telegram:before {
+    content: "\f2c6";
+  }
+}
+
+@if index($social-keys, "discord") {
+  .icon-discord:before {
+    content: "\f392";
+  }
+}
+
+@if index($social-keys, "steam") {
+  .icon-steam:before {
+    content: "\f1b6";
+  }
+}
+
+@if index($social-keys, "email") {
+  .icon-email:before {
+    content: "\f0e0";
+    font-weight: 900;
+  }
+}
+
+.sidebar-toc-btn:before {
+  font-family: var(--font-icon);
+  content: "\f0e8";
+}
+
+.sidebar-common-btn:before {
+  font-family: var(--font-icon);
+  content: "\e3af";
+}
+
+.sidebar-top .arrow-up:before {
+  font-family: var(--font-icon);
+  content: "\f062";
+}
+
+.icon-link:before {
+  font-family: var(--font-icon);
+  content: "\f0c1";
+}
+
+.icon-globe:before {
+  font-family: var(--font-icon);
+  content: "\f0ac";
+  font-weight: 900;
+}
+
+.icon-creative-commons:before {
+  font-family: var(--font-icon);
+  content: "\f25e";
+}
+
+.icon-taichi:before {
+  font-family: var(--font-icon);
+  content: "\f6ad";
+}
+
+@if index($share-keys, "weixin") {
+  .icon-weixin:before {
+    font-family: var(--font-icon);
+    content: "\f1d7";
+  }
+}
+
+@if index($share-keys, "qq") {
+  .icon-qq:before {
+    font-family: var(--font-icon);
+    content: "\f1d6";
+  }
+}
+
+.icon-image:before {
+  font-family: var(--font-icon);
+  content: "\f03e";
+  font-weight: 900;
+}
+
+.icon {
+  font-family: var(--font-icon);
+}

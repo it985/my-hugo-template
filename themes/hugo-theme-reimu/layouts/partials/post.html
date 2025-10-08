@@ -1,0 +1,103 @@
+{{- $page := .page -}}
+{{- $index := .index -}}
+{{- $ctx := .ctx -}}
+
+<div class="post-wrapper">
+  <div
+    class="{{ if mod $index 2 }}
+      post-wrap right
+    {{ else }}
+      post-wrap left
+    {{ end }}"
+    data-aos="{{ $ctx.Site.Params.animation.options.home.post }}"
+  >
+    {{- if $page.Params.link -}}
+      <a
+        class="post-link"
+        href="{{ $page.Params.link }}"
+        itemprop="url"
+        target="_blank"
+        rel="noopener nofollow noreferrer"
+        aria-label="{{ $page.Title }}"
+        title="{{ $page.Title }}"
+      >
+      </a>
+    {{- else -}}
+      <a
+        class="post-link"
+        href="{{ $page.Permalink | relURL }}"
+        aria-label="{{ $page.Title }}"
+        title="{{ $page.Title }}"
+      >
+      </a>
+    {{- end -}}
+    {{- if and $page.Params.weight (or (eq $ctx.Site.Params.sort_order.home "default") (not $ctx.Site.Params.sort_order.home)) -}}
+      <div class="post-sticky">{{ i18n "sticky" }}</div>
+    {{- end -}}
+    <div
+      class="{{ if mod $index 2 }}
+        post-cover right
+      {{ else }}
+        post-cover left
+      {{ end }}"
+    >
+      {{- if and $page.Params.cover (not (hasPrefix $page.Params.cover "rgb")) -}}
+        <img
+          data-src="{{ $page.Params.cover }}"
+          data-sizes="auto"
+          alt="{{ .Title }}"
+          class="lazyload"
+        />
+      {{- else -}}
+        {{- $cover := partial "helpers/randomCover.html" $ctx -}}
+        {{- if $cover -}}
+          <img
+            data-src="{{ $cover }}"
+            data-sizes="auto"
+            alt="{{ $page.Title }}"
+            class="lazyload"
+          />
+        {{- else -}}
+          <img
+            data-src="{{ $ctx.Site.Params.banner | relURL }}"
+            data-sizes="auto"
+            alt="{{ $page.Title }}"
+            class="lazyload"
+          />
+        {{- end -}}
+      {{- end -}}
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span
+          ><span class="icon-calendar"></span
+          >{{ $page.Date.Format $ctx.Site.Params.dateFormat }}</span
+        >
+        {{- if $ctx.Site.Params.show_update_time -}}
+          <span
+            ><span class="icon-calendar-plus"></span
+            >{{ $page.Lastmod.Format $ctx.Site.Params.dateFormat }}</span
+          >
+        {{- end -}}
+        <span
+          ><span class="icon-pencil"></span
+          >{{ i18n "post.count" $page.WordCount }}</span
+        >
+        <span
+          ><span class="icon-clock"></span
+          >{{ i18n "post.time" $page.ReadingTime }}</span
+        >
+      </div>
+      <h2 class="post-title">{{ $page.Title }}</h2>
+      <article class="post-article">
+        {{- if $page.Params.description -}}
+          {{- $page.Params.description | plainify | truncate 300 -}}
+        {{- else if $page.Summary -}}
+          {{- $page.Summary  | plainify | truncate 300 -}}
+        {{- else -}}
+          {{- $page.RawContent | truncate 300 -}}
+        {{- end -}}
+      </article>
+    </div>
+  </div>
+</div>

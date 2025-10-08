@@ -1,0 +1,358 @@
+{{- $site := .Site -}}
+{{- $params := .Site.Params -}}
+{{- $js := .Site.Data.vendor.js -}}
+
+{{- $commentSystems := dict 
+  "valine" (cond (and $params.valine.enable $params.valine.appId $params.valine.appKey) true false)
+  "waline" (cond (and $params.waline.enable $params.waline.serverURL) true false)
+  "twikoo" (cond (and $params.twikoo.enable $params.twikoo.envId) true false)
+  "gitalk" (cond (and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret) true false)
+  "giscus" (cond $params.giscus.enable true false)
+-}}
+
+{{- $activeSystems := slice -}}
+{{- range $key, $value := $commentSystems -}}
+  {{- if $value -}}
+    {{- $activeSystems = $activeSystems | append $key -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (not (eq .Params.comments false)) (len $activeSystems) -}}
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+  var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus'];
+  var commentConfig = {
+    {{- if $commentSystems.valine -}}
+    valine: {
+      enable: {{ if and $params.valine.enable $params.valine.appId $params.valine.appKey }}true{{ else }}false{{ end }},
+      load: () => {
+        const container = document.querySelector('.valine-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.valine "ctx" $site)) 0 }}',
+          !'{{ $js.valine.src }}'.startsWith('local') ? '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.valine)) 0 }}' : undefined
+        );
+        script.onload = () => {
+          const GUEST_INFO = ['nick', 'mail', 'link'];
+          const guest_info = '{{ $params.valine.guest_info }}'.split(',').filter((item) => {
+            return GUEST_INFO.indexOf(item) > -1
+          });
+          const recordIP = JSON.parse('{{ $params.valine.recordIP }}');
+          const highlight = JSON.parse('{{ $params.valine.highlight }}');
+          const visitor = JSON.parse('{{ $params.valine.visitor }}');
+          const serverURLs = {{ if $params.valine.serverURLs }}'{{ $params.valine.serverURLs }}'{{ else }}undefined{{ end }};
+
+          new Valine({
+            el: '.valine-comment',
+            appId: "{{ $params.valine.appId }}",
+            appKey: "{{ $params.valine.appKey }}",
+            placeholder: "{{ $params.valine.placeholder }}",
+            pageSize: '{{ $params.valine.pageSize }}',
+            avatar: '{{ $params.valine.avatar }}',
+            lang: document.documentElement.lang || 'en',
+            recordIP: recordIP,
+            highlight: highlight,
+            visitor: visitor,
+            requiredFields: guest_info,
+            path: window.location.pathname,
+            serverURLs,
+          });
+        };
+        document.head.appendChild(script);
+      }
+    },
+    {{- end -}}
+    {{- if $commentSystems.waline -}}
+    waline: {
+      enable: {{ if and $params.waline.enable $params.waline.serverURL }}true{{ else }}false{{ end }},
+      load: async () => {
+        const container = document.querySelector('.waline-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        let walineInit;
+        const walineCdn = '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.waline "ctx" $site)) 0 }}';
+        
+        if ('{{ $js.waline.src }}'.startsWith('local')) {
+          // 本地资源不使用 integrity
+          const module = await safeImport(walineCdn);
+          walineInit = module.init;
+        } else {
+          // 远程资源使用 integrity
+          const module = await safeImport(
+            walineCdn, 
+            '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.waline "ctx" $site)) 0 }}'
+          );
+          walineInit = module.init;
+        }
+        
+        window.walineInstance = walineInit({
+          el: '.waline-comment',
+          serverURL: '{{ $params.waline.serverURL }}',
+          lang: document.documentElement.lang || 'en',
+          locale: JSON.parse({{ $params.waline.locale | jsonify }}),
+          emoji: JSON.parse({{ $params.waline.emoji | jsonify}}),
+          meta: JSON.parse({{ $params.waline.meta | jsonify }}),
+          requiredMeta: JSON.parse({{ $params.waline.requiredMeta | jsonify }}),
+          wordLimit: {{ $params.waline.wordLimit }},
+          comment: true,
+          pageSize: {{ $params.waline.pageSize }},
+          dark: 'html[data-theme="dark"]',
+          pageview: {{ $params.waline.pageview }},
+        });
+      }
+    },
+    {{- end -}}
+    {{- if $commentSystems.twikoo -}}
+    twikoo: {
+      enable: {{ if and $params.twikoo.enable $params.twikoo.envId }}true{{ else }}false{{ end }},
+      load: () => {
+        const container = document.querySelector('.twikoo-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        // 加载 Twikoo 脚本
+        const script = loadScript(
+          '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.twikoo "ctx" $site)) 0 }}',
+          !'{{ $js.twikoo.src }}'.startsWith('local') ? '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.twikoo)) 0 }}' : undefined
+        );
+        script.onload = () => {
+          twikoo.init({
+            envId: '{{ $params.twikoo.envId }}',
+            el: '.twikoo-comment',
+            region: '{{ $params.twikoo.region }}',
+            lang: document.documentElement.lang || 'en',
+          });
+          twikoo.getCommentsCount({
+            envId: '{{ .Site.Params.twikoo.envId }}',
+            region: '{{ .Site.Params.twikoo.region }}',
+            urls: [
+              '{{ .Permalink | urlize }}'
+            ],
+            includeReply: false
+          }).then((res) => {
+            document.querySelector('.twikoo-comment-count').innerText = res[0].count;
+          }).catch((err) => {
+            console.error(err);
+          });
+        };
+        document.head.appendChild(script);
+      }
+    },
+    {{- end -}}
+    {{- if $commentSystems.gitalk -}}
+    gitalk: {
+      enable: {{ if and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret }}true{{ else }}false{{ end }},
+      load: () => {
+        const container = document.querySelector('.gitalk-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.gitalk "ctx" $site)) 0 }}',
+          !'{{ $js.gitalk.src }}'.startsWith('local') ? '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.gitalk)) 0 }}' : undefined
+        );
+        script.onload = () => {
+          if ({{ $params.gitalk.md5 }}) {
+            // 如果需要 md5，加载 md5 脚本
+            const md5Script = loadScript(
+              '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.md5 "ctx" $site)) 0 }}',
+              !'{{ $js.md5.src }}'.startsWith('local') ? '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.md5)) 0 }}' : undefined
+            );
+            md5Script.onload = initGitalk;
+            document.head.appendChild(md5Script);
+          } else {
+            // 否则直接初始化 Gitalk
+            initGitalk();
+          }
+        };
+        document.head.appendChild(script);
+
+        function initGitalk() {
+          let gitalk = new Gitalk({
+            clientID: '{{ $params.gitalk.clientID }}',
+            clientSecret: '{{ $params.gitalk.clientSecret}}',
+            repo: '{{ $params.gitalk.repo }}',
+            owner: '{{ $params.gitalk.owner }}',
+            admin: JSON.parse({{ $params.gitalk.admin | jsonify }}),
+            id: {{ if $params.gitalk.md5 }}window.md5 ? window.md5(location.pathname) : location.pathname{{ else }}location.pathname{{ end }},
+            distractionFreeMode: false,
+            language: document.documentElement.lang || 'en',
+          });
+          gitalk.render('gitalk-comment');
+        }
+      }
+    },
+    {{- end -}}
+    {{- if $commentSystems.giscus -}}
+    giscus: {
+      enable: {{ if and $params.giscus.enable }}true{{ else }}false{{ end }},
+      load: () => {
+        const container = document.querySelector('.giscus-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        // 删除可能已存在的 giscus 脚本和 iframe
+        const existingScript = container.querySelector('script[src*="giscus.app/client.js"]');
+        if (existingScript) existingScript.remove();
+        const existingFrame = document.querySelector('iframe.giscus-frame');
+        if (existingFrame) existingFrame.remove();
+
+        // 加载 Giscus 脚本
+        const giscusScript = document.createElement('script');
+        const domMode = document.documentElement.getAttribute("data-theme");
+
+        const docLang = document.documentElement.lang || 'en';
+        const langBase = docLang.split('-')[0];
+        const supportedLangs = ['ar', 'be', 'bg', 'ca', 'cs', 'da', 'de', 'en', 
+        'eo', 'es', 'eu', 'fa', 'fr', 'gr', 'hbs', 'he', 'hu', 'id', 'it', 'ja', 
+        'kh', 'ko', 'nl', 'pl', 'pt', 'ro', 'ru', 'th', 'tr', 'uk', 'uz', 'vi', 'zh-CN', 'zh-HK', 'zh-TW'];
+        const giscusLang = supportedLangs.includes(docLang) ? docLang : supportedLangs.includes(langBase) ? langBase : 'en';
+
+        giscusScript.src = 'https://giscus.app/client.js';
+        giscusScript.setAttribute('data-repo', '{{ $params.giscus.repo }}');
+        giscusScript.setAttribute('data-repo-id', '{{ $params.giscus.repoId }}');
+        giscusScript.setAttribute('data-category', '{{ $params.giscus.category }}');
+        giscusScript.setAttribute('data-category-id', '{{ $params.giscus.categoryId }}');
+        giscusScript.setAttribute('data-mapping', '{{ $params.giscus.strict }}');
+        giscusScript.setAttribute('data-strict', '{{ $params.giscus.strict }}');
+        giscusScript.setAttribute('data-reactions-enabled', '{{ $params.giscus.reactionsEnabled }}');
+        giscusScript.setAttribute('data-emit-metadata', '{{ $params.giscus.emitMetadata }}');
+        giscusScript.setAttribute('data-input-position', '{{ $params.giscus.inputPosition }}');
+        giscusScript.setAttribute('data-theme', domMode === 'dark' ? 'dark' : 'light');
+        giscusScript.setAttribute('data-lang', giscusLang);
+        giscusScript.setAttribute('crossorigin', 'anonymous');
+        giscusScript.async = true;
+        container.appendChild(giscusScript);
+        document.body.addEventListener('light-theme-set', () => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'light' } } }, 'https://giscus.app');
+        });
+        document.body.addEventListener('dark-theme-set', () => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'dark' } } }, 'https://giscus.app');
+        });
+      }
+    }
+    {{- end -}}
+  };
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig?.[key]?.enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = '{{ $params.comment.default }}';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig?.[sys]?.enable) || '';
+    }
+  }
+
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    // 评论组件加载状态跟踪
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+{{- end -}}

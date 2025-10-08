@@ -1,0 +1,10 @@
+{{- $source := .source -}}
+{{- $temp := .temp -}}
+{{- $target := .target -}}
+{{- $ctx := .ctx -}}
+{{- $scss := resources.Get $source -}}
+{{- $scss = $scss | resources.ExecuteAsTemplate $temp $ctx -}}
+{{- $css := $scss | toCSS (dict "targetPath" $target "outputStyle" "expanded") -}}
+{{- if hugo.IsProduction -}}
+  {{- $css = $css | minify | fingerprint -}}
+{{- end -}} <link rel="stylesheet" href="{{ $css.RelPermalink }}" />

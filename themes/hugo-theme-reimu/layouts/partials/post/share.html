@@ -1,0 +1,29 @@
+{{- $shareMap := partial "helpers/shareLink.html" . -}}
+
+<div class="share-wrapper">
+  {{- range $share := .Site.Params.share -}}
+    <a href="{{ index $shareMap $share }}" {{ if not (eq $share "weixin") }}target="_blank" rel="noopener noreferrer"{{ end }} title="{{ $.Title }}">
+      <div class="share-icon icon icon-{{ $share }}">
+        {{- if eq $share "weixin" -}}
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hugo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+        {{- end -}}
+      </div>
+    </a>
+  {{- end -}}
+</div>

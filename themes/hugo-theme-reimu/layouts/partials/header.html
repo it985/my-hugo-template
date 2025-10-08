@@ -1,0 +1,208 @@
+{{- $params := .Site.Params -}}
+<div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+    {{- range .Site.Params.menu -}}
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon {{ if or (and (eq .icon "e62b") ($params.icon_font)) (and (eq .icon "f6ad") (not $params.icon_font)) (not .icon) }}rotate{{ end }}'>
+          {{- if .icon -}}
+            {{- if and (strings.Contains .icon ".") (strings.Contains .icon "/") -}}
+              <img src="{{ .icon | relURL }}" alt="{{ .name }} icon" class="" style="height: 1em;">
+            {{- else -}}
+              &#x{{- .icon -}};
+            {{- end -}}
+          {{- else -}}
+            {{- if $params.icon_font -}}
+              &#xe62b;
+            {{- else -}}
+              &#xf6ad;
+            {{- end -}}
+          {{- end -}}
+        </div>
+        <a class="main-nav-link" href="{{ .url | relLangURL }}">{{ i18n .name }}</a>
+      </span>
+    {{- end -}}
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+    {{- with .OutputFormats.Get "rss" -}}
+      <a id="nav-rss-link" class="nav-icon" href="{{ .Permalink | relURL }}" title="{{ i18n "rss_feed" }}" aria-label="{{ i18n "rss_feed" }}" target="_blank"></a>
+    {{- end -}}
+    {{- if .Site.Params.algolia_search.enable -}}
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="{{ i18n "search" }}" aria-label="{{ i18n "search" }}"></a>
+    {{- end -}}
+  </nav>
+  {{- if and hugo.IsMultilingual (ne "404" .Type) -}}
+    {{- $i18nMap := dict -}}
+    {{- range .Site.Languages -}}
+      {{- $i18nMap = merge $i18nMap (dict .Lang .LanguageName) -}}
+    {{- end -}}
+    <nav id="i18n-nav" aria-label="Language selection">
+      <div class="custom-dropdown">
+        <div class="select-selected" id="select-selected" role="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language menu">
+          <span id="nav-language-btn" class="nav-icon" style="padding: 0 20px 0 0"></span>
+          <span id="selected-lang">{{ index $i18nMap $.Language.Lang }}</span>
+        </div>
+        <ul class="select-items" id="select-items" role="listbox" aria-label="Languages">
+          {{- range .Site.Languages -}}
+            <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language.Lang .Lang }}class="selected" arial-selected="true"{{ else }}arial-selected="false"{{ end }} >{{ .LanguageName }}</li>
+          {{- end -}}
+        </ul>
+      </div>
+      <script>
+        var selectSelected = document.getElementById("select-selected");
+        var selectedLang = document.getElementById("selected-lang");
+        var selectItems = document.getElementById("select-items");
+        var selectOptions = selectItems.querySelectorAll("li");
+
+        selectSelected.addEventListener("click", () => {
+          selectItems.classList.toggle("show");
+          var expanded = selectSelected.getAttribute("aria-expanded") === "true";
+          selectSelected.setAttribute("aria-expanded", (!expanded).toString());
+        });
+
+        selectOptions.forEach((item) => {
+          item.addEventListener("click", () => {
+            const langMap = {};
+            {{- with .Translations -}}
+              {{- range . -}}
+              langMap['{{ .Language.Lang }}'] = '{{ .RelPermalink }}'; 
+              {{- end -}}
+            {{- end -}}
+            selectedLang.textContent = item.textContent;
+            selectItems.classList.remove("show");
+            selectOptions.forEach((option) => {
+              option.classList.remove("selected");
+            });
+            item.classList.add("selected");
+            if (item.dataset.value === '{{ $.Language.Lang }}') {
+              return;
+            }
+            if (!langMap[item.dataset.value]) {
+              _$("#lang-tooltip").style.opacity = "1";
+              setTimeout(() => {
+                _$("#lang-tooltip").style.opacity = "0";
+              }, 1000);
+              return;
+            }
+            window.location = langMap[item.dataset.value];
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!event.target.closest(".custom-dropdown")) {
+            selectItems.classList.remove("show");
+            selectSelected.setAttribute("aria-expanded", "false");
+          }
+        });
+      </script>
+    </nav>
+  {{- end -}}
+</div>
+<header id="header" aria-label="Site header">
+  {{- if and .Params.cover (strings.HasPrefix .Params.cover "rgb") -}}
+    <picture></picture>
+    <img style="position: absolute;top: 0;left: 0;width: 100%;height: 150%;z-index: -2;display: block;background: {{ .Params.cover | safeCSS }};mask: linear-gradient(to top, transparent, #fff 50%);"></img>
+  {{- else if .Params.cover -}}
+    <picture></picture>
+    <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Params.cover | relURL }}" alt="{{ .Title }}">
+  {{- else if eq .Params.cover false -}}
+    <picture></picture>
+    <img style="visibility:hidden"></img>
+  {{- else -}}
+    {{- if in .Site.Params.mainSections .Type -}}
+      {{- if and .Site.Params.cover (strings.HasPrefix .Site.Params.cover "rgb") -}}
+        <picture></picture>
+        <img style="position: absolute;top: 0;left: 0;width: 100%;height: 150%;z-index: -2;display: block;background: {{ .Site.Params.cover | safeCSS }};mask: linear-gradient(to top, transparent, #fff 50%);"></img>
+      {{- else if .Site.Params.cover -}}
+        <picture></picture>
+        <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Site.Params.cover | relURL }}" alt="{{ .Title }}">
+      {{- else if eq .Site.Params.cover false -}}
+        <picture></picture>
+        <img style="visibility:hidden"></img>
+      {{- else -}}
+        <picture>
+          {{- if .Site.Params.banner_srcset.enable -}}
+            {{- range .Site.Params.banner_srcset.srcset -}}
+              <source media="{{ .media }}" srcset="{{ .src | relURL }}">
+            {{- end -}}
+            <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Site.Params.banner | relURL }}" alt="{{ .Title }}">
+          {{- end -}}
+        </picture>
+        {{- if .Site.Params.banner_srcset.enable -}}
+          <img alt="{{ .Title }}" style="visibility: hidden;">
+        {{- else -}}
+          <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Site.Params.banner | relURL }}" alt="{{ .Title }}">
+        {{- end -}}
+      {{- end -}}
+    {{- else -}}
+      <picture>
+        {{- if .Site.Params.banner_srcset.enable -}}
+          {{- range .Site.Params.banner_srcset.srcset -}}
+            <source media="{{ .media }}" srcset="{{ .src | relURL }}">
+          {{- end -}}
+          <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Site.Params.banner | relURL }}" alt="{{ .Title }}">
+        {{- end -}}
+      </picture>
+      {{- if .Site.Params.banner_srcset.enable -}}
+        <img alt="{{ .Title }}" style="visibility: hidden;">
+      {{- else -}}
+        <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Site.Params.banner | relURL }}" alt="{{ .Title }}">
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  <div id="header-outer">
+    <div id="header-title">
+      {{- if eq .Type "404" -}}
+        <a href="{{ "" | relLangURL }}" id="logo">
+          <h1 data-aos="{{ .Site.Params.animation.options.header.title }}">{{ i18n "not_found.title" }}</h1>
+        </a>
+      {{- else -}}
+        {{- $title := "" -}}
+        {{- if .IsHome -}}
+          {{- $title = .Site.Title -}}
+        {{- else if eq .Type "archives" -}}
+          {{- $title = i18n "archive_a" -}}
+        {{- else if eq .Type "tags" -}}
+          {{- $title = i18n "tag" -}}
+        {{- else if eq .Type "categories" -}}
+          {{- $title = i18n "category" -}}
+        {{- else if .Title -}}
+          {{- $title = .Title -}}
+        {{- else -}}
+          {{- $title = .Site.Title -}}
+        {{- end -}}
+  
+        {{- if $title -}}
+          <span id="logo">
+            <h1 data-aos="{{ .Site.Params.animation.options.header.title }}">{{ $title }}</h1>
+          </span>
+        {{- end -}}
+      {{- end -}}
+  
+      {{- if eq .Type "404" -}}
+        <h2 id="subtitle-wrap" data-aos="{{ .Site.Params.animation.options.header.subTitle }}">
+          <a href="{{ "" | relLangURL }}" id="subtitle">{{ i18n "not_found.subtitle" }}</a>
+        </h2>
+      {{- else -}}
+        {{- $subtitle := "" -}}
+        {{- if .IsHome -}}
+          {{- $subtitle = .Site.Params.subtitle | default .Site.Params.subtitle -}}
+        {{- else if and (eq .Type "categories") (not (eq .Title "Categories")) -}}
+          {{- $subtitle = .Title -}}
+        {{- else if and (eq .Type "tags") (not (eq .Title "Tags")) -}}
+          {{- $subtitle = .Title -}}
+        {{- else if and .Site.Params.summary.enable (eq .Site.Params.summary.style "subtitle") (in .Site.Params.mainSections .Type) -}}
+          {{- if .Summary -}}
+            {{- $subtitle = .Summary | plainify | truncate 200 -}}
+          {{- end -}}
+        {{- end -}}
+        <h2 id="subtitle-wrap" data-aos="{{ .Site.Params.animation.options.header.subTitle }}">
+          {{- if $subtitle -}}
+            <span id="subtitle">{{ $subtitle }}</span>
+          {{- end -}}
+        </h2>
+      {{- end -}}
+    </div>
+  </div>
+</header>

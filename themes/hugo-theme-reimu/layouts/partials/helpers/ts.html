@@ -1,0 +1,30 @@
+{{- $source := .source -}}
+{{- $temp := .source -}}
+{{- $pjax := .pjax -}}
+{{- $target := .target -}}
+{{- $inline := .inline | default true -}}
+{{- $ctx := .ctx -}}
+
+{{- with resources.Get $source -}}
+  {{- if eq hugo.Environment "development" -}}
+  {{- $ts := . | resources.ExecuteAsTemplate $temp $ctx -}}
+  {{- $opts := dict "targetPath" $target -}}
+    {{- with $ts | js.Build $opts -}}
+      {{- if $inline -}}
+      <script src="{{ .RelPermalink }}" {{ if $pjax }}data-pjax{{ end }}></script>
+      {{- else -}}
+        <!-- {{ .RelPermalink }} -->
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+  {{- $ts := . | resources.ExecuteAsTemplate $temp $ctx -}}
+    {{- $opts := dict "minify" true "targetPath" $target -}}
+    {{- with $ts | js.Build $opts -}}
+      {{- if $inline -}}
+      <script src="{{ .RelPermalink }}" integrity="{{- .Data.Integrity }}" crossorigin="anonymous" {{ if $pjax }}data-pjax{{ end }}></script>
+      {{- else -}} 
+         <!-- {{ .RelPermalink }} -->
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

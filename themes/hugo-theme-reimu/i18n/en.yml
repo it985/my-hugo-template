@@ -1,0 +1,89 @@
+categories: Categories
+search: Search
+tags: Tags
+tagcloud: Tag Cloud
+tweets: Tweets
+prev: Prev
+next: Next
+comment: Comments
+reading: Readings
+archive_a: Archives
+archive_b: "Archives: {{ . -}}"
+page: "Page {{ . -}}"
+recent_posts: Recent Posts
+newer: Prev
+older: Next
+share: Share
+powered_by: Powered by
+rss_feed: RSS Feed
+category: Category
+tag: Tag
+toc: Contents
+more: More
+
+home: Home
+about: About
+friend: Friend
+archives: Archives
+
+sidebar:
+  post: Posts
+  category: Categories
+  tag: Tags
+
+not_found:
+  title: 4 0 4 (ﾟ⊿ﾟ)ﾂ
+  subtitle: NOT FOUND
+
+post:
+  count:
+    one: "{{- . }} word"
+    other: "{{- . }} words"
+  time:
+    one: "{{- . }} min"
+    other: "{{- . }} mins"
+
+busuanzi:
+  pv: Number of visits
+  uv: Number of visitors
+
+sticky: Sticky
+
+service_worker:
+  title: New version found
+  content: The website seems to have new content, do you want to update?
+  confirm: Update
+  cancel: Cancel
+
+sponsor: Sponsor
+
+home_categories:
+  count: 
+    one: "{{- . }} post"
+    other: "{{- . }} posts"
+
+article_copyright:
+  author: "Author: "
+  permalink: "Permalink: "
+  title: "Title: "
+  date: "Published: "
+  updated: "Updated: "
+  license: "License: "
+  license_content: "All articles on this blog are licensed under the {{ . }} license agreement unless otherwise stated. Please indicate the source when reprinting!"
+
+multi_language:
+  not_found: This article does not have a corresponding language version
+
+rss:
+  author: "Author: {{ .name }}({{ .email }})"
+  date: Published on {{ .pubDate }} at {{ .content }}, last modified on {{ .lastmod }}
+
+algolia:
+  input_placeholder: "Search....."
+  hits_empty: "No results found for 「${query}」"
+  hits_stats: "Found ${hits} results (in ${time} ms)"
+
+heat_map_card:
+  no_articles: No articles
+  words: word(s)
+  total_articles: "$1 article(s), $2 word(s)"

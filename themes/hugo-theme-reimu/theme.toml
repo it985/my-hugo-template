@@ -1,0 +1,13 @@
+name = 'hugo-theme-reimu'
+license = 'MIT'
+licenselink = 'https://github.com/D-Sketon/hugo-theme-reimu/blob/main/LICENSE'
+description = 'A Hakurei Reimu style Hugo theme'
+homepage = 'https://github.com/D-Sketon/hugo-theme-reimu'
+demosite = 'https://d-sketon.github.io/hugo-theme-reimu'
+
+tags = ['Blog', 'Chinese', 'Responsive', 'Dark', 'Light']
+features = ['Blog', 'Chinese', 'Responsive', 'Dark', 'Light']
+
+[author]
+name = 'D-Sketon'
+homepage = 'https://d-sketon.github.io/'

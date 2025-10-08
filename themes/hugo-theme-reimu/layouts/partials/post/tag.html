@@ -1,0 +1,12 @@
+<ul class="article-tag-list" itemprop="keywords">
+  {{- range .Params.tags -}}
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="{{ "tags/" | relLangURL }}{{ . | urlize | lower }}"
+        rel="tag"
+        >{{- . | upper -}}</a
+      >
+    </li>
+  {{- end -}}
+</ul>

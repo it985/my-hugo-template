@@ -1,0 +1,12 @@
+node_modules/
+public/
+
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+.hugo_build.lock
+
+resources/_gen/
+
+content/
