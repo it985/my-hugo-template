@@ -1,0 +1,73 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- todo change jquery -->
+<script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js" type="application/javascript"></script>
+
+<!-- like button -->
+<link href="https://cdn.bootcss.com/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/jqueryui/1.12.0/jquery-ui.min.js" type="application/javascript"></script>
+
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="{{ (resources.Get "favicon/apple-icon-57x57.png").RelPermalink }}">
+<link rel="apple-touch-icon" sizes="60x60" href="{{ (resources.Get "favicon/apple-icon-60x60.png").RelPermalink }}">
+<link rel="apple-touch-icon" sizes="72x72" href="{{ (resources.Get "favicon/apple-icon-72x72.png").RelPermalink }}">
+<link rel="apple-touch-icon" sizes="76x76" href="{{ (resources.Get "favicon/apple-icon-76x76.png").RelPermalink }}">
+<link rel="apple-touch-icon" sizes="114x114" href="{{ (resources.Get "favicon/apple-icon-114x114.png").RelPermalink }}">
+<link rel="apple-touch-icon" sizes="120x120" href="{{ (resources.Get "favicon/apple-icon-120x120.png").RelPermalink }}">
+<link rel="apple-touch-icon" sizes="144x144" href="{{ (resources.Get "favicon/apple-icon-144x144.png").RelPermalink }}">
+<link rel="apple-touch-icon" sizes="152x152" href="{{ (resources.Get "favicon/apple-icon-152x152.png").RelPermalink }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ (resources.Get "favicon/apple-icon-180x180.png").RelPermalink }}">
+<link rel="icon" type="image/png" sizes="192x192"  href="{{ (resources.Get "favicon/android-icon-192x192.png").RelPermalink }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ (resources.Get "favicon/favicon-32x32.png").RelPermalink }}">
+<link rel="icon" type="image/png" sizes="96x96" href="{{ (resources.Get "favicon/favicon-96x96.png").RelPermalink }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ (resources.Get "favicon/favicon-16x16.png").RelPermalink }}">
+<link rel="manifest" href="{{ (resources.Get "favicon/manifest.json").RelPermalink }}">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="{{ (resources.Get "favicon/ms-icon-144x144.png").RelPermalink }}">
+<meta name="theme-color" content="#ffffff">
+
+<!-- the Moments style css file -->
+{{ $style := resources.Get "style-refractored.scss" | css.Sass | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+{{ $style_2 := resources.Get "audio.scss" | css.Sass | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $style_2.RelPermalink }}">
+
+<!-- fancybox css (js in the end before the body closing tag) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"/>
+
+<!-- videojs -->
+<link href="https://cdn.staticfile.net/video.js/8.6.1/alt/video-js-cdn.min.css" rel="stylesheet" />
+
+<!-- pure.css -->
+<link href="https://cdn.jsdelivr.net/npm/purecss@2.0.6/build/base-min.min.css" type="text/css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/purecss@2.0.6/build/grids-min.min.css" type="text/css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/purecss@2.0.6/build/grids-responsive-min.min.css" type="text/css" rel="stylesheet" />
+
+<!-- CSS for loading animation -->
+{{ if .Site.Params.infiniteScroll }}
+<link rel="stylesheet" href="/style/loading.css">
+{{ end }}
+
+{{/* pangu support: js in the end before the body closing tag */}}
+{{ if .Site.Params.features.pangu }}
+<!-- pangu support -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js"></script>
+{{ end }}
+
+{{ if $.Site.Params.experimental.comment }}
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+{{ end }}
+
+{{ if .Site.Params.features.heti }}
+<link rel="stylesheet" href="/style/heti.min.css">
+<script src="/scripts/heti-addon.min.js"></script>
+{{ end }}
+
+
+{{/* audio file play */}}
+<script src="/scripts/audio-play.js"></script>
+
+<!-- website title -->
+<title>{{ .Site.Params.title }}</title>

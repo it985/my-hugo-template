@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ partial "head.html" . }}
+    </head>
+    <body>
+        <div class="page">
+            {{ block "header" . }}
+                {{ partial "header.html" (dict "link" $.Site.BaseURL "context" .)}}
+            {{ end }}
+
+            {{ block "main" . }}
+            {{ end }}
+        
+            <!-- Pagination -->
+            <div class="center">
+
+                {{ if not .Site.Params.infiniteScroll }}
+
+                <div class="pagination">
+                    {{ block "pagination" . }}
+                    {{ end }}
+                </div>
+
+                {{ end }}
+
+            </div>
+
+            {{ partial "footer.html" . }}
+        </div>
+
+        {{ partial "after-content-js.html" . }}
+
+    </body>
+
+</html>

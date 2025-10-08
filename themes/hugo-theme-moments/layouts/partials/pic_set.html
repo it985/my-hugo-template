@@ -1,0 +1,46 @@
+{{ $pic_set := .pic_set }}
+{{ $caption := .caption }}
+
+{{ $num_per_row := 3}}
+{{ $max_width := 80}}
+{{ if or (eq (len .pic_set) 2) (eq (len .pic_set) 4)}}
+    {{ $num_per_row = 2}}
+    {{ $max_width = 53}}
+{{ end }}
+
+{{/* Trim the caption length to the first 100 characters */}}
+{{ $caption = $caption | truncate 100 "..." }}
+
+<div class="pic-grid" style="width: {{ $max_width }}%">
+    <div class="pure-g">
+        {{ range $num, $a := $pic_set }}
+            {{ if (not (strings.HasPrefix $a "http")) }}
+            {{/* if $a is a url, resources.Get may cause issues */}}
+                {{ if resources.Get $a }}
+                    {{ $a = (resources.Get $a).RelPermalink }}
+                {{ end }}
+            {{ end }}
+
+            {{ $display := "block"}}
+            {{ if gt $num 8 }} {{ $display = "none"}} {{ end }}
+            <div class="pure-u-1-{{ $num_per_row }}" style="display: {{$display}};">
+                <div class="add-padding">
+                    {{ if and (eq $num 8) (gt (len $pic_set) 9) }}
+                        <div class="img-container img-black-filter">
+                            <a data-src="{{ $a }}" data-fancybox="gallery" data-caption="{{ $caption }}">
+                                <div class="more-icon" style="background-image: url('{{ (resources.Get "more-icon.png").RelPermalink }}');"></div>
+                                <img src="{{ $a }}" alt="pictures"/>
+                            </a>
+                        </div>
+                    {{ else }}
+                        <div class="img-container">
+                            <a data-src="{{ $a }}" data-fancybox="gallery" data-caption="{{ $caption }}">
+                                <img src="{{ $a }}" alt="pictures"/>
+                            </a>
+                        </div>
+                    {{ end }}
+                </div>
+            </div>
+        {{ end }}
+    </div>
+</div>
