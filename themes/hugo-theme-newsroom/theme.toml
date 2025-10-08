@@ -1,0 +1,29 @@
+name = "newsroom"
+license = "MIT"
+licenselink = "https://github.com/onweru/newsroom/blob/master/LICENSE.md"
+description = "A simple open source theme for publishing multi-purpose content"
+homepage = "https://github.com/onweru/newsroom"
+demosite = "https://rooms.netlify.app/"
+tags = [
+  "blog",
+  "simple",
+  "dark",
+  "minimalist",
+  "fast",
+  "disqus",
+  "syntax highlighting",
+]
+features = [
+  "blog",
+  "simple",
+  "dark",
+  "minimalist",
+  "fast",
+  "disqus",
+  "syntax highlighting",
+]
+min_version = "0.146.0"
+
+[author]
+name = "weru"
+homepage = "https://github.com/onweru"

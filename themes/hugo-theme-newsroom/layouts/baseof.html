@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+{{- $mode := partialCached "func/getMode" . }}
+<html lang="{{ .Lang }}" {{ if $mode }} data-mode="{{ $mode }}"{{ end }}>
+  {{ partial "head" . }}
+  <body>
+    {{ partialCached "nav" . }}
+    <main>
+      {{ block "main" . }}{{ end }}
+    </main>
+    {{ partialCached "footer" . }}
+    {{ partialCached "sprites" . }}
+  </body>
+</html>
