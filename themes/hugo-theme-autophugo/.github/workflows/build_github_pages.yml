@@ -1,0 +1,22 @@
+name: Build GitHub Pages
+on:
+    push:
+        branches:
+            - main
+            #- cur_ver_release
+    workflow_dispatch:
+jobs:
+    build-github-pages:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Install Hugo
+              run: sudo snap install hugo
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+            - name: Build Pages
+              run: make
+            - name: Deploy
+              uses: JamesIves/github-pages-deploy-action@v4
+              with:
+                  branch: gh-pages
+                  folder: exampleSite/public
