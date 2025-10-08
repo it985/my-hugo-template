@@ -1,0 +1,49 @@
+{{ range $k, $v := (partialCached "init.html" .) }}
+{{ $.Scratch.Set $k $v }}
+{{ end }}
+{{ $isComment := .Params.comment.enable | default .Site.Params.comments.enable }}
+{{ .Scratch.Set "isComment" $isComment }}
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}" data-theme="{{ .Scratch.Get "theme" }}">
+
+<head>
+  {{ partial "head.html" . }}
+  <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" {{ if .Site.Params.motion.enable }} class="use-motion" {{ end }}>
+  <div class="headband"></div>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+        {{ partial "header.html" . }}
+      </div>
+      <!-- Sidebar -->
+      {{ if ne .Site.Params.sidebar.display "remove" }}
+      {{ partial "sidebar.html" . }}
+      {{ end }}
+    </header>
+    <!-- Widgets -->
+    {{ partialCached "widgets.html" . }}
+    <div class="main-inner {{ block "main_inner_class" . }}{{ end }}">
+      <!-- Submenu,Content,Comment -->
+      {{ block "main" . }}{{ end }}
+      {{ if and .IsPage $isComment }}
+        {{ partialCached "comments.html" . }}
+      {{ end }}
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-inner">
+      {{ partial "langs.html" . }}
+      {{ partialCached "footer.html" . }}
+    </div>
+  </footer>
+  {{ partial "head/config.html" . }}
+  {{ partial "scripts.html" . }}
+</body>
+
+</html>

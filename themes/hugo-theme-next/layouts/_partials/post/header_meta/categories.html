@@ -1,0 +1,17 @@
+{{ if .Site.Params.postMeta.categories }}
+{{ with .Params.categories }}
+<span class="post-meta-item">
+  <span class="post-meta-item-icon">
+    <i class="fas fa-solid fa-folder-open"></i>
+  </span>
+  <span class="post-meta-item-text" title="{{ T "PostMeta.category" }}">
+    {{ print (T "PostMeta.category") (T "Symbol.colon") }}
+  </span>
+  <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+    <a href="{{ "/categories/" | relLangURL }}{{ add (index (last 1 .) 0) "/" | urlize }}" itemprop="url" rel="index">
+      <span itemprop="name">{{ delimit . "/" }}</span>
+    </a>
+  </span>
+</span>
+{{ end }}
+{{ end }}

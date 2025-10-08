@@ -1,0 +1,18 @@
+{{/** Calculate some information for site operation **/}}
+{{ $scratch := newScratch }}
+{{ $pages := (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections).ByLastmod.Reverse }}
+
+{{ range $pages }}
+  {{ $scratch.Add "totalWords" .WordCount }}
+  {{ $scratch.Add "totalTimes" .ReadingTime }}
+{{ end }}
+
+{{ range first 1 $pages }}
+  {{ $lastMod := default .Date .Lastmod }}
+  {{ $scratch.Set "first" $lastMod }}
+{{ end }}
+{{ range last 1 $pages }}
+  {{ $scratch.Set "last" .Date }}
+{{ end }}
+
+{{ return $scratch }}

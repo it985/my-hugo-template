@@ -1,0 +1,109 @@
+{{ $author := .Site.Params.author }}
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  {{ with .Site.Params.avatar.url }}
+    <img class="site-author-image" itemprop="image" alt="{{ $author }}"
+    src="/imgs/img-lazy-loading.gif" data-src="{{ . }}">
+  {{ end }}
+  <p class="site-author-name" itemprop="name">{{ $author }}</p>
+  <div class="site-description" itemprop="description">{{ .Site.Params.description }}</div>
+</div>
+
+{{ if .Site.Params.siteState.basic }}
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+    <div class="site-state-item site-state-posts">
+      <a href="{{ "/archives/" | relLangURL }}">
+        <span class="site-state-item-count">{{ .Scratch.Get "postsCount" }}</span>
+        <span class="site-state-item-name">{{ T "Sidebar.label.posts" }}</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">
+      <a href="{{ "/categories/" | relLangURL }}">
+        <span class="site-state-item-count">{{ .Scratch.Get "catsCount" }}</span>
+        <span class="site-state-item-name">{{ T "Sidebar.label.categories" }}</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-tags">
+      <a href="{{ "/tags/" | relLangURL }}">
+        <span class="site-state-item-count">{{ .Scratch.Get "tagsCount" }}</span>
+        <span class="site-state-item-name">{{ T "Sidebar.label.tags" }}</span>
+      </a>
+    </div>
+  </nav>
+</div>
+{{ end }}
+{{ if and .Site.Params.chat.enable (or (or .Site.Params.chatra.enable .Site.Params.tidio.enable) .Site.Params.gitter.enable) }}
+<div class="sidebar-button site-overview-item animated">
+  <button {{ if .Site.Params.gitter.enable }} class="js-gitter-toggle-chat-button" {{ end }}>
+    {{ if .Site.Params.chat.icon }}<i class="{{ .Site.Params.chat.icon }}"></i>{{ end }}
+    {{ .Site.Params.chat.text }}
+  </button>
+</div>
+{{ end }}
+<div class="links-of-social site-overview-item animated">
+{{ $si := .Site.Params.socialIcons }}
+{{ range $key,$val := .Site.Params.socials }}
+{{ $vals := split $val "||" }}
+{{ $name := trim (index $vals 0) " " }}
+{{ $url := trim (index $vals 1) " " }}
+{{ $icon := trim (index $vals 2) " " }}
+  <span class="links-of-social-item">
+    <a href="{{ $url }}" title="{{ $name }} → {{ $url }}" rel="noopener" {{ if and $si.enable $si.transition }} class="hvr-icon-pulse" {{ end }} target="_blank">
+      {{ if $si.enable }}
+      <i class="{{ $icon }} fa-fw {{ if $si.transition }} hvr-icon {{ end }}"></i>
+      {{ end }}
+      {{ if or (not $si.enable) (not $si.iconsOnly) }}
+      {{ $name }}
+      {{ end }}
+    </a>
+  </span>
+{{ end }}
+</div>
+
+{{ with .Site.Params.creativeCommons }}
+{{ if .sidebar }}
+<div class="cc-license animated" itemprop="license">
+  {{/* 计算链接中的语言 */}}
+  {{ $lang := $.Site.LanguageCode | upper }}
+  {{ $langCode := substr $.Site.LanguageCode 0 2 }}
+  {{ if eq $lang "ZH-CN" "ZH" "ZH-CHS" }}
+    {{ $langCode = "zh-hans" }}
+  {{ end }}
+  {{ if eq $lang "ZH-CHT" "ZH-HK" "ZH-MO" "ZH-TW" "ZH-SG" }}
+    {{ $langCode = "zh-hant" }}
+  {{ end }}
+  {{/* 计算文本内容 */}}
+  {{ $ccText := $.Site.Params.creativeCommons.license | upper }}
+  {{ $ccLink := printf "https://creativecommons.org/licenses/%s/4.0/deed.%s" ( $ccText | lower) $langCode }}
+  {{ $imgName := replace .license "-" "_" }}
+  {{ if eq $ccText "CC0" "CC-ZERO" }}
+    {{ $imgName = "cc_zero" }}
+    {{ $ccLink = printf "https://creativecommons.org/publicdomain/zero/1.0/deed.%s" $langCode  }}
+  {{ end }}
+  <a href="{{ $ccLink }}" class="cc-opacity" rel="noopener" target="_blank" title="{{ T "Sidebar.label.ccommons" }}">
+    <img src="/imgs/img-lazy-loading.gif" data-src="/imgs/cc/{{ .size }}/{{ $imgName }}.svg" alt="{{ T "Sidebar.label.ccommons" }}">
+  </a>
+</div>
+{{ end }}
+{{ end }}
+
+{{ if .Site.Params.links }}
+<div class="links-of-blogroll site-overview-item animated">
+  <div class="links-of-blogroll-title">
+    {{ if .Site.Params.linksSets.icon }}
+    <i class="{{ .Site.Params.linksSets.icon }} fa-fw"></i>
+    {{ end }}
+    {{ .Site.Params.linksSets.title }}
+  </div>
+  <ul class="links-of-blogroll-list">
+    {{ range $key,$val := .Site.Params.links }}
+    {{ $vals := split $val "||" }}
+    {{ $name := trim (index $vals 0) " " }}
+    {{ $url := trim (index $vals 1) " " }}
+    <li class="links-of-blogroll-item">
+      <a href="{{ $url }}" title="{{ $url }}" target="_blank">{{ $name }}</a>
+    </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

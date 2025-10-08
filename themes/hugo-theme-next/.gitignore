@@ -1,0 +1,14 @@
+# Ignore files in Hugo NexT theme
+
+# Special files in content folder
+exampleSite/public/
+exampleSite/resources/
+exampleSite/.hugo_build.lock
+exampleSite/hugo.dev.yaml
+exampleSite/hugo.release.yaml
+exampleSite/dev-startup.sh
+
+
+
+# vscode
+.vscode/

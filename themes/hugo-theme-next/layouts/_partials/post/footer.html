@@ -1,0 +1,57 @@
+{{ with .ctx }}
+{{ if $.IsHome }} 
+{{ if and .Site.Params.readMoreBtn (not .Params.Expand) }}
+<div class="post-button">
+  <a class="btn" href="{{ .RelPermalink | relLangURL }}#more" rel="contents">
+    {{ T "PostMeta.more" }} &raquo;
+  </a>
+</div>
+{{ end }}
+<div class="post-eof"></div>
+{{ else }}
+{{ partial "post/footer_meta/tags.html" . }}
+{{ $enable := .Params.share | default .Site.Params.share.enable }}
+{{ with .Site.Params.share }}
+  {{ if $enable }}
+    <div class="post-share-tools"> 
+      <div class="post-share-loading">
+        <i class="fa-solid fa-ellipsis fa-spin"></i>
+      </div>  
+      {{ if isset . "sharethis" }}
+        {{ partial "_thirdparty/share/sharethis.html" }}
+      {{ end }}
+      {{ if isset . "addtoany" }}
+        {{ partial "_thirdparty/share/addtoany.html" }}
+      {{ end }}
+    </div>
+    {{ end }}
+{{ end }}
+<hr/>
+{{ partial "post/footer_meta/reward.html" . }}
+{{ if and (not (isset .Params "copyright")) (not .Params.copyright) }}
+{{ partial "post/footer_meta/copyright.html" . }}
+{{ end }}
+{{ if and (not (isset .Params "followme")) (not .Params.followme) }}
+{{ partial "post/footer_meta/followme.html" . }}
+{{ end }}
+{{ if and (not (isset .Params "nav")) (not .Params.nav) }}
+<div class="post-nav">
+  <div class="post-nav-next post-nav-item">
+    {{ with .NextInSection }}
+    <a href="{{ .RelPermalink | relLangURL }}" rel="next" title="{{ .Title }}">
+      <i class="fa fa-chevron-left"></i> {{ .Title }}
+    </a>
+    {{ end }}
+  </div>
+  <div class="post-nav-prev post-nav-item">
+    {{ with .PrevInSection }}
+    <a href="{{ .RelPermalink | relLangURL }}" rel="prev" title="{{ .Title }}">
+      {{ .Title }}
+      <i class="fa fa-chevron-right"></i>
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
+{{ end }}
+{{ end }}

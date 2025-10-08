@@ -1,0 +1,21 @@
+{{ if .Site.Params.postMeta.views.enable }}
+{{ $pageViewId := "pageview-count" }}
+{{ if eq .Site.Params.postMeta.views.plugin "leancloud" }}
+{{ $pageViewId = "leancloud-visitors-count" }}  
+{{ else if eq .Site.Params.postMeta.views.plugin "busuanzi" }}
+{{ $pageViewId = "busuanzi_value_page_pv" }}
+{{ else if eq .Site.Params.postMeta.views.plugin "twikoo" }}
+{{ $pageViewId = "twikoo_visitors" }}
+{{ end }}
+<span class="post-meta-item" title="{{ T "PostMeta.views" }}">
+  <span class="post-meta-item-icon">
+    <i class="fas fa-solid fa-eye"></i>
+  </span>
+  <span class="post-meta-item-text">
+  {{ print (T "PostMeta.views") (T "Symbol.colon") }}
+  </span>
+  <span {{ with $pageViewId }}id="{{ . }}"{{end}} data-path="{{ .RelPermalink | relLangURL }}">
+    <i class="fa fa-sync fa-spin"></i>
+  </span>
+</span>
+{{ end }}

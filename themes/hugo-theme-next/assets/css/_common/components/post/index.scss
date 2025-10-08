@@ -1,0 +1,83 @@
+.rtl {
+  &.post-body {
+    p, a, h1, h2, h3, h4, h5, h6, li, ul, ol {
+      direction: rtl;
+      font-family: UKIJ Ekran;
+    }
+  }
+
+  &.post-title {
+    font-family: UKIJ Ekran;
+  }
+}
+
+.post-button {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.use-motion {
+  @if $motion_trans_post_block {
+    .post-block, .flinks-block, .pagination, .comments, .post-comments {
+      visibility: hidden;
+    }
+  }
+
+  @if $motion_trans_post_header {
+    .post-header, .flinks-header {
+      visibility: hidden;
+    }
+  }
+
+  @if $motion_trans_post_body {
+    .post-body, .flinks-body  {
+      visibility: hidden;
+    }
+  }
+
+  @if $motion_trans_coll_header {
+    .collection-header {
+      visibility: hidden;
+    }
+  }
+}
+
+@if $toc_number {
+.autonumber {
+  counter-reset: h2;
+  
+  h2 {
+    counter-reset: h3;
+    &:before{
+      counter-increment: h2; 
+      content: counter(h2) ". ";
+    }
+  }
+
+  h3 {
+    counter-reset: h4;
+    &:before{
+      counter-increment: h3; 
+      content: counter(h2) ". " counter(h3) ". ";
+    }
+  }
+
+  h4 {
+    counter-reset: h5;
+    &:before{
+      counter-increment: h4; 
+      content: counter(h2) "." counter(h3) "." counter(h4) ". ";
+    }
+  }
+}
+} 
+
+@import 'post-collapse';
+@import 'post-body';
+@import 'post-gallery';
+@import 'post-header';
+@import 'post-nav';
+@import 'post-footer';
+@import 'post-widgets';
+@import 'post-reward';
+@import 'post-followme';

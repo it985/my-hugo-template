@@ -1,0 +1,36 @@
+{{ define "title" }}
+{{ .Params.Title | default (T .Section) | default .Section | dict "Some" | T "AllSome" }} - {{ .Site.Title }}
+{{ end }}
+{{ define "main_inner_class" }}archive posts-collapse{{ end }}
+{{ define "main" }}
+<div class="post-block">
+  <div class="post-content">
+    <div class="collection-title">
+      {{ $cheers := "um" }}
+      {{ $posts := .Scratch.Get "postsCount" }}      
+      {{ if gt $posts 210 }}
+      {{ $cheers = "excellent" }}
+      {{ else if gt $posts 130 }}
+      {{ $cheers = "great" }}
+      {{ else if gt $posts 80 }}
+      {{ $cheers = "good" }}
+      {{ else if gt $posts 50 }}
+      {{ $cheers = "nice" }}
+      {{ else if gt $posts 30 }}
+      {{ $cheers = "ok" }}
+      {{ end }}
+      <span class="collection-header">
+        {{ T (printf "PostArchive.cheers.%s" $cheers) }}
+        {{ T "Symbol.comma" }}
+        {{ T "Terms.archives" $posts | safeHTML }}
+        {{ T "Symbol.comma" }}
+        {{ T "PostArchive.keepOn" }}
+      </span>
+    </div>
+
+    {{ .Render "list" }} 
+    
+  </div>
+</div>
+{{ partial "pagination.html" . }}
+{{ end }}

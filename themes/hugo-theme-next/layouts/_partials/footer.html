@@ -1,0 +1,64 @@
+{{ $ft := .Site.Params.footer }}
+<div class="copyright">
+  &copy;
+  <span itemprop="copyrightYear">
+    {{ $year := now.Year }}
+    {{ if isset $ft "since" }}
+    {{ if gt $year $ft.since }}
+    {{ $ft.since }} - {{ $year }}
+    {{ else }}
+    {{ $year }}
+    {{ end }}
+    {{ else }}
+    {{ $year }}
+    {{ end }}
+  </span>
+  <span class="with-love">
+    <i class="{{ $ft.icon.name }}"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">{{ $ft.copyright | default .Site.Params.author }}</span>
+</div>
+{{ if $ft.powered }}
+<div class="powered-by">
+  {{ $pb := printf "<a href='https://gohugo.io' title='%s' target='_blank'>Hugo</a> &amp; <a href='https://github.com/hugo-next/hugo-theme-next' title='%s' target='_blank'>Hugo NexT.%s</a>" hugo.Version .Site.Data.config.version .Site.Params.scheme }}
+  {{ printf (T "Footer.powerby") $pb | safeHTML }}
+</div>
+{{ end }}
+{{ with $ft.beian }}
+{{ if .enable }}
+<div class="beian">
+  <a href="https://beian.miit.gov.cn" target="_blank">{{ .icp }}</a>
+  {{ if .gonganNum }}
+  <img src="/imgs/gongan.png" alt="{{ .provinceAbbr }}公网安备">
+  <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode={{ .gonganNum }}" target="_blank">{{ .provinceAbbr }}公网安备 {{ .gonganNum }} 号</a>
+  {{ end }}
+</div>
+{{ end }}
+{{ end }}
+{{ with $ft.vendors }}
+{{ if .enable }}
+<div class="vendors-list">
+  {{ range .list }}
+  <a target="_blank" href="{{ .link }}" title="{{ .name }}">
+    {{ if .image }}        
+      <img src="/imgs/img-lazy-loading.gif" data-src="{{ .image.url }}" alt="{{ .name }}" />
+    {{ else }}
+      {{ .name }}
+    {{ end }}
+  </a>
+  {{ end }}
+  {{ $cv := $.Scratch.Get "router" }}
+  {{ if and $cv (ne $cv.name "local") }}
+  <a target="_blank" href="{{ $cv.home }}" title="{{ $cv.name }}">
+    <img src="/imgs/img-lazy-loading.gif" data-src="{{ $cv.logo }}" alt="{{ $cv.name }}" />
+  </a>
+  {{ end }}
+  <span>{{ .title }}</span>
+</div>
+{{ end }} 
+{{ end }}
+
+{{ $custom := .Scratch.Get "footer" }}
+{{ if $custom }}
+  {{ partialCached $custom . }}
+{{ end }}

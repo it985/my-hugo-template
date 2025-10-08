@@ -1,0 +1,19 @@
+{{/* Use to get resources path with vendor */}}
+
+{{ $fmt := "%s/%s@%s/%s" }}
+
+{{ $npm := .res.name }}
+{{ $file := .res.file }}
+
+{{ if ne .router.type "nodejs" }}   
+  {{ $file = replaceRE `(dist|lib|source\/js)\/` "" .res.file }}
+  {{ $fmt = "%s/%s/%s/%s" }}
+{{ else }}
+  {{ with .res.alias }}
+    {{ $npm = . }}
+  {{ end }}
+{{ end }}
+
+{{ $pluginRes := printf $fmt .router.url $npm .res.version $file }}
+
+{{ return $pluginRes }}

@@ -1,0 +1,248 @@
+# CDN 公共资源商列表
+# Public CDN vendor list
+vendors: 
+  - name: cdnjs
+    home: "https://cdnjs.com"
+    logo: "https://cdnjs.com/_/f7a2ebfb819c118086546e481876aef6.svg"
+    type: "modern"
+    url: "https://cdnjs.cloudflare.com/ajax/libs"
+
+  - name: unpkg
+    home: "https://unpkg.com"
+    logo: "https://static-production.npmjs.com/b0f1a8318363185cc2ea6a40ac23eeb2.png"
+    type: "nodejs"
+    url: "https://unpkg.com"
+
+  - name: bootcdn
+    home: "https://www.bootcdn.cn"
+    logo: "https://www.bootcdn.cn/assets/img/logo.png"
+    type: "modern"
+    url: "https://cdn.bootcdn.net/ajax/libs"
+
+  - name: staticfile
+    home: "https://staticfile.net/"
+    logo: "https://www.staticfile.net/images/logo.png"
+    type: "modern"
+    url: "https://cdn.staticfile.net"
+
+  - name: 7ed
+    home: "https://www.7ed.net"
+    logo: "https://github.com/7ednet/homepage/raw/main/_images/logo.svg"
+    type: "modern"
+    url: "https://use.sevencdn.com/ajax/libs"
+
+  - name: zstatic
+    home: "https://www.zstatic.net"
+    logo: "https://www.zstatic.net/logo.png"
+    type: "modern"
+    url: "https://s4.zstatic.net/ajax/libs"
+
+  - name: zeyao
+    home: "https://cdn.jsdmirror.com/"
+    logo: "https://img.cuteapi.com/2023/08/29/Background.png"
+    type: "nodejs" 
+    url: "https://cdn.jsdmirror.com/npm"
+
+  - name: jsdelivr
+    home: "https://www.jsdelivr.com/"
+    logo: "https://www.jsdelivr.com/assets/0c183396fdb0079ea31849b02bc5e3429f1740de/img/jsdelivr-horizontal-regular.svg"
+    type: "nodejs"
+    url: "https://cdn.jsdelivr.net/npm"
+
+# JavaScript 资源
+# JavaScript Resources
+js:
+  - name: animejs
+    version: 3.2.2
+    file: lib/anime.min.js
+
+  - name: viewerjs
+    version: 1.11.6
+    file: dist/viewer.min.js
+
+# CSS 资源
+# CSS Resources
+css:
+  - name: font-awesome
+    version: 6.7.2
+    file: css/all.min.css
+    alias: '@fortawesome/fontawesome-free'
+
+  - name: animate.css
+    version: 3.1.1
+    file: animate.min.css
+
+  - name: viewerjs
+    version: 1.11.6
+    file: dist/viewer.min.css
+
+# 第三方服务组件资源
+# 3rd services Resource
+
+# 站点统计
+# Site analytics engine
+analytics:
+  la: https://sdk.51.la/js-sdk-pro.min.js
+  laWidget: https://v6-widget.51.la/v6/laId/quote.js?theme=0&col=true&f=12&display=0,0,0,1,0,1,1,1
+  baidu: https://hm.baidu.com/hm.js?
+  google: https://www.googletagmanager.com/gtag/js?id=
+  busuanzi: https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js
+  cloudflare: https://static.cloudflareinsights.com/beacon.min.js
+
+# 文章分享
+# Share
+share:
+  sharethis:
+    js: https://platform-api.sharethis.com/js/sharethis.js#property=id&product=inline-share-buttons&source=platform
+  addtoany:
+    js: https://static.addtoany.com/menu/page.js
+
+# 评论组件
+# Comment component
+waline:
+  js:
+    name: waline
+    version: 2.15.8
+    file: dist/waline.js
+    alias: "@waline/client"
+
+  css:
+    name: waline
+    version: 2.15.8
+    file: dist/waline.css
+    alias: "@waline/client"
+
+waline3:
+  js:
+    name: waline
+    version: 3.5.7
+    file: dist/waline.js
+    alias: "@waline/client"
+
+  css:
+    name: waline
+    version: 3.5.7
+    file: dist/waline.css
+    alias: "@waline/client"
+
+artalk:
+  js:
+    name: artalk
+    version: 2.6.4
+    file: dist/Artalk.min.js
+
+  css:
+    name: artalk
+    version: 2.6.4
+    file: dist/Artalk.min.css
+
+giscus:
+  js: https://giscus.app/client.js
+
+utterances:
+  js: https://utteranc.es/client.js
+
+livere:
+  js: https://cdn-city.livere.com/js/embed.dist.js
+
+twikoo:
+  js:
+    name: twikoo
+    version: 1.6.44
+    file: dist/twikoo.all.min.js
+
+
+# 全文搜索
+# Full text search
+algolia:
+  name: algoliasearch
+  version: 4.24.0
+  file: dist/algoliasearch-lite.umd.js
+
+instant:
+  name: instantsearch.js
+  version: 4.73.2
+  file: dist/instantsearch.production.min.js
+
+plugins:
+  # 数学公式渲染
+  mathjax:
+    js:
+      name: mathjax
+      version: 3.2.2
+      file: es5/tex-mml-svg.js
+
+  katex:
+    js:
+      - name: katex
+        alias_name: KaTeX
+        version: 0.16.15
+        file: dist/katex.min.js
+        
+      - name: auto-render
+        alias: katex
+        alias_name: KaTeX
+        version: 0.16.15
+        file: dist/contrib/auto-render.min.js
+
+    css:
+      name: katex
+      alias_name: KaTeX
+      version: 0.16.15
+      file: dist/katex.min.css
+
+  # 画图渲染
+  mermaid:
+    js:
+      name: mermaid
+      version: 10.9.1
+      file: dist/mermaid.min.js
+  # 文章访问/评论统计
+  waline:
+    js:
+      - name: pageview
+        alias_name: waline
+        version: 2.15.8
+        file: dist/pageview.js
+        alias: "@waline/client" 
+
+      - name: comment
+        alias_name: waline
+        version: 2.15.8
+        file: dist/comment.js
+        alias: "@waline/client"
+  waline3:
+    js:
+      - name: pageview
+        alias_name: waline
+        version: 3.5.7
+        file: dist/pageview.js
+        alias: "@waline/client" 
+
+      - name: comment
+        alias_name: waline
+        version: 3.5.7
+        file: dist/comment.js
+        alias: "@waline/client"
+  # 音乐播放器
+  music:
+    js:
+      - name: aplayer
+        version: 1.10.1
+        file: dist/APlayer.min.js
+      
+      - name: meting
+        version: 2.0.1
+        file: dist/Meting.min.js
+
+    css:
+      name: aplayer
+      version: 1.10.1
+      file: dist/APlayer.min.css
+  # 复制到剪贴板
+  clipboard:
+    js: 
+      name: "clipboard.js"
+      version: 2.0.11
+      file: dist/clipboard.min.js
+      alias: clipboard

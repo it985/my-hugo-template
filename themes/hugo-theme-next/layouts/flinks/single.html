@@ -1,0 +1,43 @@
+{{ define "title" }}{{ .Title }} - {{ .Site.Title }}{{ end }}
+
+{{ define "main_inner_class" }}flinks posts-expand{{ end }}
+
+{{ define "main" }}
+
+<div class="flinks-block">
+<h1 class="flinks-header">{{ .Title }}</h1>
+<div class="flinks-body">
+<div class="flinks-lists">
+  {{ $flinksData := "" }}
+  {{ if .IsTranslated }}
+    {{ $flinksData = index .Site.Data.flinks .Lang }}
+  {{ else }}
+    {{ $flinksData = .Site.Data.flinks }}
+  {{ end }}
+  {{ range $flinksData }}
+  <div class="flinks-list">
+    <div class="flinks-list-title">{{ .FLinksTitle | safeHTML }}</div>
+    <div class="flinks-list-desc">{{ .FLinksDesc | safeHTML }}</div>
+    <div class="flinks-list-items">
+    {{ range .FLinksList }}
+    {{ if .visible }}
+    <div class="flinks-list-item">
+      <a href="{{ .link }}" rel="external nofollow noreferrer" title=" {{ .name }}" target="_blank">
+        <div class="flinks-item-icon">
+          <img class="no-lightbox entered loaded" src="{{ .avatar }}" alt="{{ .name }}"/>
+        </div>
+        <div class="flinks-item-name">{{ .name  | safeHTML }}</div>
+        <div class="flinks-item-desc" title="{{ .desc }}">{{ .desc | safeHTML }}</div>
+      </a>
+    </div>
+    {{ end }}
+    {{ end }}
+  </div>
+  </div>
+  {{ end }}
+</div>
+<div class="flinks-list-footer"><hr/></div>
+<div class="flinks-page-desc">{{ .Content }}</div>
+</div>
+</div>
+{{ end }}

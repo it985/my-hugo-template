@@ -1,0 +1,103 @@
+.post-toc {
+  font-size: $font-size-small;
+  padding: 0 8px;
+
+  .active-current {
+    color: $orange;
+  }
+
+  ul {
+
+    list-style: none;
+    margin: 0;
+    padding: 0 2px 5px 10px;
+    text-align: left;
+    counter-reset: item;
+
+    >li {
+
+
+      > ul {
+        border-left: 1px solid;
+        margin-left: 4px;
+
+        li {
+          position: relative;
+          padding-left: 0;
+          
+          &:before {
+            position: absolute;
+            content: ' ';
+            top: 0.14em;
+            left: -0.75em;
+            width: 0.65em;
+            height: 0.815em;
+            border-style: none none dashed none;
+            border-width: 0.05em;
+          }          
+        }
+      }
+
+
+    }
+
+
+
+    a {
+      transition: all $transition-ease;
+      border: none;
+      @if $toc_number {
+        &:before {
+          content: counters(item, ".") ". ";
+          counter-increment: item;
+        }
+      }
+
+      &:hover {
+        text-decoration: underline;
+        color: $orange;
+      }
+    }
+  }
+
+  .nav-item {
+    line-height: 1.8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @if not $toc_wrap {
+      white-space: nowrap;
+    }
+  }
+
+  .nav {
+    .nav-child {
+      display: if($toc_expand_all, block, none);
+    }
+
+    .active>.nav-child {
+      display: block;
+    }
+
+    .active-current>.nav-child {
+      display: block;
+
+      >.nav-item {
+        display: block;
+      }
+    }
+
+    .active>a {
+      border-bottom-color: $sidebar-highlight;
+      color: $sidebar-highlight;
+    }
+
+    .active-current>a {
+      color: $sidebar-highlight;
+
+      &:hover {
+        color: $sidebar-highlight;
+      }
+    }
+  }
+}

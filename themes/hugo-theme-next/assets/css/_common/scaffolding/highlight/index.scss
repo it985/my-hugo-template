@@ -1,0 +1,33 @@
+@import 'copy-code';
+@import 'monokai';
+
+%code-inline {
+  background: var(--highlight-background);
+  color: var(--highlight-foreground);
+}
+
+pre {
+  padding: 18px;
+  margin: 0;
+} 
+
+p > code, li > code {
+  @extend %code-inline;
+  border-radius: 3px;
+  padding: 3px 6px;
+}
+
+pre, code {
+  font-family: $code-font-family;
+}
+
+
+kbd {
+  @extend %code-inline;
+  border: 2px solid $grey-light;
+  border-radius: .2em;
+  box-shadow: .1em .1em .2em rgba(0, 0, 0, .1);
+  font-family: inherit;
+  padding: .1em .3em;
+  white-space: nowrap;
+}
