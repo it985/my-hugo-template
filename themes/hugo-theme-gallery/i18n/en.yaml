@@ -1,0 +1,17 @@
+menu: Menu
+home: Home
+pageNotFound: Page not found
+toHomepage: Go to homepage
+closeTitle: Close
+zoomTitle: Zoom
+arrowPrevTitle: Previous
+arrowNextTitle: Next
+errorMsg: The photo cannot be loaded
+downloadTitle: Download
+relatedAlbums: Related albums
+photoCount:
+  one: 1 photo
+  other: "{{ . }} photos"
+albumCount:
+  one: "{{ .photoCount }} in {{ .count }} album"
+  other: "{{ .photoCount }} in {{ .count }} albums"

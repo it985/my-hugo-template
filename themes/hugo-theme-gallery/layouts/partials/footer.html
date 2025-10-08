@@ -1,0 +1,11 @@
+<footer>
+  {{ partialCached "social-icons.html" . }}
+  <section>
+    {{ .Site.Copyright }}
+    {{ range .Site.Menus.footer }}
+      <a {{ with .Params.rel -}}rel="{{ . }}"{{ end -}} href="{{ .URL }}">
+        {{ .Name }}
+      </a>
+    {{ end }}
+  </section>
+</footer>

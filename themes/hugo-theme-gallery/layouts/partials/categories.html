@@ -1,0 +1,9 @@
+{{ with site.Taxonomies.categories }}
+  <nav class="categories">
+    <ul>
+      {{ range . }}
+        <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a></li>
+      {{ end }}
+    </ul>
+  </nav>
+{{ end }}

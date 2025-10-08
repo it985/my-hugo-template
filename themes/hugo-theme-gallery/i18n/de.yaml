@@ -1,0 +1,17 @@
+menu: Menü
+home: Home
+pageNotFound: Seite nicht gefunden
+toHomepage: Zur Startseite
+closeTitle: Schließen
+zoomTitle: Vergrößern
+arrowPrevTitle: Zurück
+arrowNextTitle: Weiter
+errorMsg: Das Bild konnte nicht geladen werden
+downloadTitle: Download
+relatedAlbums: Ähnliche Alben
+photoCount:
+  one: 1 Foto
+  other: "{{ . }} Fotos"
+albumCount:
+  one: "{{ .photoCount }} in {{ .count }} Album"
+  other: "{{ .photoCount }} in {{ .count }} Alben"
