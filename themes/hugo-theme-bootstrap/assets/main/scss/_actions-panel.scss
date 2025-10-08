@@ -1,0 +1,15 @@
+.btn-actions-panel {
+  bottom: 4.5rem;
+  color: var(--#{$prefix}primary);
+
+  &:hover {
+    color: var(--#{$prefix}primary-text);
+  }
+}
+
+#offcanvasActionsPanel { /* stylelint-disable-line */
+  .action,
+  .btn-social-share {
+    width: 5rem;
+  }
+}

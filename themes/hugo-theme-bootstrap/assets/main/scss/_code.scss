@@ -1,0 +1,70 @@
+.highlight-wrapper {
+  margin: 1.5rem auto 1rem;
+
+  .panel {
+    top: -1.35rem;
+    padding: 0 0.5rem;
+    transition: opacity 0.5s;
+
+    .action {
+      color: rgba(244, 255, 255, 0.75);
+
+      &:hover,
+      &.active {
+        color: white;
+      }
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
+
+  &:hover {
+    .panel {
+      opacity: 1 !important;
+    }
+  }
+}
+
+code {
+  margin: 0;
+  padding: 0.125rem 0.25rem;
+  color: var(--#{$prefix}secondary-color);
+  background: var(--#{$prefix}secondary-bg);
+  border-radius: 3px;
+
+  &.no-ln {
+    .ln {
+      display: none;
+    }
+  }
+}
+
+pre {
+  background: var(--#{$prefix}body-bg);
+  border-radius: 0.25rem;
+  color: var(--#{$prefix}body-color);
+  padding: 1rem;
+  position: relative;
+  max-height: 360px;
+
+  code {
+    padding: 0;
+    background: inherit !important;
+    color: inherit !important;
+    opacity: 1;
+  }
+}
+
+@if $code-select {
+  :not(pre) > code {
+    user-select: all;
+  }
+}
+
+.code-toggle {
+  .highlight-wrapper {
+    margin-top: 0.5rem;
+  }
+}

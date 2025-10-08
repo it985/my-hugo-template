@@ -1,0 +1,11 @@
+.component {
+  @extend .surface; /* stylelint-disable-line */
+
+  border: none;
+  margin-bottom: var(--#{$prefix}component-gutter-b);
+
+  &:hover,
+  &:focus {
+    @extend .shadow-sm; /* stylelint-disable-line */
+  }
+}

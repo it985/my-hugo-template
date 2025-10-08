@@ -1,0 +1,11 @@
+@function validate-palette($value) {
+  @if $validPalettes == true or $preferPalette == $value {
+    @return true;
+  }
+
+  @if $validPalettes == false {
+    @return false;
+  }
+
+  @return index($validPalettes, $value) != null;
+}

@@ -1,0 +1,44 @@
+[build]
+publish = "exampleSite/public"
+
+[build.environment]
+NODE_VERSION = "18.14.1"
+HUGO_VERSION = "0.146.5"
+HUGO_ENABLEGITINFO = "true"
+GO_VERSION = "1.20.1"
+
+[context.production]
+command = "cd exampleSite && npm install && hugo --minify"
+
+[context.production.environment]
+HUGO_ENV = "production"
+
+[context.deploy-preview]
+command = "cd exampleSite && npm install && hugo --minify -b=$DEPLOY_PRIME_URL"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "deny"
+    X-XSS-Protection = "1; mode=block"
+
+[[redirects]]
+  from = "/zh-cn/*"
+  to = "/v1/zh-hans/:splat"
+
+[[redirects]]
+  from = "/zh-tw/*"
+  to = "/v1/zh-hant/:splat"
+
+[[redirects]]
+  from = "/:lang/*"
+  to = "/:lang/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/*"
+  to = "/en/404.html" # Replace the "en" to your default language code.
+  # to = "/404.html" # Use it when a monolingual site or "defaultContentLanguageInSubdir" is disabled.
+  status = 404

@@ -1,0 +1,6 @@
+.dropdown-menu {
+  --#{$prefix}dropdown-link-active-color: var(--#{$prefix}on-primary);
+  --#{$prefix}dropdown-link-active-bg: var(--#{$prefix}primary);
+  --#{$prefix}dropdown-link-hover-color: var(--#{$prefix}on-primary);
+  --#{$prefix}dropdown-link-hover-bg: var(--#{$prefix}primary);
+}

@@ -1,0 +1,39 @@
+.sidebar {
+  scrollbar-width: thin;
+
+  &:hover {
+    scrollbar-color: var(--#{$prefix}primary) rgba(0,0,0,0);
+  }
+
+  @if $fixedSidebar {
+    @include media-breakpoint-up(lg) {
+      height: calc(100vh - 84px);
+      overflow: auto;
+      position: sticky;
+      top: 84px;
+    }
+  }
+}
+
+main.has-sidebar {
+  .content-docs {
+    @extend .col-xxl-7;
+  }
+  .content-posts {
+    @extend .col-xxl-8;
+  }
+
+  &.sidebar-none {
+    .sidebar {
+      display: none !important;
+    }
+
+    .content-posts {
+      @extend .col-xxl-12;
+    }
+
+    .content-docs {
+      @extend .col-xxl-10;
+    }
+  }
+}

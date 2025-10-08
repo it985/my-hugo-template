@@ -1,0 +1,31 @@
+.footer {
+  .social-link {
+    svg {
+      font-size: 1.5em;
+    }
+  }
+
+  .nav-link {
+    text-overflow: ellipsis;
+  }
+}
+
+.beian {
+  font-size: .8rem;
+
+  a {
+    margin-right: .125rem;
+
+    &:not(:last-child) {
+      &::after {
+        content: '·';
+        margin-left: .25rem;
+        opacity: .5;
+      }
+    }
+  }
+}
+
+.beian-psb-icon {
+  height: 16px;
+}

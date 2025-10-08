@@ -1,0 +1,15 @@
+.btn-scroll-to-top {
+  bottom: 1.25rem;
+  color: var(--#{$prefix}primary);
+  transition: opacity 0.5s;
+
+  &:hover {
+    color: var(--#{$prefix}primary-text);
+  }
+
+  &.scrolling {
+    bottom: 100%;
+    transition: bottom 1s;
+    color: var(--#{$prefix}primary);
+  }
+}

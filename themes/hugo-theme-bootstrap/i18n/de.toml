@@ -1,0 +1,450 @@
+[404_title]
+other = "Huch! Seite nicht gefunden."
+
+[404_info]
+other = "Wir haben uns Mühe gegeben und gesucht, aber wir konnten die gesuchte Seite wirklich nicht finden."
+
+[about_me]
+other = "Über mich"
+
+[actions]
+other = "Aktionen"
+
+[alert_caution]
+other = 'Achtung'
+
+[alert_important]
+other = 'Wichtig'
+
+[alert_note]
+other = 'Hinweis'
+
+[alert_tip]
+other = 'Tipp'
+
+[alert_warning]
+other = 'Warnung'
+
+[alipay]
+other = "Alipay"
+
+[all]
+other = "Alle"
+
+[archives]
+other = "Archiv"
+
+[authors]
+other = "Autoren"
+
+[browse_docs]
+other = "Browse docs"
+
+[button_copy_url]
+other = "URL kopieren"
+
+[button_fullscreen]
+other = "Vollbild"
+
+[button_reload]
+other = "Neuladen"
+
+[button_run_game]
+other = "Spiel starten"
+
+[button_social_share]
+other = "teilen"
+
+[button_submit]
+other = "OK"
+
+[buy_me_a_coffee]
+other = "Kauf mir 'nen Kaffee"
+
+[categories]
+other = "Kategorien"
+
+[color_blue]
+other = "Blau"
+
+[color_blue_gray]
+other = "Blaugrau"
+
+[color_brown]
+other = "Braun"
+
+[color_cyan]
+other = "Cyan"
+
+[color_green]
+other = "Grün"
+
+[color_indigo]
+other = "Indigo"
+
+[color_orange]
+other = "Orange"
+
+[color_pink]
+other = "Rosa"
+
+[color_purple]
+other = "Purpur"
+
+[color_red]
+other = "Rot"
+
+[color_teal]
+other = "Teal"
+
+[color_yellow]
+other = "Gelb"
+
+[comments]
+other = "Kommentare"
+
+[comments_email]
+other = "E-Mail"
+
+[comments_message]
+other = "Nachricht"
+
+[comments_name]
+other = "Name"
+
+[comments_reply]
+other = "Antworten"
+
+[comments_reply_to]
+other = "Antworten auf"
+
+[comments_submit]
+other = "Absenden"
+
+[comments_url]
+other = "URL"
+
+[contact_name]
+other = "Name"
+
+[contact_email]
+other = "E-Mail"
+
+[contact_email_help]
+other = "Wir werden Deine E-Mail-Adresse niemals weitergeben."
+
+[contact_file]
+other = "Datei"
+
+[contact_subject]
+other = "Betreff"
+
+[contact_message]
+other = "Nachricht"
+
+[copyright]
+other = "Copyright"
+
+[featured_posts]
+other = "im Fokus"
+
+[font_size]
+other = "Schriftgröße"
+
+[font_size_lg]
+other = "Groß"
+
+[font_size_md]
+other = "Mittel"
+
+[font_size_sm]
+other = "Klein"
+
+[font_size_xl]
+other = "Extra groß"
+
+[font_size_xs]
+other = "Extra klein"
+
+[funding_alipay]
+other = "Alipay"
+
+[funding_buymeacoffee]
+other = "Kauf mir einen Kaffee"
+
+[funding_ko_fi]
+other = "Ko-fi"
+
+[funding_open_collective]
+other = "Open Collective"
+
+[funding_patreon]
+other = "Patreon"
+
+[funding_wechat]
+other = "Wechat"
+
+[go_back]
+other = "Zurück"
+
+[home]
+other = "Blog"
+
+[language]
+other = "Sprache"
+
+[liberapay]
+other = "Liberapay"
+
+[load]
+other = "Laden"
+
+[load_more]
+other = "Mehr laden"
+
+[mode]
+other = "Modus"
+
+[noscript_info]
+other = "Dein Browser unterstützt kein JavaScript."
+
+[offline_title]
+other = "Ups! Du bist vom Internet getrennt."
+
+[offline_info]
+other = """
+<p>Es scheint ein Problem mit Deiner Internetverbindung zu geben. Bitte überprüfe den Zustand Deines Netzwerkes.</p>
+<p>Bitte trete mit uns in Kontakt, wenn du meinst, dass es sich um einen Server-Fehler handelt. Vielen Dank.</p>
+"""
+
+[pagination_title]
+other = "Seite {{ .PageNumber }}"
+
+[palette]
+other = "Palette"
+
+[patreon]
+other = "Patreon"
+
+[paypal]
+other = "Paypal"
+
+[post_count]
+one = "{{ .Count }} Beitrag insgesamt"
+other = "{{ .Count }} Beiträge insgesamt"
+
+[post_date]
+other = "Erstellt am {{ .createdOn }}{{ with .updatedOn }}, aktualisiert am {{ . }}{{ end }}."
+
+[posts]
+other = "Beiträge"
+
+[profile]
+other = "Profil"
+
+[read_more]
+other = "Mehr lesen"
+
+[reading_time]
+other = "{{ .ReadingTime }} Min. Lesezeit"
+
+[recent_posts]
+other = "Neueste Beiträge"
+
+[related_posts]
+other = "Ähnliche Beiträge"
+
+[repo_action_edit]
+other = "Diese Seite bearbeiten"
+
+[repo_action_view]
+other = "Seiten-Quelltext betrachten"
+
+[repo_title]
+other = "Repository"
+
+[search]
+other = "Suchen"
+
+[search_advanced]
+other = "Erweitert"
+
+[search_date]
+other = "Datum"
+
+[search_input_placeholder]
+other = "Zum Suchen tippen"
+
+[search_missing_keywords]
+other = "Bitte einen Suchbegriff eingeben"
+
+[search_no_results]
+other = "keine Ergebnisse gefunden"
+
+[search_score]
+other = "Wertung"
+
+[search_shortcut]
+other = "Drücke {{ .Shortcut }} zum Suchen"
+
+[search_sorting]
+other = "Sortierung"
+
+[search_stat]
+other = "{{ .Total }} Ergebnisse gefunden"
+
+[sections]
+other = "Abschnitte"
+
+[series]
+other = "Serien"
+
+[settings]
+other = "Einstellungen"
+
+[social_artstation]
+other = "ArtStation"
+
+[social_bilibili]
+other = "Bilibili"
+
+[social_bitbucket]
+other = "Bitbucket"
+
+[social_codeberg]
+other = "Codeberg"
+
+[social_discord]
+other = "Discord"
+
+[social_discourse]
+other = "Discourse"
+
+[social_dockerhub]
+other = "Docker Hub"
+
+[social_email]
+other = "E-Mail"
+
+[social_facebook]
+other = "Facebook"
+
+[social_facebookgroup]
+other = "Facebook-Gruppe"
+
+[social_github]
+other = "GitHub"
+
+[social_gitlab]
+other = "GitLab"
+
+[social_instagram]
+other = "Instagram"
+
+[social_itchio]
+other = "itch.io"
+
+[social_kaggle]
+other = "Kaggle"
+
+[social_lastfm]
+other = "Last.fm"
+
+[social_liberapay]
+other = "Liberapay"
+
+[social_linkedin]
+other = "LinkedIn"
+
+[social_mastodon]
+other = "Mastodon"
+
+[social_medium]
+other = "Medium"
+
+[social_patreon]
+other = "Patreon"
+
+[social_paypal]
+other = "PayPal"
+
+[social_pinterest]
+other = "Pinterest"
+
+[social_qq]
+other = "QQ"
+
+[social_quora]
+other = "Quora"
+
+[social_reddit]
+other = "Reddit"
+
+[social_rss]
+other = "RSS"
+
+[social_stackoverflow]
+other = "Stack Overflow"
+
+[social_telegram]
+other = "Telegram"
+
+[social_tipeee]
+other = "Tipeee"
+
+[social_tiktok]
+other = "TikTok"
+
+[social_tumblr]
+other = "Tumblr"
+
+[social_twitter]
+other = "Twitter"
+
+[social_website]
+other = "Website"
+
+[social_weibo]
+other = "Weibo"
+
+[social_x]
+other = "X"
+
+[social_xing]
+other = "XING"
+
+[social_youtube]
+other = "YouTube"
+
+[social_zhihu]
+other = "Zhihu"
+
+[stats]
+other = "Statistiken"
+
+[table_of_contents]
+other = "Inhaltsverzeichnis"
+
+[tags]
+other = "Tags"
+
+[taxonomies]
+other = "Klassifizierung"
+
+[theme_auto]
+other = "Auto"
+
+[theme_dark]
+other = "Dunkel"
+
+[theme_light]
+other = "Hell"
+
+[tipeee]
+other = "Tipeee"
+
+[try_again]
+other = "Erneut versuchen"
+
+[wechat]
+other = "WeChat"

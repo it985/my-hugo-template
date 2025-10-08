@@ -1,0 +1,29 @@
+.post-panel-wrapper {
+  z-index: 1;
+
+  .post-panel {
+    bottom: 80px;
+    opacity: 0.85;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    .action {
+      margin: 0 0.25rem;
+      padding: 0.25rem 0;
+
+      &:not(:first-child) {
+        &::before {
+          content: '|';
+          padding-right: 0.5rem;
+          color: var(--#{$prefix}surface-color-disabled);
+        }
+      }
+
+      &:hover {
+        color: var(--#{$prefix}primary);
+      }
+    }
+  }
+}

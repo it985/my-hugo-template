@@ -1,0 +1,441 @@
+[404_title]
+other = "الصفحة غير موجودة."
+
+[404_info]
+other = "تعذر الوصول إلى الصفحة المطلوبة."
+
+[about_me]
+other = "عنّي"
+
+[actions]
+other = "الإجراءات"
+
+[alert_caution]
+other = 'Caution'
+
+[alert_important]
+other = 'Important'
+
+[alert_note]
+other = 'Note'
+
+[alert_tip]
+other = 'Tip'
+
+[alert_warning]
+other = 'Warning'
+
+[alipay]
+other = "علي باي"
+
+[all]
+other = "الكل"
+
+[archives]
+other = "الأرشيف"
+
+[authors]	
+other = "الكُتَّاب"
+
+[browse_docs]
+other = "Browse docs"
+
+[button_copy_url]
+other = "نسخ الرابط"
+
+[button_fullscreen]
+other = "كامل الشاشة"
+
+[button_reload]
+other = "تحديث"
+
+[button_run_game]
+other = "تشغيل اللعبة"
+
+[button_social_share]
+other = "مشاركة"
+
+[button_submit]
+other = "إرسال"
+
+[buy_me_a_coffee]
+other = "اشتري لي كوب قهوة"
+
+[categories]
+other = "الأقسام"
+
+[color_blue]
+other = "أزرق"
+
+[color_blue_gray]
+other = "أزرق داكن"
+
+[color_brown]
+other = "بني"
+
+[color_cyan]
+other = "سماوي"
+
+[color_green]
+other = "أخضر"
+
+[color_indigo]
+other = "نيلي"
+
+[color_orange]
+other = "برتقالي"
+
+[color_pink]
+other = "وردي"
+
+[color_purple]
+other = "بنفسجي"
+
+[color_red]
+other = "أحمر"
+
+[color_teal]
+other = "أزرق مُخضر"
+
+[color_yellow]
+other = "أصفر"
+
+[comments]
+other = "التعليقات"
+
+[comments_email]
+other = "البريد الإلكتروني"
+
+[comments_message]
+other = "الرسالة"
+
+[comments_name]
+other = "الاسم"
+
+[comments_reply]
+other = "رد"
+
+[comments_reply_to]
+other = "رد على"
+
+[comments_submit]
+other = "إرسال"
+
+[comments_url]	
+other = "العناون"
+
+[contact_name]
+other = "الاسم"
+
+[contact_email]
+other = "البريد اﻹلكتروني"
+
+[contact_email_help]
+other = "لن نشارك أبدُا بريدك اﻹلكتروني مع أي شخص آخر."
+
+[contact_file]
+other = "الملف"
+
+[contact_subject]
+other = "الموضوع"
+
+[contact_message]
+other = "الرسالة"
+
+[copyright]
+other = "حقوق النشر"
+
+[featured_posts]
+other = "تدوينات مميزة"
+
+[font_size]
+other = "حجم الخط"
+
+[font_size_lg]
+other = "كبير"
+
+[font_size_md]
+other = "متوسط"
+
+[font_size_sm]
+other = "صغير"
+
+[font_size_xl]
+other = "كبير جدا"
+
+[font_size_xs]
+other = "صغير جدا"
+
+[funding_alipay]
+other = "علي باي"
+
+[funding_buymeacoffee]
+other = "Buy Me a Coffee"
+
+[funding_ko_fi]
+other = "Ko-fi"
+
+[funding_open_collective]
+other = "Open Collective"
+
+[funding_patreon]
+other = "باتريون"
+
+[funding_wechat]
+other = "وي شات"
+
+[go_back]
+other = "الرجوع للخلف"
+
+[home]
+other = "الرئيسية"
+
+[language]
+other = "اللغة"
+
+[liberapay]
+other = "ليبرا باي"
+
+[load]
+other = "تحميل"
+
+[load_more]
+other = "تحميل المزيد"
+
+[mode]
+other = "السمة"
+
+[noscript_info]
+other = "المتصفح الذي تستخدمه لا يدعم جافاسكريبت."
+
+[offline_title]
+other = "يبدو أنك غير متصل."
+
+[offline_info]
+other = """
+<p>يبدو أن هناك مشكلة في اتصالك بالإنترنت. من فضلك تأكد من حالة الشبكة لديك.</p>
+<p>تواصل معنا من فضلك إن كنت تظن أن هذه المشكلة من الخادم. شكرا لك.</p>
+"""
+
+[pagination_title]
+other = "الصفحة {{ .PageNumber }}"
+
+[palette]
+other = "لوح الألوان"
+
+[patreon]
+other = "باتريون"
+
+[paypal]
+other = "ياي بال"
+
+[post_count]
+one = "{{ .Count }} منشور"
+other = "{{ .Count }} منشورات"
+
+[post_date]
+other = "أنشئت في {{ .createdOn }}{{ with .updatedOn }}, وحٌدثت في {{ . }}{{ end }}."
+
+[posts]
+other = "التدوينات"
+
+[profile]
+other = "الملف الشخصي"
+
+[read_more]
+other = "اقرأ المزيد"
+
+[reading_time]
+other = "{{ .ReadingTime }} دقيقة قراءة"
+
+[recent_posts]
+other = "التدوينات الأخيرة"
+
+[related_posts]
+other = "تدوينات ذات صلة"
+
+[repo_action_edit]
+other = "تعديل هذه الصفحة"
+
+[repo_action_view]
+other = "عرض مصدر الصفحة"
+
+[repo_title]
+other = "المستودع"
+
+[search]
+other = "البحث"
+
+[search_advanced]
+other = "بحث متقدم"
+
+[search_date]
+other = "التاريخ"
+
+[search_input_placeholder]
+other = "اكتب لبدء البحث"
+
+[search_missing_keywords]
+other = "من فضلك أدخل كلمات البحث"
+
+[search_no_results]
+other = "لا يوجد نتائج"
+
+[search_score]
+other = "التقييم"
+
+[search_shortcut]
+other = "اضغط {{ .Shortcut }} لبدء البحث"
+
+[search_sorting]
+other = "الترتيب"
+
+[search_stat]
+other = "عُثر على {{ .Total }} نتيجة"
+
+[sections]
+other = "الأقسام"
+
+[series]
+other = "السلاسل"
+
+[settings]
+other = "الإعدادات"
+
+[social_artstation]
+other = "ArtStation"
+
+[social_bilibili]
+other = "Bilibili"
+
+[social_bitbucket]
+other = "Bitbucket"
+
+[social_codeberg]
+other = "Codeberg"
+
+[social_discord]
+other = "ديسكورد"
+
+[social_discourse]
+other = "ديسكورس"
+
+[social_dockerhub]
+other = "Docker Hub"
+
+[social_email]
+other = "البريد الإلكتروني"
+
+[social_facebook]
+other = "فيس بوك"
+
+[social_facebookgroup]
+other = "مجموعة فيس بوك"
+
+[social_github]
+other = "جيت هب"
+
+[social_gitlab]
+other = "جيت لاب"
+
+[social_instagram]
+other = "إنستجرام"
+
+[social_itchio]
+other = "itch.io"
+
+[social_kaggle]
+other = "Kaggle"
+
+[social_lastfm]
+other = "Last.fm"
+
+[social_liberapay]
+other = "ليبر باي"
+
+[social_linkedin]
+other = "لينكدإن"
+
+[social_mastodon]
+other = "ماستودن"
+
+[social_medium]
+other = "ميديم"
+
+[social_patreon]
+other = "باتريون"
+
+[social_paypal]
+other = "بايبال"
+
+[social_pinterest]
+other = "بينتيريست"
+
+[social_qq]
+other = "QQ"
+
+[social_quora]
+other = "كورا"
+
+[social_reddit]
+other = "ريديت"
+
+[social_rss]
+other = "خلاصات RSS"
+
+[social_stackoverflow]
+other = "Stack Overflow"
+
+[social_telegram]
+other = "تليجرام"
+
+[social_tipeee]
+other = "تيبي"
+
+[social_tiktok]
+other = "تيك توك"
+
+[social_tumblr]
+other = "Tumblr"
+
+[social_twitter]
+other = "تويتر"
+
+[social_website]
+other = "موقع الويب"
+
+[social_weibo]
+other = "ويبو"
+
+[social_x]
+other = "X"
+
+[social_xing]
+other = "XING"
+
+[social_youtube]
+other = "يوتيوب"
+
+[social_zhihu]
+other = "Zhihu"
+
+[stats]
+other = "اﻹحصائيات"
+
+[table_of_contents]
+other = "الفِهْرِس"
+
+[tags]
+other = "التسميات"
+
+[taxonomies]
+other = "التصنيفات"
+
+[tipeee]
+other = "تيبي"
+
+[try_again]
+other = "إعادة المحاولة"
+
+[wechat]
+other = "وي شات"

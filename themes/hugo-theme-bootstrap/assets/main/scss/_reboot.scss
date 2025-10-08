@@ -1,0 +1,27 @@
+html {
+  @if $backgroundImageLight != '' {
+    background: url($backgroundImageLight) no-repeat center center fixed;
+    background-size: cover;
+
+    body {
+      background-color: unset;
+    }
+  }
+
+  @if $backgroundImageDark != '' {
+    &[data-bs-theme='dark'] {
+      background-image: url($backgroundImageDark);
+    }
+  }
+
+  @if $fixedHeader {
+    scroll-padding-top: 64px;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  --#{$prefix}link-hover-color-rgb: var(--#{$prefix}primary-rgb);
+}

@@ -1,0 +1,8 @@
+:target:not(sup)::before {
+  content: '';
+  display: block;
+}
+
+.anchor {
+  font-size: 75%;
+}

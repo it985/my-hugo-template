@@ -1,0 +1,7 @@
+.offcanvas {
+  @extend .shadow-lg; /* stylelint-disable-line */
+
+  .offcanvas-title {
+    margin: 0;
+  }
+}

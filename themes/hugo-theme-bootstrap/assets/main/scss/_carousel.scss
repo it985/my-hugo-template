@@ -1,0 +1,42 @@
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.75);
+  color: rgba(255, 255, 255, 0.75) !important;
+  bottom: -20px;
+}
+
+.carousel-indicators {
+  [data-bs-target] {
+    height: 15px;
+    width: 15px;
+    background-color: var(--#{$prefix}primary) !important;
+  }
+}
+
+.carousel-item {
+  background: rgba(0, 0, 0, 0.35);
+
+  img {
+    width: 100%;
+    height: 450px;
+
+    @include media-breakpoint-down(lg) {
+      height: 270px;
+    }
+
+    @include media-breakpoint-down(sm) {
+      height: 180px;
+    }
+  }
+}
+
+.carousel-controls {
+  right: 1.75rem;
+  bottom: 1rem;
+  z-index: 3;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  align-items: end;
+  bottom: 1.25rem;
+}

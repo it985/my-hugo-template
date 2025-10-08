@@ -1,0 +1,119 @@
+/*! purgecss start ignore */
+$palette-blue: $blue-600 !default;
+$palette-blue-gray: #37474f !default;
+$palette-brown: #5d4037 !default;
+$palette-cyan: $cyan-700 !default;
+$palette-green: $green !default;
+$palette-indigo: $indigo !default;
+$palette-orange: $orange-700 !default;
+$palette-pink: $pink !default;
+$palette-purple: $purple !default;
+$palette-red: $red !default;
+$palette-teal: $teal-700 !default;
+$palette-yellow: $yellow-800 !default;
+$palettes: (
+  'blue': $palette-blue,
+  'blue-gray': $palette-blue-gray,
+  'brown': $palette-brown,
+  'cyan': $palette-cyan,
+  'green': $palette-green,
+  'indigo': $palette-indigo,
+  'orange': $palette-orange,
+  'pink': $palette-pink,
+  'purple': $palette-purple,
+  'red': $palette-red,
+  'teal': $palette-teal,
+  'yellow': $palette-yellow,
+);
+$theme-colors: map-remove($theme-colors, 'primary');
+$theme-colors: map-merge($theme-colors, $palettes);
+$palettes-rgb: (
+  'blue': to-rgb($palette-blue),
+  'blue-gray': to-rgb($palette-blue-gray),
+  'brown': to-rgb($palette-brown),
+  'cyan': to-rgb($palette-cyan),
+  'green': to-rgb($palette-green),
+  'indigo': to-rgb($palette-indigo),
+  'orange': to-rgb($palette-orange),
+  'pink': to-rgb($palette-pink),
+  'purple': to-rgb($palette-purple),
+  'red': to-rgb($palette-red),
+  'teal': to-rgb($palette-teal),
+  'yellow': to-rgb($palette-yellow),
+);
+$theme-colors-rgb: map-remove($theme-colors-rgb, 'primary');
+$theme-colors-rgb: map-merge($theme-colors-rgb, $palettes-rgb);
+$palette-classes: 'btn', 'btn-outline';
+@each $name, $color in $palettes {
+  @if validate-palette($name) {
+    $on-primary: color-contrast($color);
+    $primary-secondary: shade-color($color, 20%);
+    $primary-tint: tint-color($color, 20%);
+    $theme-colors: map-merge($theme-colors, ('#{$name}-tint': $primary-tint));
+    $on-primary-secondary: if(
+      $on-primary == $color-contrast-light,
+      shade-color($on-primary, 20%),
+      tint-color($on-primary, 20%)
+    );
+    $on-primary-disabled: if(
+      $on-primary == $color-contrast-light,
+      shade-color($on-primary, 40%),
+      tint-color($on-primary, 40%)
+    );
+    [data-palette='#{$name}'] {
+      --#{$prefix}primary: #{$color};
+      --#{$prefix}primary-rgb: #{to-rgb($color)} !important;
+      --#{$prefix}primary-secondary: #{$primary-secondary};
+      --#{$prefix}primary-secondary-rgb: #{to-rgb($primary-secondary)};
+      --#{$prefix}on-primary: #{$on-primary};
+      --#{$prefix}on-primary-rgb: #{to-rgb($on-primary)};
+      --#{$prefix}primary-text: #{shade-color($color, 30%)} !important;
+      --#{$prefix}on-primary-secondary: #{$on-primary-secondary};
+      --#{$prefix}on-primary-secondary-rgb: #{to-rgb($on-primary-secondary)};
+      --#{$prefix}on-primary-disabled: #{$on-primary-disabled};
+      --#{$prefix}on-primary-disabled-rgb: #{to-rgb($on-primary-disabled)};
+      --#{$prefix}accent-bg: #{$color} !important;
+      --#{$prefix}accent-color: #{$on-primary} !important;
+      --#{$prefix}accent-border: #{$color} !important;
+
+      // Override the primary components.
+      @each $class in $palette-classes {
+        .#{$class}-primary {
+          @extend .#{$class}-#{$name}; /* stylelint-disable-line */
+        }
+      }
+
+      &[data-bs-theme='dark'] {
+        --#{$prefix}primary: #{$primary-tint};
+        --#{$prefix}primary-rgb: #{to-rgb($primary-tint)} !important;
+        --#{$prefix}primary-text: #{tint-color($color, 30%)} !important;
+        --#{$prefix}accent-bg: #{$primary-tint} !important;
+        --#{$prefix}accent-color: #{$on-primary} !important;
+        --#{$prefix}accent-border: #{$primary-tint} !important;
+
+        @each $class in $palette-classes {
+          .#{$class}-primary {
+            @extend .#{$class}-#{$name}-tint; /* stylelint-disable-line */
+          }
+        }
+      }
+
+      .text-primary {
+        color: var(--#{$prefix}primary) !important;
+      }
+    }
+  }
+}
+
+.palette {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.palette-dropdown-menu {
+  &.show {
+    display: flex !important;
+  }
+}
+
+/*! purgecss end ignore */

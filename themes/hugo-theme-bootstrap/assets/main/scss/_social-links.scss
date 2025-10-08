@@ -1,0 +1,19 @@
+.social-link {
+  position: relative;
+
+  @if $socialAnimation {
+    &:hover {
+      top: -2px;
+      transition: top ease 0.5s;
+    }
+
+  }
+
+  @if $socialColor {
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

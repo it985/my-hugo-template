@@ -1,0 +1,8 @@
+.snackbar {
+  bottom: 20%;
+  transition: opacity 1s ease-in-out;
+
+  &.show {
+    opacity: 1 !important;
+  }
+}
