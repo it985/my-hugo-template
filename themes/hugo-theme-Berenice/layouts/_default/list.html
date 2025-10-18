@@ -1,0 +1,40 @@
+{{ define "main" }}
+<main class="max-w-7xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">Albums</h1>
+  {{ partial "breadcrumb.html" . }}
+
+  <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
+    {{ range .Pages }}
+      {{ $cover := "" }}
+
+      {{ if .Params.featured_image }}
+        {{ $coverRes := .Resources.GetMatch .Params.featured_image }}
+        {{ if and $coverRes (eq $coverRes.MediaType.MainType "image") }}
+          {{ $thumb := $coverRes.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
+          {{ $cover = $thumb.RelPermalink }}
+        {{ end }}
+      {{ end }}
+
+      <div class="break-inside-avoid mb-4 rounded overflow-hidden shadow hover:shadow-md transition">
+        <a href="{{ .RelPermalink }}" class="relative block group">
+          {{ if $cover }}
+            <img src="{{ $cover }}" class="w-full h-auto object-cover" alt="{{ .Title }}">
+          {{ else }}
+            <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
+              No preview
+            </div>
+          {{ end }}
+
+          <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-3">
+            <h2 class="text-white text-lg font-semibold drop-shadow-sm group-hover:underline">
+              {{ .Title }}
+            </h2>
+          </div>
+        </a>
+      </div>
+    {{ end }}
+  </div>
+</main>
+{{ end }}
+
+

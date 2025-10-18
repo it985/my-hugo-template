@@ -1,0 +1,48 @@
+{{ define "main" }}
+
+<main class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">{{ .Title }}</h1>
+  {{ partial "breadcrumb.html" . }}
+
+  <div id="lightgallery" class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
+    {{ $resources := .Resources.Match "**" }}
+    {{ range $res := $resources }}
+      {{ if or (eq $res.MediaType.MainType "image") (eq $res.MediaType.MainType "video") }}
+      <div class="break-inside-avoid mb-4">
+
+        {{ $thumb := "" }}
+        {{ if eq $res.MediaType.MainType "image" }}
+          {{ $thumb = $res.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
+          <a href="{{ $res.RelPermalink }}"
+             class="block rounded overflow-hidden"
+             data-lg-size="{{ $res.Width }}-{{ $res.Height }}"
+             data-sub-html="{{ $res.Name }}">
+            <img src="{{ $thumb.RelPermalink }}"
+                 class="w-full h-auto object-cover"
+                 alt="{{ $res.Name }}"
+                 loading="lazy">
+          </a>
+
+        {{ else if eq $res.MediaType.MainType "video" }}
+        <a href=""
+            class="block rounded overflow-hidden"
+            data-sub-html="{{ $res.Name }}"
+            data-video='{"source":[{"src":"{{ $res.RelPermalink }}","type":"{{ $res.MediaType.Type }}"}],
+            "attributes": {
+                "preload": true,
+                "autoplay": true,
+                "controls": true
+                }}'>
+            <video width="600" height="600"  class="w-full h-auto object-cover" autoplay="true" muted="true" loop="true" playsinline="true" preload="auto">
+              <source src="{{ $res.RelPermalink }}" type="{{ $res.MediaType.Type }}">
+            </video>
+          </a>
+        {{ end }}
+        </div>
+
+      {{ end }}
+    {{ end }}
+  </div>
+</main>
+
+{{ end }}

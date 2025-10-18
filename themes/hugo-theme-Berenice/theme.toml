@@ -1,0 +1,19 @@
+name = 'Berenice'
+license = 'CC-BY 4.0'
+
+licenselink = 'https://creativecommons.org/licenses/by/4.0/'
+description = 'This Hugo Theme is built to create a personal photo album with additional videoclips.'
+
+# The home page of the theme, where the source can be found
+homepage = 'https://github.com/22decembre/Berenice'
+
+# If you have a running demo of the theme
+demosite = 'https://photos.22decembre.eu/'
+
+# Taxonomy terms
+tags = ['photos', 'videoclips', 'personal', 'album','gallery']
+
+# If the theme has a single author
+[author]
+  name = 'Stéphane 22Decembre'
+  homepage = 'https://www.22decembre.eu'

@@ -1,0 +1,12 @@
+{{ $parts := split .RelPermalink "/" }}
+<nav class="text-sm text-gray-500 mb-4 space-x-1">
+  <a href="/" class="hover:underline">Home</a>
+  {{ $path := "" }}
+  {{ range $i, $p := $parts }}
+    {{ if and (ne $p "") (lt $i (sub (len $parts) 1)) }}
+      {{ $path = print $path "/" $p }}
+      /
+      <a href="{{ $path | relURL }}" class="hover:underline capitalize">{{ $p }}</a>
+    {{ end }}
+  {{ end }}
+</nav>

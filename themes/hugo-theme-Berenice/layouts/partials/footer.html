@@ -1,0 +1,11 @@
+<script src="{{ "lightgallery.min.js" | relURL }}"></script>
+<script src="{{ "lg-video.min.js" | relURL }}"></script>
+<script src="{{ "lg-zoom.min.js" | relURL }}"></script>
+
+<script>
+  lightGallery(document.getElementById("lightgallery"), {
+    selector: 'a',
+    plugins: [lgVideo, lgZoom],
+    download: false
+  });
+</script>
