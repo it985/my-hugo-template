@@ -1,0 +1,224 @@
+# Tệp ngôn ngữ Tiếng Việt
+# Điều hướng
+nav:
+  menu: "Menu"
+  home: "Trang chủ"
+  posts: "Bài viết"
+  tags: "Thẻ"
+  categories: "Chuyên mục"
+  about: "Giới thiệu"
+  contact: "Liên hệ"
+  archive: "Lưu trữ"
+  archives: "Lưu trữ"
+  search: "Tìm kiếm"
+  breadcrumb: "Điều hướng"
+  pagination: "Phân trang"
+  prev: "Trước"
+  next: "Tiếp"
+  prev_page: "Trang trước"
+  next_page: "Trang sau"
+  page_info: "Trang {{ .current }} / {{ .total }}"
+  total_pages: "{{ .count }} trang"
+  back_home: "Về trang chủ"
+  post_navigation: "Điều hướng bài viết"
+
+# Giao diện
+theme:
+  toggle: "Đổi giao diện"
+  light: "Sáng"
+  dark: "Tối"
+  system: "Hệ thống"
+  auto: "Tự động"
+
+# Chân trang
+footer:
+  copyright: "Bản quyền"
+  all_rights_reserved: "Đã đăng ký bản quyền"
+  about_us: "Về chúng tôi"
+  contact_us: "Liên hệ"
+  privacy_policy: "Chính sách bảo mật"
+  terms_of_service: "Điều khoản dịch vụ"
+  rss_feed: "RSS Feed"
+
+# Trang chủ
+home:
+  recent_posts: "Bài viết mới"
+  showing_posts: "Hiển thị mới nhất"
+  posts: "bài viết"
+  view_all_posts: "Xem tất cả bài viết"
+
+# Bài viết
+post:
+  read_more: "Đọc thêm"
+  published_on: "Đăng ngày"
+  updated_on: "Cập nhật ngày"
+  tags: "Thẻ"
+  categories: "Chuyên mục"
+  share: "Chia sẻ"
+  previous: "Trước"
+  next: "Tiếp"
+  related_posts: "Bài viết liên quan"
+  reading_time: "Thời gian đọc"
+  no_posts: "Chưa có bài viết"
+  no_posts_desc: "Chưa có bài viết nào được đăng. Vui lòng quay lại sau."
+  list_desc: "Tất cả bài viết, sắp xếp theo thời gian."
+  total_posts: "{{ .count }} bài viết"
+  author: "Tác giả"
+  words: "từ"
+  words_count: "Số từ"
+  no_previous: "Không có bài trước"
+  no_next: "Không có bài sau"
+  no_previous_desc: "Đây là bài viết đầu tiên"
+  no_next_desc: "Đây là bài viết mới nhất"
+  view_more_posts: "Xem thêm bài viết"
+  reading_time_unit: "phút"
+
+# Phân trang
+pagination:
+  previous: "Trước"
+  next: "Tiếp"
+  page: "Trang"
+  of: "trong"
+  pages: "trang"
+
+# Tìm kiếm
+search:
+  placeholder: "Tìm kiếm bài viết..."
+  clear: "Xóa"
+  close: "Đóng"
+  loading: "Đang tìm..."
+  empty_title: "Bắt đầu tìm kiếm"
+  empty_description: "Nhập từ khóa để tìm kiếm"
+  no_results_title: "Không tìm thấy kết quả"
+  no_results_description: "Thử tìm với từ khóa khác"
+  results_count: "Tìm thấy %d kết quả"
+  match_score: "Độ phù hợp"
+  hint_navigate: "Di chuyển"
+  hint_select: "Chọn"
+  hint_close: "Đóng"
+  hint_shortcut: "Phím tắt"
+
+# Form related
+form:
+  name: "Tên"
+  email: "Email"
+  message: "Tin nhắn"
+  subject: "Chủ đề"
+  send: "Gửi"
+  required: "Bắt buộc"
+
+# Time related
+time:
+  minute: "phút"
+  minutes: "phút"
+  hour: "giờ"
+  hours: "giờ"
+  day: "ngày"
+  days: "ngày"
+  week: "tuần"
+  weeks: "tuần"
+  month: "tháng"
+  months: "tháng"
+  year: "năm"
+  years: "năm"
+  ago: "trước"
+  date_format: "02 tháng 01 năm 2006"
+  date_format_short: "02 Thg 01"
+  month_format: "Tháng 01 năm 2006"
+
+# Archives related
+archives:
+  desc: "Duyệt qua tất cả các bài viết theo thứ tự thời gian và khám phá những gì bạn quan tâm."
+  posts_count: "bài viết"
+  no_posts: "Chưa có bài viết nào"
+  no_posts_desc: "Chưa có bài viết nào được xuất bản. Vui lòng quay lại sau."
+  total_posts: "Tổng cộng {{ .count }} bài viết"
+  timeline: "Chế độ xem dòng thời gian"
+
+# Taxonomy related
+taxonomy:
+  total_tags: "Tổng cộng {{ .count }} thẻ"
+  total_categories: "Tổng cộng {{ .count }} chuyên mục"
+  total_terms: "Tổng cộng {{ .count }} thuật ngữ"
+  tags_desc: "Duyệt qua tất cả các thẻ để khám phá nội dung thú vị."
+  categories_desc: "Duyệt qua tất cả các chuyên mục để khám phá nội dung thú vị."
+  desc: "Duyệt qua tất cả các chuyên mục để khám phá nội dung thú vị."
+  no_terms: "Chưa có chuyên mục nào"
+  no_terms_desc: "Chưa có chuyên mục nào được tạo. Vui lòng quay lại sau."
+
+# Taxonomy term pages
+term:
+  tag_desc: "Tất cả các bài viết dưới thẻ \"{{ .tag }}\""
+  category_desc: "Tất cả các bài viết dưới chuyên mục \"{{ .category }}\""
+  desc: "Tất cả các bài viết dưới \"{{ .term }}\""
+  total_posts: "Tổng cộng {{ .count }} bài viết"
+  date_range: "Sắp xếp theo ngày"
+  no_posts: "Chưa có bài viết nào"
+  no_posts_tag: "Chưa có bài viết nào dưới thẻ này."
+  no_posts_category: "Chưa có bài viết nào dưới chuyên mục này."
+  no_posts_desc: "Chưa có bài viết nào dưới chuyên mục này."
+
+# Common
+common:
+  error: "Lỗi"
+  success: "Thành công"
+  open: "Mở"
+  save: "Lưu"
+  cancel: "Hủy"
+  confirm: "Xác nhận"
+  delete: "Xóa"
+  edit: "Chỉnh sửa"
+  view: "Xem"
+  back: "Quay lại"
+  more: "Thêm"
+
+# License related
+license:
+  author: "Tác giả"
+  link: "Liên kết"
+  type: "Giấy phép"
+  cc_by_nc_sa_desc: "Tác phẩm này được cấp phép theo Giấy phép Creative Commons Ghi công - Phi thương mại - Chia sẻ tương tự 4.0 Quốc tế. Vui lòng ghi rõ nguồn, sử dụng phi thương mại và giữ nguyên giấy phép tương tự."
+  cc_by_desc: "Tác phẩm này được cấp phép theo Giấy phép Creative Commons Ghi công 4.0 Quốc tế. Vui lòng ghi rõ nguồn."
+
+# Comments related
+comments:
+  not_configured: "Hệ thống bình luận chưa được cấu hình"
+  not_configured_desc: "Vui lòng bật hệ thống bình luận trong cấu hình trang web"
+  giscus_not_configured: "Hệ thống bình luận Giscus chưa được cấu hình"
+  disqus_not_configured: "Hệ thống bình luận Disqus chưa được cấu hình"
+  waline_not_configured: "Hệ thống bình luận Waline chưa được cấu hình"
+
+# Bottom Dock
+dock:
+  back: "Quay lại"
+  toc: "Mục lục"
+  search: "Tìm kiếm"
+  comments: "Bình luận"
+  back_to_top: "Quay lại đầu trang"
+  top: "Đầu trang"
+
+# Alert related
+alert:
+  note: "Lưu ý"
+  tip: "Mẹo"
+  important: "Quan trọng"
+  warning: "Cảnh báo"
+  caution: "Thận trọng"
+
+# TOC related
+toc:
+  title: "Mục lục"
+  navigation: "Điều hướng mục lục"
+  empty: "Không có tiêu đề trong bài viết này"
+  tip: "Nhấp để chuyển đến phần"
+
+# Code block related
+code:
+  copied: "Đã sao chép"
+  selected: "Đã chọn"
+  collapse: "Thu gọn"
+  expand: "Mở rộng"
+  clickToExpand: "Nhấp để mở rộng và xem thêm"
+
+# Liên kết
+links: "Liên kết"

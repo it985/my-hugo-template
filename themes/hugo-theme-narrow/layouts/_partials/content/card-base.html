@@ -1,0 +1,105 @@
+{{/* 文章卡片基础组件 - 用于主文章列表显示
+  @context {page} .page 文章页面对象
+*/}}
+
+{{ $page := .page }}
+
+{{/* 使用通用图片处理器 */}}
+{{- if $page.Params.cover -}}
+  {{- partial "content/image-processor.html" (dict
+    "context" $page
+    "src" $page.Params.cover
+    "enablePlaceholder" true
+    "outputType" "data"
+  ) -}}
+{{- else -}}
+  {{/* 没有封面图时，仍需要生成占位图数据 */}}
+  {{- partial "content/image-processor.html" (dict
+    "context" $page
+    "src" ""
+    "enablePlaceholder" true
+    "outputType" "data"
+  ) -}}
+{{- end -}}
+
+{{- $coverImage := $page.Scratch.Get "imageUrl" -}}
+{{- $placeholderData := $page.Scratch.Get "placeholderData" | default dict -}}
+{{- $randomImage := $placeholderData.randomImage | default "" -}}
+{{- $useRandomImage := $placeholderData.useRandomImage | default false -}}
+{{- $gradients := $placeholderData.gradients | default (slice "from-blue-500/20 to-purple-500/10") -}}
+{{- $colorIndex := $placeholderData.colorIndex | default 0 -}}
+
+
+{{- $summaryContent := "" -}}
+{{- if $page.Params.summary -}}
+  {{- $summaryContent = $page.Params.summary -}}
+{{- else if $page.Params.description -}}
+  {{- $summaryContent = $page.Params.description -}}
+{{- else if $page.Summary -}}
+  {{- $summaryContent = $page.Summary | plainify | truncate 140 -}}
+{{- end -}}
+
+{{/* 文章卡片 */}}
+<article class="group">
+  <a href="{{ $page.RelPermalink }}" class="block">
+    <div class="bg-card border-border hover:bg-primary/5 hover:border-primary/20 focus:ring-primary/20 relative flex flex-col overflow-hidden rounded-xl border transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg focus:ring-2 focus:outline-none">
+      <!-- 移动端顶部封面 -->
+      <div class="block md:hidden">
+        {{ partial "content/card-image.html" (dict "page" $page "type" "mobile" "coverImage" $coverImage "randomImage" $randomImage "useRandomImage" $useRandomImage "gradients" $gradients "colorIndex" $colorIndex) }}
+      </div>
+
+      <!-- 桌面端右侧封面 -->
+      <div class="absolute top-0 right-0 hidden h-full w-80 transition-opacity duration-300 group-hover:opacity-90 md:block">
+        {{ partial "content/card-image.html" (dict "page" $page "type" "desktop" "coverImage" $coverImage "randomImage" $randomImage "useRandomImage" $useRandomImage "gradients" $gradients "colorIndex" $colorIndex) }}
+      </div>
+
+      <!-- 桌面端悬浮时的填充颜色遮罩 -->
+      <div class="absolute top-0 right-0 hidden h-full w-80 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block bg-gradient-to-l from-primary/5"></div>
+
+      <!-- 文章内容区域 -->
+      <div class="relative z-10 flex flex-1 flex-col p-6 md:pr-[21rem]">
+        <!-- 文章标题 -->
+        <h3 class="text-foreground group-hover:text-primary mb-4 text-lg font-semibold leading-tight transition-colors duration-200">
+          {{ $page.Title }}
+        </h3>
+
+        <!-- 文章摘要 -->
+        {{ if $summaryContent }}
+          <p class="text-muted-foreground mb-4 text-sm leading-relaxed">
+            {{ $summaryContent }}
+          </p>
+        {{ end }}
+
+        <!-- 元信息 -->
+        <div class="mt-auto text-sm text-muted-foreground">
+          <!-- 时间信息行 -->
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              {{ partial "features/icon.html" (dict "name" "calendar" "size" "sm" "ariaLabel" (i18n "post.published_on")) }}
+              <time datetime="{{ $page.Date.Format "2006-01-02" }}" class="font-medium">
+                {{ $page.Date.Format (i18n "time.date_format" | default "2006年01月02日") }}
+              </time>
+            </div>
+            {{ if $page.ReadingTime }}
+              <div class="flex items-center gap-1.5">
+                {{ partial "features/icon.html" (dict "name" "clock" "size" "sm" "ariaLabel" (i18n "post.reading_time")) }}
+                <span class="font-medium">{{ $page.ReadingTime }} {{ i18n "time.minute" | default "min" }}</span>
+              </div>
+            {{ end }}
+          </div>
+
+          <!-- 标签行 -->
+          {{ if isset $page.Params "tags" }}
+            <div class="flex flex-wrap items-center gap-1.5 mt-2">
+              {{ range $tag := $page.Params.tags }}
+                <span class="bg-muted/50 border-muted/30 flex items-center gap-1 rounded-md border px-2 py-1">
+                  <span class="font-medium">{{ $tag }}</span>
+                </span>
+              {{ end }}
+            </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </a>
+</article>

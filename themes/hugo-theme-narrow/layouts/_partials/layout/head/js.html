@@ -1,0 +1,182 @@
+{{- with resources.Get "js/main.js" }}
+  {{- $opts := dict
+    "minify" (not hugo.IsDevelopment)
+    "sourceMap" (cond hugo.IsDevelopment "external" "")
+    "targetPath" "js/main.js"
+  }}
+  {{- with . | js.Build $opts }}
+    {{- if hugo.IsDevelopment }}
+      <script src="{{ .RelPermalink }}"></script>
+    {{- else }}
+      {{- with . | fingerprint }}
+        <script
+          src="{{ .RelPermalink }}"
+          integrity="{{ .Data.Integrity }}"
+          crossorigin="anonymous"></script>
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+
+<!-- Gumshoe 库 - 只在文章页面加载 -->
+{{- if .IsPage }}
+  <script src="{{ "js/gumshoe.polyfills.min.js" | relURL }}"></script>
+{{- end }}
+
+
+<!-- 目录功能脚本 - 只在文章页面加载，需要在 dock.js 之前加载 -->
+{{- if .IsPage }}
+  {{- with resources.Get "js/toc.js" }}
+    {{- $opts := dict
+      "minify" (not hugo.IsDevelopment)
+      "sourceMap" (cond hugo.IsDevelopment "external" "")
+      "targetPath" "js/toc.js"
+    }}
+    {{- with . | js.Build $opts }}
+      {{- if hugo.IsDevelopment }}
+        <script src="{{ .RelPermalink }}" defer></script>
+      {{- else }}
+        {{- with . | fingerprint }}
+          <script
+            src="{{ .RelPermalink }}"
+            integrity="{{ .Data.Integrity }}"
+            crossorigin="anonymous"
+            defer></script>
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+
+<!-- 搜索功能脚本 -->
+{{- with resources.Get "js/search.js" }}
+  {{- $opts := dict
+    "minify" (not hugo.IsDevelopment)
+    "sourceMap" (cond hugo.IsDevelopment "external" "")
+    "targetPath" "js/search.js"
+  }}
+  {{- with . | js.Build $opts }}
+    {{- if hugo.IsDevelopment }}
+      <script src="{{ .RelPermalink }}" defer></script>
+    {{- else }}
+      {{- with . | fingerprint }}
+        <script
+          src="{{ .RelPermalink }}"
+          integrity="{{ .Data.Integrity }}"
+          crossorigin="anonymous"
+          defer></script>
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+
+<!-- Dock 控制脚本 -->
+{{- with resources.Get "js/dock.js" }}
+  {{- $opts := dict
+    "minify" (not hugo.IsDevelopment)
+    "sourceMap" (cond hugo.IsDevelopment "external" "")
+    "targetPath" "js/dock.js"
+  }}
+  {{- with . | js.Build $opts }}
+    {{- if hugo.IsDevelopment }}
+      <script src="{{ .RelPermalink }}" defer></script>
+    {{- else }}
+      {{- with . | fingerprint }}
+        <script
+          src="{{ .RelPermalink }}"
+          integrity="{{ .Data.Integrity }}"
+          crossorigin="anonymous"
+          defer></script>
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+
+{{/* FJ Gallery */}}
+{{/* Gallery JavaScript */}}
+{{ if .Scratch.Get "justifiedEnabled" }}
+  <script src="/js/fjGallery.min.js"></script>
+{{ end }}
+
+{{ if .Scratch.Get "lightboxEnabled" }}
+  <script src="/js/glightbox.min.js"></script>
+{{ end }}
+
+{{/* 检测 masonry 短代码 */}}
+{{ $hasMasonryShortcode := false }}
+{{ if .RawContent }}
+  {{ if findRE `{{<\s*masonry` .RawContent }}
+    {{ $hasMasonryShortcode = true }}
+  {{ end }}
+{{ end }}
+
+{{ if $hasMasonryShortcode }}
+  <script src="/js/macy.js"></script>
+  {{ if not (.Scratch.Get "lightboxEnabled") }}
+    {{ $globalLightbox := site.Params.lightbox | default dict }}
+    {{ $lightboxEnabled := $globalLightbox.enabled | default false }}
+    {{ if not $lightboxEnabled }}
+      <script src="/js/glightbox.min.js"></script>
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+
+{{ if or (.Scratch.Get "justifiedEnabled") (.Scratch.Get "lightboxEnabled") }}
+  {{- with resources.Get "js/gallery.js" }}
+    {{- $opts := dict
+      "minify" (not hugo.IsDevelopment)
+      "sourceMap" (cond hugo.IsDevelopment "external" "")
+      "targetPath" "js/gallery.js"
+    }}
+    {{- with . | js.Build $opts }}
+      {{- if hugo.IsDevelopment }}
+        <script src="{{ .RelPermalink }}" defer></script>
+      {{- else }}
+        {{- with . | fingerprint }}
+          <script
+            src="{{ .RelPermalink }}"
+            integrity="{{ .Data.Integrity }}"
+            crossorigin="anonymous"
+            defer></script>
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{ end }}
+
+
+
+<!-- 自定义 JS 文件 -->
+{{- $customJsFiles := resources.Match "js/custom/*.js" }}
+{{- range $customJsFiles }}
+  {{- $fileName := .Name }}
+  {{- $targetPath := printf "js/custom/%s" $fileName }}
+  {{- $opts := dict
+    "minify" (not hugo.IsDevelopment)
+    "sourceMap" (cond hugo.IsDevelopment "external" "")
+    "targetPath" $targetPath
+  }}
+  {{- with . | js.Build $opts }}
+    {{- if hugo.IsDevelopment }}
+      <script src="{{ .RelPermalink }}" defer></script>
+    {{- else }}
+      {{- with . | fingerprint }}
+        <script
+          src="{{ .RelPermalink }}"
+          integrity="{{ .Data.Integrity }}"
+          crossorigin="anonymous"
+          defer></script>
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+
+{{ if .Site.Params.analytics.enabled -}}
+  {{ partial "features/analytics.html" . }}
+{{- end }}

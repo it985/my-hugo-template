@@ -1,0 +1,21 @@
+/* Hugo Narrow 主题 - 主样式文件 */
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+@layer theme {
+  @import "./themes.css";
+}
+
+@layer base {
+  @import "./base.css";
+}
+
+@layer components {
+  @import "./components.css";
+}
+
+@layer utilities {
+  @import "./custom.css";
+}

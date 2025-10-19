@@ -1,0 +1,23 @@
+{{ define "main" }}
+  <!-- 面包屑导航 -->
+  {{ partial "navigation/breadcrumb.html" . }}
+
+
+  <!-- 页面标题 -->
+  <header class="mb-8">
+    <h1 class="text-foreground mb-4 text-3xl font-bold md:text-4xl">
+      {{ .Title }}
+    </h1>
+    {{ if .Params.summary }}
+      <div class="text-muted-foreground mb-6 text-lg leading-relaxed">
+        {{ .Params.summary | plainify }}
+      </div>
+    {{ end }}
+  </header>
+
+  <!-- 页面内容 -->
+  <article class="prose prose-neutral dark:prose-invert max-w-none">
+    {{ .Content }}
+  </article>
+  {{ partial "features/comments.html" . }}
+{{ end }}

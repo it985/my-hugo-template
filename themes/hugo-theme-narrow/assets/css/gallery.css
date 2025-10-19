@@ -1,0 +1,42 @@
+/* Justified Gallery 样式 */
+.fj-gallery .glightbox {
+  @apply no-underline hover:no-underline focus:no-underline block overflow-hidden;
+  border-radius: 0.5rem;
+}
+
+.fj-gallery-item {
+  @apply overflow-hidden;
+  border-radius: 0.5rem;
+}
+
+.fj-gallery img {
+  @apply transition-transform duration-300 ease-in-out;
+  border-radius: 0.5rem;
+}
+
+.fj-gallery img:hover {
+  @apply scale-105;
+}
+
+.single-image .glightbox {
+  @apply no-underline hover:no-underline focus:no-underline inline-block overflow-hidden;
+  border-radius: 0.5rem;
+}
+.single-image .image-container {
+  @apply overflow-hidden;
+  border-radius: 0.5rem;
+}
+
+.single-image img {
+  @apply transition-transform duration-300 ease-in-out;
+  border-radius: 0.5rem;
+}
+
+.single-image img:hover {
+  @apply scale-105;
+}
+
+.fj-gallery-item,
+.single-image .image-container {
+  position: relative;
+}

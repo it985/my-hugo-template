@@ -1,0 +1,61 @@
+{{/*
+  Hugo Markdown 图片渲染器
+  处理业务逻辑：灯箱功能、类名、结构等
+*/}}
+
+{{- $dest := .Destination | safeURL -}}
+{{- $alt := .Text -}}
+{{- $caption := .Title -}}
+
+{{/* 检查是否启用灯箱功能 */}}
+{{- $globalLightbox := site.Params.lightbox | default dict -}}
+{{- $pageLightbox := .Page.Params.lightbox | default dict -}}
+{{- $lightboxEnabled := false -}}
+
+{{/* 优先使用页面级配置，然后是全局配置 */}}
+{{- if isset $pageLightbox "enabled" -}}
+  {{- $lightboxEnabled = $pageLightbox.enabled -}}
+{{- else if isset $globalLightbox "enabled" -}}
+  {{- $lightboxEnabled = $globalLightbox.enabled -}}
+{{- end -}}
+
+{{/* 使用图片处理器获取数据 */}}
+{{- partial "content/image-processor.html" (dict
+  "context" .Page
+  "src" $dest
+  "alt" $alt
+  "caption" $caption
+  "enablePlaceholder" false
+  "outputType" "data"
+) -}}
+
+{{/* 获取处理结果 */}}
+{{- $imageUrl := .Page.Scratch.Get "imageUrl" -}}
+{{- $imageResource := .Page.Scratch.Get "imageResource" -}}
+{{- $isExternal := .Page.Scratch.Get "isExternal" -}}
+{{- $canProcess := .Page.Scratch.Get "canProcess" -}}
+{{- $processedImages := .Page.Scratch.Get "processedImages" -}}
+
+{{/* 生成 figure 元素 */}}
+<figure class="image-figure not-prose my-8" 
+        data-lightbox-enabled="{{ if $lightboxEnabled }}true{{ else }}false{{ end }}"
+        data-gallery-type="auto">
+  <div class="image-container">
+    {{/* 使用图片处理器生成图片HTML */}}
+    {{- partial "content/image-processor.html" (dict
+      "context" .Page
+      "src" $dest
+      "alt" $alt
+      "caption" $caption
+      "enablePlaceholder" false
+      "outputType" "img"
+    ) -}}
+  </div>
+
+  {{/* 图片说明 */}}
+  {{- if $caption -}}
+    <figcaption class="image-caption">
+      {{ $caption | .Page.RenderString }}
+    </figcaption>
+  {{- end -}}
+</figure>

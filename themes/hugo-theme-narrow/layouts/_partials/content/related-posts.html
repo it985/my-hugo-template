@@ -1,0 +1,38 @@
+{{/* 相关文章组件
+
+  显示与当前文章相关的其他文章
+
+  @context {page} . 当前文章页面对象
+*/}}
+
+{{/* 获取配置参数 */}}
+{{ $relatedCount := .Site.Params.post.relatedPostsCount | default 3 }}
+{{ $showRelated := .Params.showRelated | default .Site.Params.post.showRelated | default true }}
+{{ $related := .Site.RegularPages.Related . | first $relatedCount }}
+
+{{ if and $showRelated $related }}
+  <section class="related-posts mb-12">
+    <!-- 标题 -->
+    <div class="mb-6 flex items-center gap-3">
+      {{ partial "features/icon.html" (dict "name" "related" "size" "md" "ariaLabel" "") }}
+      <h2 class="text-foreground text-2xl font-bold">
+        {{ i18n "post.related_posts" | default "相关文章" }}
+      </h2>
+    </div>
+
+    <!-- 相关文章列表 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+      {{ range $related }}
+        <article class="group">
+          <a href="{{ .RelPermalink }}" class="block">
+            <div class="bg-card border-border hover:bg-primary/5 hover:border-primary/20 focus:ring-primary/20 flex items-center rounded-xl border p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg focus:ring-2 focus:outline-none min-h-[120px]">
+              <h3 class="text-foreground group-hover:text-primary text-lg font-semibold leading-snug line-clamp-3 w-full">
+                {{ .Title }}
+              </h3>
+            </div>
+          </a>
+        </article>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}
