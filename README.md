@@ -38,7 +38,7 @@ GitHub 源仓库地址：https://github.com/bep/gallerydeluxe
 GitHub 源仓库地址：https://github.com/MeiK2333/github-style
 ## hugo-theme-LoveIt
 GitHub 源仓库地址：https://github.com/dillonzq/LoveIt
-## hugo-theme-LoveIt
+## hugo-theme-Berenice
 GitHub 源仓库地址：https://github.com/22decembre/Berenice
 ## hugo-theme-narrow
 GitHub 源仓库地址：https://github.com/tom2almighty/hugo-narrow
