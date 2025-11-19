@@ -43,6 +43,10 @@ GitHub 源仓库地址：https://github.com/22decembre/Berenice
 ## hugo-theme-narrow
 GitHub 源仓库地址：https://github.com/tom2almighty/hugo-narrow
 
+## hugo-theme-demius
+
+GitHub 源仓库地址：https://github.com/demius782/demius
+
 ## hugo 初始化
 ```ssh
 hugo new site mywebsite
