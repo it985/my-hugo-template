@@ -24,7 +24,7 @@ Demius 是我为个人与内容创作者设计的 Hugo 主题，目标是在 **�
 
 {{< button href="/about/" color="primary" size="large" icon="fas fa-play" target="_blank" rel="noopener" >}}查看关于页面演示{{< /button >}}
 
-{{< button href="https://blog.demius.tech" color="success" icon="fas fa-bolt" >}}访问在线 Demo{{< /button >}}
+{{< button href="https://example.com" color="success" icon="fas fa-bolt" >}}访问在线 Demo{{< /button >}}
 
 ## 折叠式详情
 
