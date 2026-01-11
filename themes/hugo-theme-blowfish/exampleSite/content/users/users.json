@@ -881,5 +881,98 @@
       "Personal site",
       "Technology Blog"
     ]
+  },
+  {
+    "title": "tbsch.de | Smart Home, Technik, Kram",
+    "url": "https://tbsch.de",
+    "source": "n/a",
+    "tags": [
+      "Personal site"
+    ]
+  },
+  {
+    "title": "metalhearf.fr",
+    "url": "https://metalhearf.fr",
+    "source": "n/a",
+    "tags": [
+      "Blog",
+      "Personal site"
+    ]
+  },
+  {
+    "title": "encelo.github.io",
+    "url": "https://encelo.github.io/",
+    "source": "https://github.com/encelo/encelo.github.io",
+    "tags": [
+      "Personal site",
+      "Blog"
+    ]
+  },
+  {
+    "title": "ncine.github.io",
+    "url": "https://ncine.github.io/",
+    "source": "https://github.com/nCine/nCine-site",
+    "tags": [
+      "Project site"
+    ]
+  },
+  {
+    "title": "István Merza",
+    "url": "https://www.merza.is/",
+    "source": "https://gitlab.com/istvanmerza/istvanmerza.gitlab.io",
+    "tags": [
+      "Personal site",
+      "Blog",
+      "Tech Blog",
+      "Fun Project",
+      "Learning"
+    ]
+  },
+  {
+    "title": "daytaur.com",
+    "url": "https://daytaur.com/",
+    "source": "n/a",
+    "tags": [
+      "Portfolio",
+      "Environment design"
+    ]
+  },
+  {
+    "title": "zzamboni.org",
+    "url": "https://zzamboni.org/",
+    "source": "https://gitlab.com/zzamboni/zzamboni.org",
+    "tags": [
+      "Personal site",
+      "Blog",
+      "Technology Blog"
+    ]
+  },
+  {
+    "title": "Tower of Kubes",
+    "url": "https://www.towerofkubes.com/",
+    "source": "n/a",
+    "tags": [
+      "Blog",
+      "DevOps",
+      "Personal site",
+      "Technology Blog"
+      ]
+  },
+  {
+    "title": "monpetitdev.fr",
+    "url": "https://monpetitdev.fr/",
+    "tags": [
+      "Personal site",
+      "Blog",
+      "Software Developer"
+    ]
+  },
+  {
+    "title": "Noor Khafidzin",
+    "url": "https://noorkhafidzin.com/",
+    "tags": [
+      "Personal site",
+      "Blog"
+    ]
   }
 ]

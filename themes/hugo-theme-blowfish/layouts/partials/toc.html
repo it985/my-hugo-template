@@ -1,7 +1,7 @@
 <details
   open
   id="TOCView"
-  class="toc-right mt-0 overflow-y-auto overscroll-contain scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600 rounded-lg -ms-5 ps-5 pe-2 hidden lg:block">
+  class="toc-right mt-0 overflow-y-auto overscroll-contain bf-scrollbar rounded-lg -ms-5 ps-5 pe-2 hidden lg:block">
   <summary
     class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 -ms-5 ps-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
     {{ i18n "article.table_of_contents" }}
@@ -33,11 +33,23 @@
     const TOC_LINK_SELECTOR = 'a[href^="#"]'
     const NESTED_LIST_SELECTOR = 'li ul'
     const ACTIVE_CLASS = 'active'
+    let isJumpingToAnchor = false
 
     function getActiveAnchorId(anchors, offsetRatio) {
       const threshold = window.scrollY + window.innerHeight * offsetRatio
       const tocLinks = [...document.querySelectorAll('#TableOfContents a[href^="#"]')]
       const tocIds = new Set(tocLinks.map(link => link.getAttribute('href').substring(1)))
+
+      if (isJumpingToAnchor) {
+        for (let i = 0; i < anchors.length; i++) {
+          const anchor = anchors[i]
+          if (!tocIds.has(anchor.id)) continue
+          const top = anchor.getBoundingClientRect().top + window.scrollY
+          if (Math.abs(window.scrollY - top) < 100) {
+            return anchor.id
+          }
+        }
+      }
 
       for (let i = anchors.length - 1; i >= 0; i--) {
         const top = anchors[i].getBoundingClientRect().top + window.scrollY
@@ -84,6 +96,12 @@
       if (collapseInactive) {
         toc.querySelectorAll(NESTED_LIST_SELECTOR).forEach(ul => ul.style.display = 'none')
       }
+
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          isJumpingToAnchor = true
+        })
+      })
 
       const config = {
         toc,

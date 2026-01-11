@@ -16,8 +16,8 @@ series_order: 8
 `alert` 可以将其中内容输出为文章中的风格化消息框。它对于吸引读者注意您不想让读者错过的重要信息很有用。
 
 <!-- prettier-ignore-start -->
-| 参数        | 功能                                                                                                                             |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 参数 | 功能 |
+| --- | --- |
 | `icon`      | **可选** 显示在左侧的图标。<br>**默认：** `exclaimation triangle icon` (查看[图标简码](#图标)，了解有关使用图标的更多详细信息。) |
 | `iconColor` | **可选** 基本 CSS 样式中图标的颜色。<br>可以是十六进制值 (`#FFFFFF`) 或颜色名称 (`white`)<br>默认情况下由当前配色方案决定。      |
 | `cardColor` | **可选** 基本 CSS 样式中卡片背景的颜色。<br>可以是十六进制值 (`#FFFFFF`) 或颜色名称 (`white`)<br>默认情况下由当前配色方案决定。  |
@@ -61,6 +61,41 @@ This is an error!
 {{< alert icon="fire" cardColor="#e63946" iconColor="#1d3557" textColor="#f1faee" >}}
 This is an error!
 {{< /alert >}}
+
+<br/><br/><br/>
+
+## Admonition
+
+Admonition 用于在内容中插入醒目提示。
+
+Admonition 的用途与 alert shortcode 类似，但其实现方式是通过 Hugo 的 render hooks。两者的关键区别在于语法：admonition 使用 Markdown 语法，因此在不同平台之间具有更好的可移植性；而 shortcode 是 Hugo 专有的。其语法类似 GitHub 的 alerts：
+
+```md
+> [!TIP]
+> 一个 Tip 类型的提示块。
+
+> [!TIP]+ 自定义标题
+> 一个带有自定义标题的可折叠提示块。
+{icon="twitter"}
+```
+
+> [!TIP]
+> 一个 Tip 类型的提示块。
+
+> [!TIP]+ 自定义标题
+> 一个带有自定义标题的可折叠提示块。
+{icon="twitter"}
+
+提示符号（`+` 或 `-`）是可选的，用于控制提示块是否默认折叠。请注意，该提示符号仅在 Obsidian 中兼容。
+
+> [!INFO]- 支持的类型
+> 可用的 admonition 类型包括 [GitHub alert 类型](https://github.blog/changelog/2023-12-14-new-markdown-extension-alerts-provide-distinctive-styling-for-significant-content/) 和 [Obsidian callout 类型](https://help.obsidian.md/callouts)。类型名称不区分大小写。
+>
+> **GitHub 类型：** `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`  
+> **Obsidian 类型：** `note`, `abstract`, `info`, `todo`, `tip`, `success`, `question`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`
+
+> [!INFO]- 自定义提示框
+> 请参阅 [提示框自定义指南](https://github.com/nunocoracao/blowfish/blob/main/layouts/_default/_markup/render-blockquote.html)。
 
 <br/><br/><br/>
 
@@ -253,16 +288,16 @@ Blowfish 包含一个 `figure` 简码，用于将图像添加到内容中。该�
 `figure` 简码接受六个参数：
 
 <!-- prettier-ignore-start -->
-| 参数      | 功能                                                                                                                                                                                                                                                     |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src`     | **必填** 图像的本地路径/文件名或 URL。当提供路径和文件名时，主题将尝试使用以下查找顺序来查找图像：首先，作为与页面绑定的[页面资源](https://gohugo.io/content-management/page-resources/)；然后是 `assets/` 目录中的文件；最后是，`static/`目录中的文件。 |
-| `alt`     | 图像的[替代文本描述](https://moz.com/learn/seo/alt-text)。                                                                                                                                                                                               |
-| `caption` | Markdown 格式的图像标题，将显示在图像下方。                                                                                                                                                                                                              |
-| `class`   | 应用于图像的其他 CSS 类。                                                                                                                                                                                                                                |
-| `href`    | 图像应链接到的 URL。                                                                                                                                                                                                                                     |
-| `target`  | `href` URL 的目标属性。                                                                                                                                                                                                                                  |
-| `nozoom`  | `nozoom=true` 会禁用图像`缩放`功能。与 `href` 结合使用十分有用。                                                                                                                                                                                         |
-| `default` | 用于恢复默认 Hugo `figure` 行为的特殊参数。只需提供`default=true`，然后使用正常的 [Hugo 简码语法](https://gohugo.io/content-management/shortcodes/#figure)。                                                                                             |
+| 参数 | 功能 |
+| --- | --- |
+| `src` | **必填** 图像的本地路径/文件名或 URL。当提供路径和文件名时，主题将尝试使用以下查找顺序来查找图像：首先，作为与页面绑定的[页面资源](https://gohugo.io/content-management/page-resources/)；然后是 `assets/` 目录中的文件；最后是，`static/`目录中的文件。 |
+| `alt` | 图像的[替代文本描述](https://moz.com/learn/seo/alt-text)。 |
+| `caption` | Markdown 格式的图像标题，将显示在图像下方。 |
+| `class` | 应用于图像的其他 CSS 类。 |
+| `href` | 图像应链接到的 URL。 |
+| `target` | `href` URL 的目标属性。 |
+| `nozoom` | `nozoom=true` 会禁用图像`缩放`功能。与 `href` 结合使用十分有用。 |
+| `default` | 用于恢复默认 Hugo `figure` 行为的特殊参数。只需提供`default=true`，然后使用正常的 [Hugo 简码语法](https://gohugo.io/content-management/shortcodes/#figure)。 |
 <!-- prettier-ignore-end -->
 
 Blowfish 还支持使用标准 Markdown 语法自动转换图像。只需使用以下格式，主题将自动处理：
@@ -600,8 +635,8 @@ When life gives you lemons, make lemonade.
 `List` 将显示最近文章的列表。此简码需要一个限制值来约束列表。此外，它还支持输入 `where` 和 `value` ，以便按参数过滤文章。请注意，此简码不会显示其父页面，但会计入限制值。
 
 <!-- prettier-ignore-start -->
-| 参数       | 功能                                                                                                   |
-| ---------- | ------------------------------------------------------------------------------------------------------ |
+| 参数 | 功能 |
+| --- | --- |
 | `limit`    | **必填** 要显示的最近文章数量。                                                                        |
 | `title`    | **可选** 列表标题，默认为 `Recent`                                                                     |
 | `cardView` | **可选** 列表启用卡片视图，默认为 `false`                                                              |
@@ -721,6 +756,74 @@ B-->C[Profit]
 
 **输出**
 {{< swatches "#64748b" "#3b82f6" "#06b6d4" >}}
+
+<br/><br/><br/>
+
+## Tabs
+
+`tabs` 简码常用于呈现某个步骤的不同变体。例如，可用于展示在不同平台上安装 VS Code 的方式。
+
+**示例**
+
+````md
+{{</* tabs */>}}
+
+    {{</* tab label="Windows" */>}}
+    使用 Chocolatey 安装:
+
+    ```pwsh
+    choco install vscode.install
+    ```
+
+    或使用 WinGet 安装
+
+    ```pwsh
+    winget install -e --id Microsoft.VisualStudioCode
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="macOS" */>}}
+    ```bash
+    brew install --cask visual-studio-code
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="Linux" */>}}
+    参见[文档](https://code.visualstudio.com/docs/setup/linux#_install-vs-code-on-linux)。
+    {{</* /tab */>}}
+
+{{</* /tabs */>}}
+````
+
+**输出**
+
+{{< tabs >}}
+
+    {{< tab label="Windows" >}}
+    使用 Chocolatey 安装:
+
+    ```pwsh
+    choco install vscode.install
+    ```
+
+    或使用 WinGet 安装
+
+    ```pwsh
+    winget install -e --id Microsoft.VisualStudioCode
+    ```
+    {{< /tab >}}
+
+    {{< tab label="macOS" >}}
+    ```bash
+    brew install --cask visual-studio-code
+    ```
+    {{< /tab >}}
+
+    {{< tab label="Linux" >}}
+    参见[文档](https://code.visualstudio.com/docs/setup/linux#_install-vs-code-on-linux)。
+    {{< /tab >}}
+
+{{< /tabs >}}
 
 <br/><br/><br/>
 
@@ -895,6 +998,54 @@ consectetur adipiscing elit.
 "Toto, I've a feeling we're not in Kansas anymore." The Wizard of Oz (1939)
 {{< /typeit >}}
 
+
+<br/><br/><br/>
+
+## Video
+
+Blowfish 提供 `video` 简码，用于在内容中嵌入本地或外部视频。该简码会渲染一个 `<figure>` 容器，包含自适应的视频播放器和可选说明。
+
+`video` 简码支持以下参数：
+
+<!-- prettier-ignore-start -->
+| 参数 | 说明 |
+| --- | --- |
+| `src` | **必填。** 视频 URL 或本地路径。本地查找顺序：页面资源 → `assets/` → `static/`。 |
+| `poster` | 可选的封面图 URL 或本地路径。未提供时，会尝试在页面 bundle 中寻找同名图片。 |
+| `caption` | 可选的 Markdown 说明文字，显示在视频下方。 |
+| `autoplay` | `true`/`false`。为 `true` 时自动播放。默认：`false`。 |
+| `loop` | `true`/`false`。为 `true` 时循环播放。默认：`false`。 |
+| `muted` | `true`/`false`。为 `true` 时静音。默认：`false`。 |
+| `controls` | `true`/`false`。为 `true` 时显示浏览器默认播放控制条。默认：`true`。 |
+| `playsinline` | `true`/`false`。为 `true` 时在移动端内联播放。默认：`true`。 |
+| `preload` | `metadata`（仅加载信息）、`none`（节省带宽）或 `auto`（预加载更多）。默认：`metadata`。 |
+| `start` | 可选的开始时间（秒）。 |
+| `end` | 可选的结束时间（秒）。 |
+| `ratio` | 为播放器预留的宽高比。支持 `16/9`、`4/3`、`1/1` 或自定义 `W/H`。默认：`16/9`。 |
+| `fit` | 视频在比例中的适配方式：`contain`（不裁切）、`cover`（裁切填满）、`fill`（拉伸）。默认：`contain`。 |
+<!-- prettier-ignore-end -->
+
+如果浏览器无法播放视频，播放器会显示一段简短的英文提示并提供下载链接。
+
+**示例：**
+
+```md
+{{</* video
+    src="https://upload.wikimedia.org/wikipedia/commons/5/5a/CC0_-_Public_Domain_Dedication_video_bumper.webm"
+    poster="https://upload.wikimedia.org/wikipedia/commons/e/e0/CC0.jpg"
+    caption="**公有领域演示** — CC0 视频与封面。"
+    loop=true
+    muted=true
+*/>}}
+```
+
+{{< video
+  src="https://upload.wikimedia.org/wikipedia/commons/5/5a/CC0_-_Public_Domain_Dedication_video_bumper.webm"
+  poster="https://upload.wikimedia.org/wikipedia/commons/e/e0/CC0.jpg"
+  caption="**公有领域演示** — CC0 视频与封面。"
+  loop=true
+  muted=true
+>}}
 
 <br/><br/><br/>
 

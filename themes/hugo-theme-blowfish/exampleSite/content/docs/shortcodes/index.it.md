@@ -16,12 +16,12 @@ In addition to all the [default Hugo shortcodes](https://gohugo.io/content-manag
 `alert` outputs its contents as a stylised message box within your article. It's useful for drawing attention to important information that you don't want the reader to miss.
 
 <!-- prettier-ignore-start -->
-| Parameter   | Description                                                                                                                                                                                  |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `icon`      | **Optional.** the icon to display on the left side.<br>**Default:** `triangle-exclamation` (Check out the [icon shortcode](#icon) for more details on using icons.)                    |
-| `iconColor` | **Optional.** the color for the icon in basic CSS style.<br>Can be either hex values (`#FFFFFF`) or color names (`white`)<br>By default chosen based on the current color theme .            |
+| Parameter | Description |
+| --- | --- |
+| `icon` | **Optional.** the icon to display on the left side.<br>**Default:** `triangle-exclamation` (Check out the [icon shortcode](#icon) for more details on using icons.) |
+| `iconColor` | **Optional.** the color for the icon in basic CSS style.<br>Can be either hex values (`#FFFFFF`) or color names (`white`)<br>By default chosen based on the current color theme . |
 | `cardColor` | **Optional.** the color for the card background in basic CSS style.<br>Can be either hex values (`#FFFFFF`) or color names (`white`)<br>By default chosen based on the current color theme . |
-| `textColor` | **Optional.** the color for the text in basic CSS style.<br>Can be either hex values (`#FFFFFF`) or color names (`white`)<br>By default chosen based on the current color theme .            |
+| `textColor` | **Optional.** the color for the text in basic CSS style.<br>Can be either hex values (`#FFFFFF`) or color names (`white`)<br>By default chosen based on the current color theme . |
 <!-- prettier-ignore-end -->
 
 The input is written in Markdown so you can format it however you please.
@@ -61,6 +61,38 @@ This is an error!
 {{< alert icon="fire" cardColor="#e63946" iconColor="#1d3557" textColor="#f1faee" >}}
 This is an error!
 {{< /alert >}}
+
+<br/><br/><br/>
+
+## Admonition
+
+Admonitions allow you to insert eye-catching callout boxes in your content.
+
+Admonitions serve a similar purpose as the alert shortcode but are implemented via Hugo render hooks. The key difference is syntax: admonitions use Markdown syntax, making them more portable across different platforms, whereas shortcodes are specific to Hugo. The syntax resembles GitHub alerts:
+
+```md
+> [!TIP]
+> A Tip type admonition.
+
+> [!TIP]+ Custom Title
+> A collapsible admonition with custom title.
+{icon="twitter"}
+```
+
+> [!TIP]
+> A Tip type admonition.
+
+> [!TIP]+ Custom Title
+> A collapsible admonition with custom title.
+{icon="twitter"}
+
+The alert sign (`+` or `-`) is optional to control whether the admonition is folded or not. Note that alert sign is only compatible in Obsidian.
+
+> [!INFO]- Supported types
+> Valid admonition types include [GitHub alert types](https://github.blog/changelog/2023-12-14-new-markdown-extension-alerts-provide-distinctive-styling-for-significant-content/) and [Obsidian callout types](https://help.obsidian.md/callouts). The types are case-insensitive.
+>
+> **GitHub types:** `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`  
+> **Obsidian types:** `note`, `abstract`, `info`, `todo`, `tip`, `success`, `question`, `warning`, `failure`, `danger`, `bug`, `example`, `quote`
 
 <br/><br/><br/>
 
@@ -127,11 +159,11 @@ Call to action
 `carousel` is used to showcase multiple images in an interactive and visually appealing way. This allows a user to slide through multiple images while only taking up the vertical space of a single one. All images are displayed using the full width of the parent component and using one of the predefined aspect ratios of `16:9`, `21:9` or `32:9`.
 
 <!-- prettier-ignore-start -->
-| Parameter     | Description                                                                                                       |
-| ------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `images`      | **Required.** A regex string to match image names or URLs.                                                        |
+| Parameter | Description |
+| --- | --- |
+| `images` | **Required.** A regex string to match image names or URLs. |
 | `aspectRatio` | **Optional.** The aspect ratio for the carousel. Either `16-9`, `21-9` or `32-9`. It is set to `16-9` by default. |
-| `interval`    | **Optional.** The interval for the auto-scrooling, specified in milliseconds. Defaults to `2000` (2s)             |
+| `interval` | **Optional.** The interval for the auto-scrooling, specified in milliseconds. Defaults to `2000` (2s) |
 <!-- prettier-ignore-end -->
 
 **Example 1:** 16:9 aspect ratio and verbose list of images
@@ -251,16 +283,16 @@ When a provided image is a page resource, it will be optimised using Hugo Pipes 
 The `figure` shortcode accepts six parameters:
 
 <!-- prettier-ignore-start -->
-| Parameter | Description                                                                                                                                                                                                                                                                                                                                                                               |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src`     | **Required.** The local path/filename or URL of the image. When providing a path and filename, the theme will attempt to locate the image using the following lookup order: Firstly, as a [page resource](https://gohugo.io/content-management/page-resources/) bundled with the page; then an asset in the `assets/` directory; then finally, a static image in the `static/` directory. |
-| `alt`     | [Alternative text description](https://moz.com/learn/seo/alt-text) for the image.                                                                                                                                                                                                                                                                                                         |
-| `caption` | Markdown for the image caption, which will be displayed below the image.                                                                                                                                                                                                                                                                                                                  |
-| `class`   | Additional CSS classes to apply to the image.                                                                                                                                                                                                                                                                                                                                             |
-| `href`    | URL that the image should be linked to.                                                                                                                                                                                                                                                                                                                                                   |
-| `target`  | The target attribute for the `href` URL.                                                                                                                                                                                                                                                                                                                                                  |
-| `nozoom`  | `nozoom=true` disables the image "zoom" functionality. This is most useful in combination with a `href` link.                                                                                                                                                                                                                                                                             |
-| `default` | Special parameter to revert to default Hugo `figure` behaviour. Simply provide `default=true` and then use normal [Hugo shortcode syntax](https://gohugo.io/content-management/shortcodes/#figure).                                                                                                                                                                                       |
+| Parameter | Description |
+| --- | --- |
+| `src` | **Required.** The local path/filename or URL of the image. When providing a path and filename, the theme will attempt to locate the image using the following lookup order: Firstly, as a [page resource](https://gohugo.io/content-management/page-resources/) bundled with the page; then an asset in the `assets/` directory; then finally, a static image in the `static/` directory. |
+| `alt` | [Alternative text description](https://moz.com/learn/seo/alt-text) for the image. |
+| `caption` | Markdown for the image caption, which will be displayed below the image. |
+| `class` | Additional CSS classes to apply to the image. |
+| `href` | URL that the image should be linked to. |
+| `target` | The target attribute for the `href` URL. |
+| `nozoom` | `nozoom=true` disables the image "zoom" functionality. This is most useful in combination with a `href` link. |
+| `default` | Special parameter to revert to default Hugo `figure` behaviour. Simply provide `default=true` and then use normal [Hugo shortcode syntax](https://gohugo.io/content-management/shortcodes/#figure). |
 <!-- prettier-ignore-end -->
 
 Blowfish also supports automatic conversion of images included using standard Markdown syntax. Simply use the following format and the theme will handle the rest:
@@ -593,13 +625,13 @@ When life gives you lemons, make lemonade.
 `List` will display a list of recent articles. This shortcode requires a limit value to constraint the list. Additionally, it supports a `where` and a `value` in order to filter articles by their parameters. Note that this shortcode will not display its parent page but it will count for the limit value.
 
 <!-- prettier-ignore-start -->
-| Parameter  | Description                                                                                                                                             |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `limit`    | **Required.** the number of recent articles to display.                                                                                                 |
-| `title`    | Optional title for the list, default is `Recent`                                                                                                        |
-| `cardView` | Optional card view enabled for the list, default is `false`                                                                                             |
-| `where`    | The variable to be used for the query of articles e.g. `Type`                                                                                           |
-| `value`    | The value that will need to match the parameter defined in `where` for the query of articles e.g. for `where` == `Type` a valid value could be `sample` |
+| Parameter | Description |
+| --- | --- |
+| `limit` | **Required.** the number of recent articles to display. |
+| `title` | Optional title for the list, default is `Recent` |
+| `cardView` | Optional card view enabled for the list, default is `false` |
+| `where` | The variable to be used for the query of articles e.g. `Type` |
+| `value` | The value that will need to match the parameter defined in `where` for the query of articles e.g. for `where` == `Type` a valid value could be `sample` |
 
 {{< alert >}}
 The `where` and `value` values are used in the following query `where .Site.RegularPages $where $value` in the code of the shortcode. Check [Hugo docs](https://gohugo.io/methods/page/) to learn more about which parameters are available to use.
@@ -714,6 +746,74 @@ You can see some additional Mermaid examples on the [diagrams and flowcharts sam
 
 <br/><br/><br/>
 
+## Tabs
+
+The `tabs` shortcode is commonly used to present different variants of a particular step. For example, it can be used to show how to install VS Code on different platforms.
+
+**Example**
+
+`````md
+{{</* tabs */>}}
+
+    {{</* tab label="Windows" */>}}
+    Install using Chocolatey:
+
+    ```pwsh
+    choco install vscode.install
+    ```
+
+    or install using WinGet
+
+    ```pwsh
+    winget install -e --id Microsoft.VisualStudioCode
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="macOS" */>}}
+    ```bash
+    brew install --cask visual-studio-code
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="Linux" */>}}
+    See [documentation](https://code.visualstudio.com/docs/setup/linux#_install-vs-code-on-linux).
+    {{</* /tab */>}}
+
+{{</* /tabs */>}}
+`````
+
+**Output**
+
+{{< tabs >}}
+
+    {{< tab label="Windows" >}}
+    Install using Chocolatey:
+
+    ```pwsh
+    choco install vscode.install
+    ```
+
+    or install using WinGet
+
+    ```pwsh
+    winget install -e --id Microsoft.VisualStudioCode
+    ```
+    {{< /tab >}}
+
+    {{< tab label="macOS" >}}
+    ```bash
+    brew install --cask visual-studio-code
+    ```
+    {{< /tab >}}
+
+    {{< tab label="Linux" >}}
+    See [documentation](https://code.visualstudio.com/docs/setup/linux#_install-vs-code-on-linux).
+    {{< /tab >}}
+
+{{< /tabs >}}
+
+<br/><br/><br/>
+
 ## Timeline
 
 The `timeline` creates a visual timeline that can be used in different use-cases, e.g. professional experience, a project's achievements, etc. The `timeline` shortcode relies on the `timelineItem` sub-shortcode to define each item within the main timeline. Each item can have the following properties.
@@ -809,17 +909,17 @@ With other shortcodes
 Blowfish implements a sub-set of TypeIt features using a `shortcode`. Write your text within the `typeit` shortcode and use the following parameters to configure the behavior you want.
 
 <!-- prettier-ignore-start -->
-| Parameter          | Description                                                                                                                                        |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tag`              | [String] `html` tag that will be used to render the strings.                                                                                       |
-| `classList`        | [String] List of `css` classes to apply to the `html` element.                                                                                     |
-| `initialString`    | [String] Initial string that will appear written and will be replaced.                                                                             |
-| `speed`            | [number] Typing speed, measured in milliseconds between each step.                                                                                 |
-| `lifeLike`         | [boolean] Makes the typing pace irregular, as if a real person is doing it.                                                                        |
-| `startDelay`       | [number] The amount of time before the plugin begins typing after being initialized.                                                               |
-| `breakLines`       | [boolean] Whether multiple strings are printed on top of each other (true), or if they're deleted and replaced by each other (false).              |
+| Parameter | Description |
+| --- | --- |
+| `tag` | [String] `html` tag that will be used to render the strings. |
+| `classList` | [String] List of `css` classes to apply to the `html` element. |
+| `initialString` | [String] Initial string that will appear written and will be replaced. |
+| `speed` | [number] Typing speed, measured in milliseconds between each step. |
+| `lifeLike` | [boolean] Makes the typing pace irregular, as if a real person is doing it. |
+| `startDelay` | [number] The amount of time before the plugin begins typing after being initialized. |
+| `breakLines` | [boolean] Whether multiple strings are printed on top of each other (true), or if they're deleted and replaced by each other (false). |
 | `waitUntilVisible` | [boolean] Determines if the instance will begin when loaded or only when the target element becomes visible in the viewport. The default is `true` |
-| `loop`             | [boolean] Whether your strings will continuously loop after completing                                                                             |
+| `loop` | [boolean] Whether your strings will continuously loop after completing |
 
 <!-- prettier-ignore-end -->
 
@@ -880,6 +980,54 @@ consectetur adipiscing elit.
 "I'm gonna make him an offer he can't refuse." The Godfather (1972)
 "Toto, I've a feeling we're not in Kansas anymore." The Wizard of Oz (1939)
 {{< /typeit >}}
+
+<br/><br/><br/>
+
+## Video
+
+Blowfish include uno shortcode `video` per incorporare video locali o esterni nei contenuti. Lo shortcode renderizza un contenitore `<figure>` con un lettore video responsive e una didascalia opzionale.
+
+Lo shortcode `video` accetta i seguenti parametri:
+
+<!-- prettier-ignore-start -->
+| Parametro | Descrizione |
+| --- | --- |
+| `src` | **Obbligatorio.** URL del video o percorso locale. Ordine di ricerca locale: risorsa di pagina → `assets/` → `static/`. |
+| `poster` | Immagine poster opzionale (URL o percorso locale). Se omessa, lo shortcode tenta un'immagine con lo stesso nome nel bundle della pagina. |
+| `caption` | Didascalia Markdown opzionale mostrata sotto il video. |
+| `autoplay` | `true`/`false`. Attiva la riproduzione automatica quando `true`. Predefinito: `false`. |
+| `loop` | `true`/`false`. Ripete in loop quando `true`. Predefinito: `false`. |
+| `muted` | `true`/`false`. Silenzia quando `true`. Predefinito: `false`. |
+| `controls` | `true`/`false`. Mostra i controlli di riproduzione predefiniti del browser quando `true`. Predefinito: `true`. |
+| `playsinline` | `true`/`false`. Riproduzione in linea su mobile quando `true`. Predefinito: `true`. |
+| `preload` | `metadata` (carica le info), `none` (risparmia banda) o `auto` (precarica di più). Predefinito: `metadata`. |
+| `start` | Tempo di inizio opzionale in secondi. |
+| `end` | Tempo di fine opzionale in secondi. |
+| `ratio` | Rapporto d'aspetto riservato per il lettore. Supporta `16/9`, `4/3`, `1/1` o `W/H` personalizzato. Predefinito: `16/9`. |
+| `fit` | Come il video si adatta al rapporto: `contain` (senza ritaglio), `cover` (ritaglia per riempire), `fill` (stira). Predefinito: `contain`. |
+<!-- prettier-ignore-end -->
+
+Se il browser non riesce a riprodurre il video, il lettore mostrerà un breve messaggio in inglese con un link per il download.
+
+**Esempio:**
+
+```md
+{{</* video
+    src="https://upload.wikimedia.org/wikipedia/commons/5/5a/CC0_-_Public_Domain_Dedication_video_bumper.webm"
+    poster="https://upload.wikimedia.org/wikipedia/commons/e/e0/CC0.jpg"
+    caption="**Demo di pubblico dominio** — video e poster CC0."
+    loop=true
+    muted=true
+*/>}}
+```
+
+{{< video
+  src="https://upload.wikimedia.org/wikipedia/commons/5/5a/CC0_-_Public_Domain_Dedication_video_bumper.webm"
+  poster="https://upload.wikimedia.org/wikipedia/commons/e/e0/CC0.jpg"
+  caption="**Demo di pubblico dominio** — video e poster CC0."
+  loop=true
+  muted=true
+>}}
 
 <br/><br/><br/>
 

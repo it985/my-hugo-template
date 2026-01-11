@@ -1,11 +1,21 @@
 /*! Blowfish | MIT License | https://github.com/nunocoracao/blowfish */
 
-@import "./components/zen-mode.css";
-@import "./components/chroma.css";
-@import "./components/a11y.css";
+@config "../../tailwind.config.js";
 
 @import "tailwindcss";
-@config "../../tailwind.config.js";
+@import "./components/chroma.css" layer(utilities);
+@import "./components/tabs.css" layer(utilities);
+@import "./components/zen-mode.css";
+@import "./components/a11y.css";
+@import "./components/admonition.css" layer(components);
+
+html:not(.dark) {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
 
 body a,
 body button {
@@ -66,10 +76,6 @@ button,
 }
 
 /* Table of Contents */
-#TableOfContents {
-  @apply lg:max-w-[25vw];
-}
-
 #TOCView {
   max-height: calc(100vh - 150px);
   min-height: 0;
@@ -86,7 +92,7 @@ button,
 }
 
 .toc a {
-  @apply font-normal text-neutral-700 dark:text-neutral-400;
+  @apply font-normal text-neutral-700 dark:text-neutral-300;
 }
 
 .toc ul > li {
@@ -94,15 +100,11 @@ button,
 }
 
 /* Code Copy */
-.highlight-wrapper {
-  @apply block;
-}
-
 .highlight {
   @apply relative z-0;
 }
 
-.highlight:hover > .copy-button {
+.highlight-wrapper:hover > .copy-button {
   @apply visible;
 }
 
@@ -130,8 +132,8 @@ button,
 
 /* Fix katex overflow https://github.com/nunocoracao/blowfish/issues/2138 */
 .katex-display {
-  padding-right: 2px;
-  width: calc(100% - 2px);
+  padding: 1em;
+  width: calc(100% - 1em);
 }
 
 /* Fix long tables breaking out of article on mobile */
@@ -163,40 +165,13 @@ pre {
   text-align: left;
 }
 
-.thumbnail,
-.thumbnail_card,
-.thumbnail_card_related,
-.thumbnail_card_term,
-.single_hero_basic,
-.single_hero_background {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
-.thumbnail {
-  min-width: 300px;
-  height: 180px;
-}
-
-.thumbnail_card {
-  height: 200px;
-}
-
-.thumbnail_card_related {
-  height: 150px;
-}
-
-.thumbnail_card_term {
-  height: 150px;
-}
-
 .single_hero_round {
   max-height: 50vh;
   object-fit: cover;
 }
 
 .single_hero_background {
+  width: calc(100% + 1px); /* patch for very small gap at right edge on mobile devices */
   z-index: -10;
 }
 
@@ -205,8 +180,40 @@ pre {
   height: 100%;
 }
 
-.thumbnailshadow {
+.thumbnail_card {
+  min-width: 300px;
+  height: 200px;
+}
+
+.thumbnail_card_related {
+  height: 150px;
+}
+
+.thumbnail {
+  width: 300px;
+  min-height: 180px;
+}
+
+@variant max-md {
+  .thumbnail {
+    width: 100%;
+  }
+}
+
+.thumbnail-shadow {
   box-shadow: 5px 5px 20px 1px rgba(0, 0, 0, 0.3);
+}
+
+/* placeholder for gallery/carousel */
+@variant max-md {
+  .width-patch {
+    width: 80vw;
+  }
+}
+@variant min-md {
+  .width-patch {
+    width: 65ch;
+  }
 }
 
 .anchor {
@@ -223,22 +230,18 @@ pre {
   scroll-margin-top: 145px;
 }
 
+/* patch for skip to main content */
+#main-content {
+  scroll-margin-top: -125px;
+}
+
 @variant sm {
-  .thumbnail {
-    min-width: 100%;
-    height: 180px;
-  }
   .article {
     flex-wrap: wrap;
   }
 }
 
 @variant md {
-  .thumbnail {
-    min-width: 300px;
-    min-height: 180px;
-    height: auto;
-  }
   .article {
     flex-wrap: nowrap;
   }
@@ -248,38 +251,66 @@ pre {
   z-index: 100;
 }
 
-.nested-menu:hover + .menuhide {
-  visibility: visible;
-  opacity: 1;
-  transition:
-    visibility 0.3s,
-    opacity 0.3s ease-in-out;
+@layer utilities {
+  .bf-border-color {
+    @apply border-neutral-300 dark:border-neutral-700;
+  }
+
+  .bf-border-color-hover {
+    @apply hover:border-primary-600 dark:hover:border-primary-400;
+  }
+
+  .bf-icon-color-hover {
+    @apply hover:text-primary-600 dark:hover:text-primary-400;
+  }
+
+  .bf-scrollbar {
+    @apply scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600;
+  }
 }
 
-.menuhide:hover {
-  visibility: visible;
-  opacity: 1;
-  transition:
-    visibility 0.3s,
-    opacity 0.3s ease-in-out;
+/* Prevent body scroll when mobile menu is open */
+body:has(#mobile-menu-toggle:checked) {
+  overflow: hidden;
+}
+
+/* Reset body position for desktop after it was modified on mobile */
+@media (min-width: 853px) {
+  body:has(#mobile-menu-toggle:checked) {
+    overflow: visible;
+  }
+}
+
+/* Hide buy me a coffee in mobile menu */
+#bmc-wbtn {
+  z-index: 50 !important;
+}
+
+.nested-menu {
+  position: relative;
 }
 
 .menuhide {
-  visibility: hidden;
+  position: absolute;
+  z-index: 1000;
+  white-space: nowrap;
+
   opacity: 0;
+  visibility: hidden;
+
   transition:
     visibility 0.3s,
     opacity 0.3s ease-in-out;
-  z-index: 1000;
+}
+
+.nested-menu:hover .menuhide,
+.nested-menu:focus-within .menuhide {
+  opacity: 1;
+  visibility: visible;
 }
 
 .active {
   text-decoration-line: underline;
   text-decoration-thickness: 3px;
   text-underline-offset: 4px;
-}
-
-/* Cancel group hover if .group-hover-card contains .group-hover-cancel*/
-.group-hover-card:hover:has(.group-hover-cancel:hover) .group-hover-card-title {
-  text-decoration: none !important;
 }
