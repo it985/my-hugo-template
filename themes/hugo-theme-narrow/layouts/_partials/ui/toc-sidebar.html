@@ -1,0 +1,73 @@
+{{/* 侧边栏目录组件
+
+  显示在页面左侧或右侧的固定目录
+  使用固定定位，不影响正文居中布局
+  只在大屏幕（≥1280px）且配置为 left/right 模式时显示
+
+  @context {page} . 当前文章页面对象
+*/}}
+
+{{- $globalTocConfig := .Site.Params.toc | default dict }}
+{{- $tocPosition := $globalTocConfig.position | default "card" }}
+{{- $tocMaxWidth := $globalTocConfig.maxWidth | default "280px" }}
+{{- $tocMaxHeight := $globalTocConfig.maxHeight | default "80vh" }}
+
+{{/* frontmatter 参数覆盖 */}}
+{{- if isset .Params "toc" }}
+  {{- if reflect.IsMap .Params.toc }}
+    {{- if isset .Params.toc "position" }}
+      {{- $tocPosition = .Params.toc.position }}
+    {{- end }}
+    {{- if isset .Params.toc "maxWidth" }}
+      {{- $tocMaxWidth = .Params.toc.maxWidth }}
+    {{- end }}
+    {{- if isset .Params.toc "maxHeight" }}
+      {{- $tocMaxHeight = .Params.toc.maxHeight }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- if and .IsPage .TableOfContents (or (eq $tocPosition "left") (eq $tocPosition "right")) }}
+  {{/* 检查 Series 是否也在同一侧 */}}
+  {{- $globalSeriesConfig := .Site.Params.series | default dict }}
+  {{- $seriesEnabled := $globalSeriesConfig.enabled | default false }}
+  {{- $seriesPosition := $globalSeriesConfig.position | default "card" }}
+  {{- $currentSeries := .GetTerms "series" }}
+
+  {{/* frontmatter 参数覆盖 - 读取 Series 配置 */}}
+  {{- if isset .Params "series" }}
+    {{- if reflect.IsMap .Params.series }}
+      {{- if isset .Params.series "enabled" }}
+        {{- $seriesEnabled = .Params.series.enabled }}
+      {{- end }}
+      {{- if isset .Params.series "position" }}
+        {{- $seriesPosition = .Params.series.position }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+
+  <!-- 侧边栏目录容器 - 使用固定定位 -->
+  <aside
+    id="toc-sidebar"
+    class="toc-sidebar hidden xl:block fixed {{ if eq $tocPosition "left" }}toc-sidebar-left{{ else }}toc-sidebar-right{{ end }}"
+    style="max-width: {{ $tocMaxWidth }}; max-height: {{ $tocMaxHeight }};"
+    aria-label="{{ i18n "toc.navigation" | default "文章目录导航" }}">
+
+    <!-- 目录标题 -->
+    <div class="mb-4 flex items-center gap-2">
+      {{ partial "features/icon.html" (dict "name" "list" "size" "sm" "ariaLabel" "") }}
+      <h2 class="text-foreground text-sm font-semibold">
+        {{ i18n "toc.title" | default "目录" }}
+      </h2>
+    </div>
+
+    <!-- 目录内容 -->
+    <nav
+      id="toc-sidebar-content"
+      class="toc-sidebar-scroll overflow-y-auto pr-2"
+      style="max-height: calc({{ $tocMaxHeight }} - 3rem);">
+      {{ .TableOfContents }}
+    </nav>
+  </aside>
+{{- end }}
+

@@ -4,8 +4,10 @@ nav:
   menu: "Menu"
   home: "Home"
   posts: "Posts"
+  projects: "Projects"
   tags: "Tags"
   categories: "Categories"
+  series: "Series"
   about: "About"
   contact: "Contact"
   archive: "Archive"
@@ -54,6 +56,7 @@ post:
   updated_on: "Updated on"
   tags: "Tags"
   categories: "Categories"
+  series: "Series"
   share: "Share"
   previous: "Previous"
   next: "Next"
@@ -205,7 +208,9 @@ comments:
 dock:
   aria_label: "Quick action toolbar"
   back: "Back"
+  navigation: "Navigation"
   toc: "Table of Contents"
+  series: "Series"
   search: "Search"
   comments: "Comments"
   back_to_top: "Back to Top"
@@ -219,6 +224,11 @@ alert:
   warning: "Warning"
   caution: "Caution"
 
+# Navigation related
+navigation:
+  title: "Navigation"
+  close: "Close"
+
 # TOC related
 toc:
   close: "Close"
@@ -226,6 +236,19 @@ toc:
   navigation: "Table of Contents Navigation"
   empty: "No headings in this article"
   tip: "Click to jump to the section"
+
+# Series related
+series:
+  title: "Series"
+  navigation: "Series Navigation"
+  empty: "This article is not part of any series"
+  current: "Current Article"
+  progress: "Part {{ .current }} of {{ .total }}"
+  total: "{{ .count }} articles"
+  part: "Part {{ .current }}"
+  previous: "Previous"
+  next: "Next"
+  view_all: "View All"
 
 # Code block related
 code:
@@ -238,3 +261,24 @@ code:
 
 # Links related
 links: "Links"
+
+# Projects related
+project:
+  featured_projects: "Featured Projects"
+  all_projects: "All Projects"
+  view_all_projects: "View All Projects"
+  view_project: "View Project"
+  demo: "Live Demo"
+  source: "Source Code"
+  github: "GitHub"
+  website: "Website"
+  tech_stack: "Tech Stack"
+  status: "Status"
+  status_completed: "Completed"
+  status_in_progress: "In Progress"
+  status_planning: "Planning"
+  no_projects: "No projects yet"
+  no_projects_desc: "No projects have been published yet. Please check back later."
+  list_desc: "Here are all published projects, showcasing my work and experiments."
+  total_projects: "{{ .count }} projects total"
+  featured: "Featured"

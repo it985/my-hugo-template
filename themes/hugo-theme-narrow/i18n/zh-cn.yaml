@@ -4,8 +4,10 @@ nav:
   menu: "菜单"
   home: "首页"
   posts: "文章"
+  projects: "项目"
   tags: "标签"
   categories: "分类"
+  series: "系列"
   about: "关于"
   contact: "联系"
   archive: "归档"
@@ -54,6 +56,7 @@ post:
   updated_on: "更新于"
   tags: "标签"
   categories: "分类"
+  series: "系列"
   share: "分享"
   previous: "上一篇"
   next: "下一篇"
@@ -204,7 +207,9 @@ comments:
 dock:
   aria_label: "快捷操作工具栏"
   back: "返回"
+  navigation: "导航"
   toc: "目录"
+  series: "系列"
   search: "搜索"
   comments: "评论"
   back_to_top: "返回顶部"
@@ -218,6 +223,11 @@ alert:
   warning: "警告"
   caution: "小心"
 
+# 导航相关
+navigation:
+  title: "导航"
+  close: "关闭"
+
 # 目录相关
 toc:
   close: "关闭"
@@ -225,6 +235,19 @@ toc:
   navigation: "文章目录导航"
   empty: "此文章没有标题"
   tip: "点击标题快速跳转"
+
+# 系列文章相关
+series:
+  title: "系列文章"
+  navigation: "系列文章导航"
+  empty: "此文章不属于任何系列"
+  current: "当前文章"
+  progress: "第 {{ .current }} 篇，共 {{ .total }} 篇"
+  total: "共 {{ .count }} 篇"
+  part: "第 {{ .current }} 篇"
+  previous: "上一篇"
+  next: "下一篇"
+  view_all: "查看全部"
 
 # 代码块相关
 code:
@@ -237,3 +260,24 @@ code:
 
 # 链接相关
 links: "链接"
+
+# 项目相关
+project:
+  featured_projects: "特色项目"
+  all_projects: "所有项目"
+  view_all_projects: "查看所有项目"
+  view_project: "查看项目"
+  demo: "在线演示"
+  source: "源代码"
+  github: "GitHub"
+  website: "网站"
+  tech_stack: "技术栈"
+  status: "状态"
+  status_completed: "已完成"
+  status_in_progress: "进行中"
+  status_planning: "计划中"
+  no_projects: "暂无项目"
+  no_projects_desc: "还没有发布任何项目，请稍后再来查看。"
+  list_desc: "这里是所有已发布的项目，展示我的作品和实验。"
+  total_projects: "共 {{ .count }} 个项目"
+  featured: "精选"

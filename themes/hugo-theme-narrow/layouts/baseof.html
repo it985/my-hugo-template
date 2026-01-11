@@ -1,13 +1,99 @@
-<!DOCTYPE html>
-{{- $mode := partialCached "func/getMode" . }}
-<html lang="{{ .Lang }}" {{ if $mode }} data-mode="{{ $mode }}"{{ end }}>
-  {{ partial "head" . }}
-  <body>
-    {{ partialCached "nav" . }}
-    <main>
+<!doctype html>
+<html
+  lang="{{ site.LanguageCode }}"
+  data-theme="{{ site.Params.colorScheme | default "default" }}">
+  <head>
+    {{ partial "layout/head.html" . }}
+    <script>
+      // 主题初始化脚本
+      (function() {
+        const theme = localStorage.getItem('theme') || 'system';
+        const colorScheme = localStorage.getItem('colorScheme') || '{{ site.Params.colorScheme | default "shadcn" }}';
+
+        // 设置颜色主题
+        document.documentElement.setAttribute('data-theme', colorScheme);
+
+        // 设置明暗模式
+        function applyTheme() {
+          if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        }
+
+        applyTheme();
+
+        // 监听系统主题变化
+        if (theme === 'system') {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+        }
+      })();
+    </script>
+  </head>
+
+  <body class="bg-background text-foreground min-h-screen antialiased">
+    <!-- 阅读进度条 -->
+    {{ partial "ui/reading-progress.html" . }}
+
+    {{ partial "navigation/header.html" . }}
+
+    <!-- 主内容区域 - 始终居中 -->
+    <main class="mx-auto max-w-4xl px-4 py-6">
       {{ block "main" . }}{{ end }}
     </main>
-    {{ partialCached "footer" . }}
-    {{ partialCached "sprites" . }}
+
+    <!-- 侧边栏 TOC 和 Series - 使用固定定位，不影响正文布局 -->
+    {{- if .IsPage }}
+      {{- $tocEnabled := true }}
+      {{- $globalTocConfig := .Site.Params.toc | default dict }}
+      {{- if isset $globalTocConfig "enabled" }}
+        {{- $tocEnabled = $globalTocConfig.enabled }}
+      {{- end }}
+      {{- if isset .Params "toc" }}
+        {{- if reflect.IsMap .Params.toc }}
+          {{- if isset .Params.toc "enabled" }}
+            {{- $tocEnabled = .Params.toc.enabled }}
+          {{- end }}
+        {{- else }}
+          {{- $tocEnabled = .Params.toc }}
+        {{- end }}
+      {{- end }}
+
+      {{- $seriesEnabled := false }}
+      {{- $globalSeriesConfig := .Site.Params.series | default dict }}
+      {{- if isset $globalSeriesConfig "enabled" }}
+        {{- $seriesEnabled = $globalSeriesConfig.enabled }}
+      {{- end }}
+      {{- if isset .Params "series" }}
+        {{- if reflect.IsMap .Params.series }}
+          {{- if isset .Params.series "enabled" }}
+            {{- $seriesEnabled = .Params.series.enabled }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+
+      {{- if $tocEnabled }}
+        {{ partial "ui/toc-sidebar.html" . }}
+      {{- end }}
+      {{- if $seriesEnabled }}
+        {{ partial "ui/series-sidebar.html" . }}
+      {{- end }}
+    {{- end }}
+
+    {{ partial "layout/footer.html" . }}
+
+    <!-- 底部 Dock -->
+    {{ partial "ui/dock.html" . }}
+
+    <!-- 导航卡片 -->
+    {{- if .IsPage }}
+      {{ partial "ui/navigation-card.html" . }}
+    {{- end }}
+    {{ partial "features/katex.html" . }}
+    {{ partial "features/mermaid.html" . }}
+
+    <!-- 搜索组件 -->
+    {{ partial "ui/search-modal.html" . }}
   </body>
 </html>

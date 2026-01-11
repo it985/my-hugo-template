@@ -4,8 +4,10 @@ nav:
   menu: "Menu"
   home: "Home"
   posts: "Articoli"
+  projects: "Progetti"
   tags: "Tag"
   categories: "Categorie"
+  series: "Serie"
   about: "Chi siamo"
   contact: "Contatti"
   archive: "Archivio"
@@ -54,6 +56,7 @@ post:
   updated_on: "Aggiornato il"
   tags: "Tag"
   categories: "Categorie"
+  series: "Serie"
   share: "Condividi"
   previous: "Precedente"
   next: "Successivo"
@@ -190,8 +193,11 @@ comments:
 
 # Bottom Dock
 dock:
+  aria_label: "Barra degli strumenti azioni rapide"
   back: "Indietro"
+  navigation: "Navigazione"
   toc: "Indice"
+  series: "Serie"
   search: "Cerca"
   comments: "Commenti"
   back_to_top: "Torna su"
@@ -207,13 +213,28 @@ alert:
 
 # TOC related
 toc:
+  close: "Chiudi"
   title: "Indice"
   navigation: "Navigazione nell'indice"
   empty: "Nessun titolo in questo articolo"
   tip: "Clicca per saltare alla sezione"
 
+# Serie
+series:
+  title: "Serie"
+  navigation: "Navigazione della serie"
+  empty: "Questo articolo non fa parte di alcuna serie"
+  current: "Articolo corrente"
+  progress: "Parte {{ .current }} di {{ .total }}"
+  total: "{{ .count }} articoli"
+  part: "Parte {{ .current }}"
+  previous: "Precedente"
+  next: "Successivo"
+  view_all: "Vedi tutto"
+
 # Code block related
 code:
+  copy: "Copia"
   copied: "Copiato"
   selected: "Selezionato"
   collapse: "Comprimi"
@@ -222,3 +243,24 @@ code:
 
 # Link
 links: "Link"
+
+# Progetti
+project:
+  featured_projects: "Progetti in evidenza"
+  all_projects: "Tutti i progetti"
+  view_all_projects: "Vedi tutti i progetti"
+  view_project: "Vedi progetto"
+  demo: "Demo dal vivo"
+  source: "Codice sorgente"
+  github: "GitHub"
+  website: "Sito web"
+  tech_stack: "Stack tecnologico"
+  status: "Stato"
+  status_completed: "Completato"
+  status_in_progress: "In corso"
+  status_planning: "Pianificazione"
+  no_projects: "Nessun progetto ancora"
+  no_projects_desc: "Non sono ancora stati pubblicati progetti. Ricontrolla più tardi."
+  list_desc: "Ecco tutti i progetti pubblicati, che mostrano il mio lavoro e i miei esperimenti."
+  total_projects: "{{ .count }} progetti in totale"
+  featured: "In evidenza"

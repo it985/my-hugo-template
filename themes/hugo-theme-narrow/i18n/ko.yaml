@@ -4,8 +4,10 @@ nav:
   menu: "메뉴"
   home: "홈"
   posts: "게시글"
+  projects: "프로젝트"
   tags: "태그"
   categories: "카테고리"
+  series: "시리즈"
   about: "소개"
   contact: "연락처"
   archive: "아카이브"
@@ -54,6 +56,7 @@ post:
   updated_on: "수정일"
   tags: "태그"
   categories: "카테고리"
+  series: "시리즈"
   share: "공유"
   previous: "이전"
   next: "다음"
@@ -203,7 +206,9 @@ comments:
 dock:
   aria_label: "바로가기 도구 모음"
   back: "뒤로"
+  navigation: "탐색"
   toc: "목차"
+  series: "시리즈"
   search: "검색"
   comments: "댓글"
   back_to_top: "맨 위로"
@@ -225,6 +230,19 @@ toc:
   empty: "이 글에는 제목이 없습니다"
   tip: "제목을 클릭하면 해당 위치로 이동합니다"
 
+# 시리즈 관련
+series:
+  title: "시리즈"
+  navigation: "시리즈 탐색"
+  empty: "이 글은 시리즈에 포함되지 않습니다"
+  current: "현재 글"
+  progress: "{{ .total }}개 중 {{ .current }}번째"
+  total: "총 {{ .count }}개"
+  part: "{{ .current }}번째"
+  previous: "이전"
+  next: "다음"
+  view_all: "전체 보기"
+
 # 코드 블록 관련
 code:
   copy: "복사"
@@ -236,3 +254,24 @@ code:
 
 # 링크
 links: "링크"
+
+# 프로젝트
+project:
+  featured_projects: "주요 프로젝트"
+  all_projects: "모든 프로젝트"
+  view_all_projects: "모든 프로젝트 보기"
+  view_project: "프로젝트 보기"
+  demo: "라이브 데모"
+  source: "소스 코드"
+  github: "GitHub"
+  website: "웹사이트"
+  tech_stack: "기술 스택"
+  status: "상태"
+  status_completed: "완료"
+  status_in_progress: "진행 중"
+  status_planning: "계획 중"
+  no_projects: "아직 프로젝트가 없습니다"
+  no_projects_desc: "아직 게시된 프로젝트가 없습니다. 나중에 다시 확인해주세요."
+  list_desc: "여기에 게시된 모든 프로젝트가 있으며, 제 작업과 실험을 보여줍니다."
+  total_projects: "총 {{ .count }}개 프로젝트"
+  featured: "주요"

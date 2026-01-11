@@ -4,8 +4,10 @@ nav:
   menu: "Menú"
   home: "Inicio"
   posts: "Artículos"
+  projects: "Proyectos"
   tags: "Etiquetas"
   categories: "Categorías"
+  series: "Serie"
   about: "Acerca de"
   contact: "Contacto"
   archive: "Archivo"
@@ -54,6 +56,7 @@ post:
   updated_on: "Actualizado el"
   tags: "Etiquetas"
   categories: "Categorías"
+  series: "Serie"
   share: "Compartir"
   previous: "Anterior"
   next: "Siguiente"
@@ -203,7 +206,9 @@ comments:
 dock:
   aria_label: "Barra de herramientas de acciones rápidas"
   back: "Volver"
+  navigation: "Navegación"
   toc: "Tabla de contenidos"
+  series: "Serie"
   search: "Buscar"
   comments: "Comentarios"
   back_to_top: "Volver arriba"
@@ -225,6 +230,19 @@ toc:
   empty: "No hay encabezados en este artículo"
   tip: "Haz clic para ir a la sección"
 
+# Serie
+series:
+  title: "Serie"
+  navigation: "Navegación de serie"
+  empty: "Este artículo no forma parte de ninguna serie"
+  current: "Artículo actual"
+  progress: "Parte {{ .current }} de {{ .total }}"
+  total: "{{ .count }} artículos"
+  part: "Parte {{ .current }}"
+  previous: "Anterior"
+  next: "Siguiente"
+  view_all: "Ver todo"
+
 # Bloques de código
 code:
   copy: "Copiar"
@@ -236,3 +254,24 @@ code:
 
 # Enlaces
 links: "Enlaces"
+
+# Proyectos
+project:
+  featured_projects: "Proyectos destacados"
+  all_projects: "Todos los proyectos"
+  view_all_projects: "Ver todos los proyectos"
+  view_project: "Ver proyecto"
+  demo: "Demo en vivo"
+  source: "Código fuente"
+  github: "GitHub"
+  website: "Sitio web"
+  tech_stack: "Stack tecnológico"
+  status: "Estado"
+  status_completed: "Completado"
+  status_in_progress: "En progreso"
+  status_planning: "Planificación"
+  no_projects: "Aún no hay proyectos"
+  no_projects_desc: "Aún no se han publicado proyectos. Por favor, vuelva más tarde."
+  list_desc: "Aquí están todos los proyectos publicados, mostrando mi trabajo y experimentos."
+  total_projects: "{{ .count }} proyectos en total"
+  featured: "Destacado"
