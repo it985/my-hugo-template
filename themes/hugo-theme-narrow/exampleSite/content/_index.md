@@ -1,5 +1,5 @@
 +++
-title = 'Home'
-date = 2023-01-01T08:00:00-07:00
-draft = false
+title = "Newsroom"
+date = 2019-08-25T00:52:59+03:00
+image = "/images/street.jpg"
 +++
