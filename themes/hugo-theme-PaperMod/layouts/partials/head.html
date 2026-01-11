@@ -127,24 +127,72 @@
                 --code-block-bg: rgb(46, 46, 51);
                 --code-bg: rgb(55, 56, 62);
                 --border: rgb(51, 51, 51);
+                color-scheme: dark;
             }
 
             .list {
                 background: var(--theme);
             }
 
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
+            .toc {
+                background: var(--entry);
             }
+        }
 
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
             }
         }
 
     </style>
     {{- end }}
 </noscript>
+
+{{- /* theme-toggle is enabled */}}
+{{- if (not site.Params.disableThemeToggle) }}
+{{- /* theme is light */}}
+{{- if (eq site.Params.defaultTheme "light") }}
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    }
+
+</script>
+{{- /* theme is dark */}}
+{{- else if (eq site.Params.defaultTheme "dark") }}
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+{{- else }}
+{{- /* theme is auto */}}
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+{{- end }}
+{{- /* theme-toggle is disabled and theme is auto */}}
+{{- else if (and (ne site.Params.defaultTheme "light") (ne site.Params.defaultTheme "dark"))}}
+<script>
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+{{- end }}
 
 {{- partial "extend_head.html" . -}}
 
