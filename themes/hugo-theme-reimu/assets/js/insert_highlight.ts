@@ -24,7 +24,8 @@
       if (
         expandThreshold === false ||
         (typeof expandThreshold === "number" &&
-          element.querySelectorAll("code[data-lang] .line").length > expandThreshold)
+          element.querySelectorAll("code[data-lang] .line").length >
+            expandThreshold)
       ) {
         element.classList.add("code-closed");
         // force rerender element to refresh AOS
@@ -56,9 +57,9 @@
       codeFigcaptionBottom.classList.remove("has-link");
     }
     if (fileName || url) {
-      codeFigcaptionBottom.style.marginBottom = '12px';
+      codeFigcaptionBottom.style.marginBottom = "12px";
     } else {
-      codeFigcaptionBottom.style.marginBottom = '0';
+      codeFigcaptionBottom.style.marginBottom = "0";
     }
   });
   // 代码收缩
@@ -141,7 +142,9 @@
       successText = successConfig;
     } else if (typeof successConfig === "object") {
       const lang = document.documentElement.lang;
-      const key = Object.keys(successConfig).find(key => key.toLowerCase() === lang.toLowerCase());
+      const key = Object.keys(successConfig).find(
+        (key) => key.toLowerCase() === lang.toLowerCase(),
+      );
       if (key && successConfig[key]) {
         successText = successConfig[key];
       }
@@ -165,7 +168,9 @@
       failText = failConfig;
     } else if (typeof failConfig === "object") {
       const lang = document.documentElement.lang;
-      const key = Object.keys(failConfig).find(key => key.toLowerCase() === lang.toLowerCase());
+      const key = Object.keys(failConfig).find(
+        (key) => key.toLowerCase() === lang.toLowerCase(),
+      );
       if (key && failConfig[key]) {
         failText = failConfig[key];
       }

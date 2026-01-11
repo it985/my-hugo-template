@@ -200,7 +200,7 @@ window.addEventListener("pjax:complete", () => {
   } else if (mode === "auto") {
     const osMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
     document.body.dispatchEvent(
-      new CustomEvent(`${osMode ? "dark" : "light"}-theme-set`)
+      new CustomEvent(`${osMode ? "dark" : "light"}-theme-set`),
     );
   }
   // destroy waline

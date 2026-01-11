@@ -2,5 +2,5 @@
   <p class="alert-heading">
     {{ title (.Get "type") }}
   </p>
-  <p>{{ .Inner | .Page.RenderString }}</p>
+  {{ .Inner | .Page.RenderString (dict "display" "block") }}
 </blockquote>

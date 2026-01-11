@@ -8,7 +8,7 @@
       <div class="article-nav-link-wrap left">
         {{- if and .PrevInSection.Params.cover (not (strings.HasPrefix .PrevInSection.Params.cover "rgb")) -}}
           <img
-            data-src="{{ .PrevInSection.Params.cover }}"
+            data-src="{{ .PrevInSection.Params.cover | relURL }}"
             data-sizes="auto"
             alt="{{ .PrevInSection.Title }}"
             class="lazyload"
@@ -17,7 +17,7 @@
           {{- $covers := partial "helpers/randomCover.html" . -}}
           {{- if $covers -}}
             <img
-              data-src="{{ $covers }}"
+              data-src="{{ $covers | relURL }}"
               data-sizes="auto"
               alt="{{ .PrevInSection.Title }}"
               class="lazyload"
@@ -59,7 +59,7 @@
       <div class="article-nav-link-wrap right">
         {{- if and .NextInSection.Params.cover (not (strings.HasPrefix .NextInSection.Params.cover "rgb")) -}}
           <img
-            data-src="{{ .NextInSection.Params.cover }}"
+            data-src="{{ .NextInSection.Params.cover | relURL }}"
             data-sizes="auto"
             alt="{{ .NextInSection.Title }}"
             class="lazyload"
@@ -68,7 +68,7 @@
           {{- $covers := partial "helpers/randomCover.html" . -}}
           {{- if $covers -}}
             <img
-              data-src="{{ $covers }}"
+              data-src="{{ $covers | relURL }}"
               data-sizes="auto"
               alt="{{ .NextInSection.Title }}"
               class="lazyload"

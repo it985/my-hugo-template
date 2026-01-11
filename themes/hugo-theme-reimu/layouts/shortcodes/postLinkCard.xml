@@ -1,6 +1,6 @@
 {{- $path := .Get "path" -}}
 {{- $cover := .Get "cover" -}}
-{{- $escape := .Get "escape" -}}
+{{- $escape := .Get "escape" | default true -}}
 
 {{- $page := .Site.GetPage $path -}}
 
@@ -8,6 +8,10 @@
   {{- errorf "postLinkCard shortcode: page not found: %s" $path -}}
 {{- end -}}
 
-{{- $safeTitle := $page.Title | safeHTML -}}
+{{- $title := $page.Title -}}
+{{- $displayTitle := $title -}}
+{{- if not $escape -}}
+	{{- $displayTitle = $title | safeHTML -}}
+{{- end -}}
 
-<a href="{{ $page.Permalink | absURL }}" title="{{ $safeTitle }}" target="_blank">{{ $safeTitle }}</a>
+<a href="{{ $page.Permalink | absURL }}" title="{{ $title }}" target="_blank">{{ $displayTitle }}</a>

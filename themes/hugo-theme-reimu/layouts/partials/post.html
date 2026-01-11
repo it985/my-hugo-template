@@ -43,7 +43,7 @@
     >
       {{- if and $page.Params.cover (not (hasPrefix $page.Params.cover "rgb")) -}}
         <img
-          data-src="{{ $page.Params.cover }}"
+          data-src="{{ $page.Params.cover | relURL }}"
           data-sizes="auto"
           alt="{{ .Title }}"
           class="lazyload"
@@ -52,7 +52,7 @@
         {{- $cover := partial "helpers/randomCover.html" $ctx -}}
         {{- if $cover -}}
           <img
-            data-src="{{ $cover }}"
+            data-src="{{ $cover | relURL }}"
             data-sizes="auto"
             alt="{{ $page.Title }}"
             class="lazyload"

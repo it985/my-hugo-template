@@ -145,7 +145,8 @@
     transition: 0.2s;
   }
 
-  &:hover:before, &:focus:before {
+  &:hover:before,
+  &:focus:before {
     height: 6px;
     border-radius: 50%;
     opacity: 1;
@@ -164,7 +165,8 @@
     text-decoration: none;
     transition: 0.2s;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: var(--red-2);
       box-shadow: var(--shadow-red-6-shadow);
       color: #fff;

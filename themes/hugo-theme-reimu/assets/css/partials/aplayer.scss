@@ -4,6 +4,7 @@
   background: var(--color-wrap) !important;
   transition: all 0.3s;
   font-family: $font-basic !important;
+  box-shadow: none !important;
 
   button,
   .aplayer-icon {
@@ -12,6 +13,10 @@
         fill: var(--color-link) !important;
       }
     }
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover) !important;
   }
 
   .aplayer-after-sidebar &,
@@ -93,6 +98,8 @@ body .aplayer .aplayer-info .aplayer-controller .aplayer-volume-wrap,
   cursor: var(--cursor-pointer) !important;
 }
 
-.aplayer-author, .aplayer-lrc p, .aplayer-list-author {
+.aplayer-author,
+.aplayer-lrc p,
+.aplayer-list-author {
   color: var(--grey-7) !important;
 }

@@ -165,7 +165,7 @@
       -webkit-clip-path: polygon(0 0, 92% 0%, 100% 100%, 0% 100%);
       clip-path: polygon(0 0, 92% 0%, 100% 100%, 0% 100%);
     }
-  
+
     @media #{$mg-normal} {
       border-radius: $post-radius $post-radius 0 0;
     }
@@ -177,7 +177,7 @@
       -webkit-clip-path: polygon(0 0, 100% 0%, 100% 100%, 8% 100%);
       clip-path: polygon(0 0, 100% 0%, 100% 100%, 8% 100%);
     }
-  
+
     @media #{$mg-normal} {
       border-radius: $post-radius $post-radius 0 0;
     }

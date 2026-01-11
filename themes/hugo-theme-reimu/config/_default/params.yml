@@ -72,16 +72,6 @@ open_graph:
 # Content
 excerpt_link: Read More
 
-# Inject code snippet
-# Make sure your code snippet is safeHTML
-injector:
-  head_begin: # Inject code snippet right after <head>
-  head_end: # Inject code snippet right before </head>
-  body_begin: # Inject code snippet right after <body>
-  body_end: # Inject code snippet right before </body>
-  sidebar_begin: # Inject code snippet right after <aside>
-  sidebar_end: # Inject code snippet right before </aside>
-
 # Footer copyright
 # Inject code snippet right in the footer copyright
 # Make sure your code snippet is safeHTML
@@ -104,7 +94,12 @@ footer:
     mask: true # whether to use the images as a mask
 
 # Sidebar
-sidebar: right
+# sidebar: right # deprecated, use sidebar.position instead
+sidebar:
+  position: right
+  menu: true  # whether to show the sidebar menu button, ignored on mobile devices
+  article:
+    show_common: true # whether to show common sidebar, ignored on mobile devices
 
 social:
   # email: mailto:xxx@gmail.com
@@ -147,6 +142,7 @@ tagcloud_limits: 20
 
 # Archive behavior
 only_show_capsule_in_index: false # If you have hugo amounts of tags and categories, you can set this to true to only show the capsule in the index page for better performance
+uppercase_capsule: true # If you want to keep taxonomic capsule unchanged, please set this to false
 
 show_update_time: false # If you want to show the update time, please set this to true
 
@@ -175,9 +171,22 @@ sort_order:
   archive: date-reverse # controlled by weight
   home: default # controlled by weight
 
+# Pagination
+paginate:
+  archive: # Number of posts per page in archive and taxonomy pages
+  post: # Number of posts per page in home and other list pages
+
 ########################################
 # CSS
 ########################################
+
+layout:
+  max_width: 1350px # the max width of the main content area
+
+triangle_badge:
+  enable: false
+  icon: github # same as the icon in the social config
+  link: https://github.com/D-Sketon/hugo-theme-reimu
 
 anchor_icon: # default use '#' icon, you can use a hexadecimal representation of fontawesome or icon_font, like 'f0c1', you can also use false to hide anchor icon
 
@@ -255,6 +264,25 @@ code_block:
   # number means collapse the code block by default when the number of lines exceeds the specified value
   expand: true
 
+# Clipboard configuration
+clipboard:
+  success: 
+    en: Copy successfully (*^▽^*)
+    zh-CN: 复制成功 (*^▽^*)
+    zh-TW: 複製成功 (*^▽^*)
+    ja: コピー成功 (*^▽^*)
+    pt-BR: Copiado com sucesso (*^▽^*)
+  fail: 
+    en: Copy failed (ﾟ⊿ﾟ)ﾂ
+    zh-CN: 复制失败 (ﾟ⊿ﾟ)ﾂ
+    zh-TW: 複製失敗 (ﾟ⊿ﾟ)ﾂ
+    ja: コピー失敗 (ﾟ⊿ﾟ)ﾂ
+    pt-BR: Falha ao copiar (ﾟ⊿ﾟ)ﾂ
+  copyright:
+    enable: false
+    count: 50 # The number of characters when the copyright is displayed
+    license_type: by-nc-sa # https://creativecommons.org/licenses
+
 math:
   katex:
     enable: true
@@ -293,7 +321,7 @@ math:
 # global control of the comment system
 # you can use multiple comment systems at the same time
 # load order: localStorage(user manually selects) -> default
-# -> valine -> waline -> twikoo -> gitalk -> giscus
+# -> valine -> waline -> twikoo -> gitalk -> giscus -> disqus
 comment:
   # comment system title
   title:
@@ -376,6 +404,19 @@ giscus:
   # commentTheme: preferred_color_scheme invalid
   # lang: zh-CN # deprecated, use html.lang instead
 
+# https://disqus.com
+disqus:
+  enable: false
+  shortname: # your disqus shortname
+  count: true
+
+# https://utteranc.es
+utterances:
+  enable: false
+  repo: owner/repo # Change this to "Your GitHub Username/The Repository Name" used for storing blog comments
+  issue_term: title
+  theme: auto # auto means to automatically adapt to dark and light themes, you can also use specific themes like github-light, github-dark, preferred-color-scheme, etc.
+
 ########################################
 # Search
 ########################################
@@ -432,6 +473,7 @@ animation:
 # see https://github.com/D-Sketon/mouse-firework
 firework:
   enable: true
+  disable_on_mobile: false
   options:
     excludeElements: ["a", "button"]
     particles:
@@ -469,25 +511,6 @@ article_copyright:
     date: false
     updated: false
     license: true
-    license_type: by-nc-sa # https://creativecommons.org/licenses
-
-# Clipboard configuration
-clipboard:
-  success: 
-    en: Copy successfully (*^▽^*)
-    zh-CN: 复制成功 (*^▽^*)
-    zh-TW: 複製成功 (*^▽^*)
-    ja: コピー成功 (*^▽^*)
-    pt-BR: Copiado com sucesso (*^▽^*)
-  fail: 
-    en: Copy failed (ﾟ⊿ﾟ)ﾂ
-    zh-CN: 复制失败 (ﾟ⊿ﾟ)ﾂ
-    zh-TW: 複製失敗 (ﾟ⊿ﾟ)ﾂ
-    ja: コピー失敗 (ﾟ⊿ﾟ)ﾂ
-    pt-BR: Falha ao copiar (ﾟ⊿ﾟ)ﾂ
-  copyright:
-    enable: false
-    count: 50 # The number of characters when the copyright is displayed
     license_type: by-nc-sa # https://creativecommons.org/licenses
 
 # Back To Top
@@ -562,6 +585,16 @@ home_categories:
 # Experimental features
 ########################################
 
+# Inject code snippet
+# Make sure your code snippet is safeHTML
+injector:
+  head_begin: # Inject code snippet right after <head>
+  head_end: # Inject code snippet right before </head>
+  body_begin: # Inject code snippet right after <body>
+  body_end: # Inject code snippet right before </body>
+  sidebar_begin: # Inject code snippet right after <aside>
+  sidebar_end: # Inject code snippet right before </aside>
+
 # Experimental, may have a lot of bugs, open with caution!
 pjax:
   enable: false
@@ -600,6 +633,7 @@ pace:
 # Experimental
 # Please turn on pjax to use this feature
 player:
+  disable_on_mobile: false
   position: before_sidebar # before_sidebar | after_sidebar | after_widget
   # if you enable meting, you must enable aplayer first
   aplayer:
@@ -660,37 +694,43 @@ internal_theme:
     --color-red-6-shadow: 'rgba(255, 78, 78, 0.6)'
     --color-red-3-shadow: 'rgba(255, 78, 78, 0.3)'
 
-    --highlight-nav: '#e6e6e6'
-    --highlight-scrollbar: '#d6d6d6'
-    --highlight-background: '#f7f7f7'
-    --highlight-current-line: '#dadada'
-    --highlight-selection: '#e9e9e9'
-    --highlight-foreground: '#4d4d4d'
-    --highlight-comment: '#7d7d7d'
-    --highlight-red: '#c8362b'
-    --highlight-orange: '#b66014'
-    --highlight-yellow: '#cb911d'
-    --highlight-green: '#2ea52e'
-    --highlight-aqua: '#479d9d'
-    --highlight-blue: '#1973b8'
-    --highlight-purple: '#7135ac'
+    --highlight-nav: "#f5f5f5"
+    --highlight-scrollbar: "#d6d6d6"
+    --highlight-background: "#fdfdfd"
+    --highlight-selection: "#e9e9e988"
+    --highlight-foreground: "#24292e"
+    --highlight-comment: "#7d7d7d"
+    --highlight-red: "#d73a49"
+    --highlight-orange: "#e36209"
+    --highlight-yellow: "#cb911d"
+    --highlight-green: "#22863a"
+    --highlight-aqua: "#005cc5"
+    --highlight-blue: "#032f62"
+    --highlight-purple: "#6f42c1"
+    --highlight-deletion: "#b31d28"
+    --highlight-deletion-bg: "#ffeef0"
+    --highlight-addition: "#22863a"
+    --highlight-addition-bg: "#f0fff4"
   dark:
     --red-4: 'rgba(255, 208, 208, 0.5)'
     --red-5: 'rgba(255,228,228,0.15)'
     --red-5-5: 'rgba(255,236,236,0.05)'
     --red-6: 'rgba(255, 243, 243, 0.2)'
 
-    --highlight-nav: '#2e353f'
-    --highlight-scrollbar: '#454d59'
-    --highlight-background: '#22272e'
-    --highlight-current-line: '#393939'
-    --highlight-selection: '#515151'
-    --highlight-foreground: '#cccccc'
-    --highlight-comment: '#999999'
-    --highlight-red: '#f47067'
-    --highlight-orange: '#f69d50'
-    --highlight-yellow: '#ffcc66'
-    --highlight-green: '#99cc99'
-    --highlight-aqua: '#66cccc'
-    --highlight-blue: '#54b6ff'
-    --highlight-purple: '#dcbdfb'
+    --highlight-nav: "#222830"
+    --highlight-scrollbar: "#454d59"
+    --highlight-background: "#1e2027"
+    --highlight-selection: "#51515155"
+    --highlight-foreground: "#c9d1d9"
+    --highlight-comment: "#8b949e"
+    --highlight-red: "#ff7b72"
+    --highlight-orange: "#ffa657"
+    --highlight-yellow: "#ffcc66"
+    --highlight-green: "#7ee787"
+    --highlight-aqua: "#a5d6ff"
+    --highlight-blue: "#79c0ff"
+    --highlight-purple: "#d2a8ff"
+    --highlight-deletion: "#ffa198"
+    --highlight-deletion-bg: "#490202"
+    --highlight-addition: "#7ee787"
+    --highlight-addition-bg: "#04260f"

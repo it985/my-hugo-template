@@ -54,6 +54,8 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - Twikoo
   - Gitalk
   - Giscus
+  - Disqus
+  - Utterances
 
 ### Statistics & Analytics
 
@@ -84,13 +86,15 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 - 🎨 Icon support:
   - Iconfont
   - FontAwesome7
-- 🔗 Custom shortcodes for:
+- 🔗 Built-in shortcodes:
   - Internal links
   - External links
   - Friend links
   - Heatmap
   - Tag Roulette
   - Alert Blockquote
+  - Tabs
+  - Gallery
 - 🎨 Dynamic theme color adaptation
 - ©️ Article copyright declaration
 - 🌐 Custom CDN source / local source configuration
@@ -215,7 +219,7 @@ cover: https://example.com
 ---
 ```
 
-- If the article's Front matter contains cover set to `false`, the article won't display a header image (homepage will still show random images)
+- If the article's Front matter contains cover set to `false`, the article won't display a header image (homepage thumbnail will still show random images)
 
 ```yaml
 ---
@@ -224,7 +228,7 @@ cover: false
 ---
 ```
 
-- If the article's Front matter contains cover set to `rgb(xxx,xxx,xxx)`, the article header will be a gradient of that solid color (homepage will still show random images)
+- If the article's Front matter contains cover set to `rgb(xxx,xxx,xxx)`, the article header will be a gradient of that solid color (homepage thumbnail will still show random images)
 
 ```yaml
 ---
@@ -233,8 +237,8 @@ cover: rgb(255,117,117)
 ---
 ```
 
-- Otherwise, it will look for `covers.yml` in the `data` folder and randomly select an image
-- If none of the above files exist, it will display the banner image
+- Otherwise, the homepage thumbnail will look for `covers.yml` in the `data` folder and randomly select an image; the in-article header image will look for the `cover` configuration in `params.yml`
+- If none of the above files/configurations exist, it will display the `banner` header image as a fallback
 
 #### Banner
 
@@ -247,6 +251,94 @@ banner: "images/banner.webp"
 #### Favicon
 
 The favicon is saved at `themes/hugo-theme-reimu/static/favicon.ico`. You can replace it with your own file.
+
+#### Article Summary
+
+Disabled by default. You can choose to display the article summary in the subtitle or at the beginning of the article.
+
+```yaml
+summary:
+  enable: false
+  style: 'subtitle' # 'subtitle' or 'blockquote'
+```
+
+</details>
+
+<details>
+
+<summary>Sidebar</summary>
+
+### Sidebar
+
+#### Sidebar Position
+
+Default on the right. You can modify it in `params.yml`.
+
+```yaml
+sidebar:
+  position: right # left | right | false
+  menu: true # whether to show the sidebar menu button, ignored on mobile devices
+  article:
+    show_common: true # whether to show common sidebar on article pages, ignored on mobile devices
+```
+
+Additionally, you can control it through the article's front-matter, which takes precedence over the global configuration.
+
+```yaml
+---
+sidebar: left # left | right | false
+---
+```
+
+> When sidebar is set to false, the sidebar will be hidden, and the aplayer player and widgets will not be displayed at the same time.
+
+#### TOC
+
+Default enabled. You can modify it in `params.yml`.
+
+```yaml
+toc: true # true | false
+```
+
+Additionally, you can control it through the article's front-matter, which takes precedence over the global configuration.
+
+```yaml
+---
+toc: true # true | false
+---
+```
+
+#### Social Links
+
+You can configure the social links in the sidebar in `params.yml`.
+
+```yaml
+social:
+  # github: https://github.com/yourname
+  # bilibili: https://space.bilibili.com/yourname
+  # ...
+```
+
+#### Widgets
+
+You can configure the widgets in the sidebar in `params.yml`.
+
+```yaml
+widgets:
+  - category
+  - tag
+  - tagcloud
+  - recent_posts
+```
+
+You can also configure the behavior of the widgets through the following configuration:
+
+```yaml
+category_limits: 10
+tag_limits: 10
+recent_posts_limits: 5
+tagcloud_limits: 20
+```
 
 </details>
 <details>
@@ -352,17 +444,26 @@ comment:
 ```
 
 If using [Valine](https://valine.js.org/)  
-Please refer to their official documentation to complete the `LeanCloud` configuration, then set `valine.enable` to `true` in the inner `params.yml` and fill in your `appId` and `appKey`
+Please refer to their official documentation to complete the `LeanCloud` configuration, then set `valine.enable` to `true` in `params.yml` and fill in your `appId` and `appKey`
 
 ```yaml
 valine:
   enable: true
   appId: "your appId"
   appKey: "your appKey"
+  pageSize: 10 # comment list page size
+  avatar: mp # gravatar style https://valine.js.org/#/avatar
+  # lang: zh-cn # deprecated, use html.lang instead
+  placeholder: Just go go # valine comment input placeholder(like: Please leave your footprints )
+  guest_info: nick,mail,link #valine comment header info
+  recordIP: true # whether to record the IP address of the commenters
+  highlight: true # whether to highlight the code blocks
+  visitor: false # whether to display the number of visitors
+  serverURLs: # leancloud server url
 ```
 
 If using [Waline](https://waline.js.org/)  
-Please refer to their [official documentation](https://waline.js.org/guide/get-started/) to complete the `LeanCloud` configuration, then set `waline.enable` to `true` in the inner `params.yml` and fill in your `serverURL`
+Please refer to their [official documentation](https://waline.js.org/guide/get-started/) to complete the `LeanCloud` configuration, then set `waline.enable` to `true` in `params.yml` and fill in your `serverURL`
 
 ```yaml
 waline:
@@ -389,7 +490,7 @@ waline:
 ```
 
 If using [twikoo](https://twikoo.js.org)  
-Please refer to their [official documentation](https://twikoo.js.org/quick-start.html) to complete Tencent Cloud or Vercel deployment, then set `twikoo.enable` to `true` in the inner `params.yml` and fill in your `envId`
+Please refer to their [official documentation](https://twikoo.js.org/quick-start.html) to complete Tencent Cloud or Vercel deployment, then set `twikoo.enable` to `true` in `params.yml` and fill in your `envId`
 
 ```yml
 twikoo:
@@ -399,7 +500,7 @@ twikoo:
 ```
 
 If using [giscus](https://giscus.app/)  
-Please refer to the documentation to complete repository configuration, then set `giscus.enable` to `true` in the inner `params.yml` and fill in the corresponding data
+Please refer to the documentation to complete repository configuration, then set `giscus.enable` to `true` in `params.yml` and fill in the corresponding data
 
 ```yml
 giscus:
@@ -416,7 +517,7 @@ giscus:
 ```
 
 If using [gitalk](https://gitalk.github.io/)  
-Please refer to their [official documentation](https://github.com/gitalk/gitalk?tab=readme-ov-file#usage) to complete repository configuration, then set `gitalk.enable` to `true` in the inner `params.yml` and fill in the corresponding data
+Please refer to their [official documentation](https://github.com/gitalk/gitalk?tab=readme-ov-file#usage) to complete repository configuration, then set `gitalk.enable` to `true` in `params.yml` and fill in the corresponding data
 
 ```yml
 gitalk:
@@ -427,6 +528,27 @@ gitalk:
   owner: "repo owner"
   admin: "repo owner and collaborators"
   md5: false # Whether to use md5 to encrypt the path
+```
+
+If using [Disqus](https://disqus.com/)  
+Please set `disqus.enable` to `true` in `params.yml`, and fill in your `shortname`
+
+```yml
+disqus:
+  enable: true
+  shortname: "your shortname"
+  count: true # Whether to enable comment count statistics
+```
+
+If using utterance [utterances](https://utteranc.es/)  
+Please set `utterances.enable` to `true` in `params.yml` and fill in your own `repo`
+
+```yml
+utterances:
+  enable: true
+  repo: owner/repo # Change this to "Your GitHub Username/The Repository Name" used for storing blog comments
+  issue_term: title
+  theme: github-light # You can use auto to automatically adapt to dark and light themes
 ```
 
 </details>
@@ -479,7 +601,7 @@ math: true
 ---
 ```
 
-> Note: Do not enable both KaTeX and MathJax3 simultaneously
+> Note: Do not enable both KaTeX and MathJax3 at the same time.
 
 #### KaTex
 
@@ -516,6 +638,13 @@ mermaid: true
 ---
 ```
 
+Besides, you can configure Mermaid in `params.yml`:
+
+```yaml
+mermaid:
+  zoom: false # whether to enable zooming
+```
+
 </details>
 <details>
 <summary>RSS</summary>
@@ -549,17 +678,17 @@ If you want to continue using FontAwesome icons, set `icon_font` to `false`. Thi
 ```yml
 fontawesome:
   high_priority:
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
-      integrity: sha384-k5640LgghgAohDLPwSqVWa96yQwWouT6wsAL+J1g0CFJVITNKYkIh1XpPLYKQe7Y
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
-      integrity: sha384-8yO/A/BtltnG0hDxdwmmkza8UAleyDoAD1FhXiH6rsOQQsCho1P6WZP9TpBBH3YP
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/regular.min.css
+      integrity: sha384-4qYppzjH8EiA+cGdaubu2vL7Rk8WGiqCSj7oRuP1uwtFWkfKNHD20lPfcrbQc8dU
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/solid.min.css
+      integrity: sha384-wbMWab3UDSPm2kvIgVOn/d9KPTecgPU1+Nb3zoQrm/oVu0EkPL6IaKinjbwW0rum
   low_priority:
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
-      integrity: sha384-/BRyRRN0wxxRgh/DAXU621go9pdoMHl6LFPiX5Pp8PZYZlKBQCDXj9X9DHx6LOud
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
-      integrity: sha384-/mBKnLlGtog8q2qQrgugURRDV+iHWHAPvM5KulYXT1C2ErKOKkBI0vbff8ZPq7rL
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
-      integrity: sha384-d2Yn1/9Iw78r3oqwk5B+EcpRcmepXR5LyhmRF2a+WoSe9mpRGvVk0ZviFwDGDOTO
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/brands.min.css
+      integrity: sha384-KTGeC2hIMzpeQakhsmzB9bZfhCD5xZZCgI1iZH6f/O457SxzlkzTQg/WXFNoi3ih
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/v5-font-face.min.css
+      integrity: sha384-nJ1ThfldViXoLpJ6jlKcP2beas8BMbYq26SG9Hi8cH89bZi4RZ644v7helMCqJxd
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/v4-font-face.min.css
+      integrity: sha384-UlkrhOIvZxJFd4MElSUp7ow6/RUeYKi/orfCZIRRiOENFuQPIAA3T3HjYfmBRhNq
 ```
 
 </details>
@@ -568,6 +697,16 @@ fontawesome:
 <summary>Extended features</summary>
 
 ### Extended features
+
+#### Back to Top
+
+Enabled by default
+
+```yaml
+top:
+  enable: true
+  position: right # left | right
+```
 
 #### Dark Mode
 
@@ -579,6 +718,16 @@ dark_mode:
   # false means that the dark mode is disabled by default
   # auto means that the dark mode is automatically switched according to the system settings
   enable: auto # true | false | auto
+```
+
+#### Analytics
+
+Disabled by default, supports Baidu Analytics, Google Analytics and Microsoft Clarity
+
+```yaml
+baidu_analytics: false
+google_analytics: false
+clarity: false
 ```
 
 #### Pace Progress Bar
@@ -597,6 +746,8 @@ Enabled by default
 ```yaml
 firework:
   enable: true
+  disable_on_mobile: false # whether to disable on mobile devices, which can improve performance
+  options: # mouse-firework options
 ```
 
 For detailed configuration, please check [mouse-firework](https://github.com/D-Sketon/mouse-firework)
@@ -661,7 +812,9 @@ srcset:
     media: "(max-width: 479px)"
   - src: "images/banner-800w.webp"
     media: "(max-width: 799px)"
-  - src: "images/banner.webp"
+  - src: 
+    - "/images/banner.avif"
+    - "/images/banner.webp" # support array format
     media: "(min-width: 800px)"
 ```
 
@@ -699,7 +852,7 @@ quicklink:
   enable: true
   timeout: 3000 # Timeout for quicklink
   priority: true # Whether to prioritize loading the page
-  ignores: [] # Ignore the specified link, only support string
+  ignores: [] # Ignore the specified link, only support string array
 ```
 
 #### Outdated Notice
@@ -856,40 +1009,55 @@ injector:
   sidebar_end: # Inject code snippet right before </aside>
 ```
 
+#### Triangle Badge (v0.13.2+)
+
+Disabled by default. When enabled, it will display a triangle badge in the upper right corner, supporting custom links and icons.
+
+```yaml
+triangle_badge:
+  enable: false
+  icon: github # Same as the icon in the social config
+  link: https://github.com/D-Sketon/hexo-theme-reimu
+```
+
 </details>
 
 <details>
-<summary>Built-in Card Shortcodes</summary>
+<summary>Built-in Shortcodes</summary>
 
-### Built-in Card Shortcodes
+### Built-in Shortcodes
 
 #### friendLink Card
 
-```yaml
+```markdown
 {{< friendsLink >}}
 ```
 
 No parameters, directly reads from the `data/friends.yml` file
 
-#### postLinkCard - Internal Link Card
+#### postLinkCard - Internal Link Card (Not recommended, use Link Card instead)
 
-```yaml
+```markdown
 {{<postLinkCard path="?" cover="?" escape="?" >}}
 ```
 
+Not recommended for use. It is advised to use the `link` shortcode instead.
+
 The first parameter is the article's `path`; the second parameter (optional) is the cover image shown on the card - if set to `auto`, it will automatically use the blog's `banner`; the third parameter (optional, `true | false`) indicates whether the article title should be escaped
 
-#### externalLinkCard - External Link Card
+#### externalLinkCard - External Link Card (Not recommended, use Link Card instead)
 
-```yaml
+```markdown
 {{<externalLinkCard title="?" link="?" cover="?">}}
 ```
+
+Not recommended for use. It is advised to use the `link` shortcode instead.
 
 The first parameter is the article's title; the second parameter is the external link to the article; the third parameter (optional) is the cover image shown on the card - if set to `auto`, it will automatically use the default cover
 
 #### Heat Map Card Article Heatmap (v0.8.0+)
 
-```yaml
+```markdown
 {{< heatMapCard levelStandard="?" >}}
 ```
 
@@ -897,7 +1065,7 @@ The first parameter is the level standard for the heatmap (graded based on the w
 
 #### tagRoulette (v0.12.0+)
 
-```yaml
+```markdown
 {{< tagRoulette tags="?" icon="?" >}}
 ```
 
@@ -908,7 +1076,7 @@ tagRoulette is an interactive element that provides a random tag display feature
 
 #### alertBlockquote (v0.12.1+)
 
-```yaml
+```markdown
 {{< alertBlockquote type="?" >}}
 Your content here
 {{</alertBlockquote>}}
@@ -918,10 +1086,87 @@ It is applicable to scenarios where Hugo v0.132.0 or lower cannot use Hugo Block
 
 The first parameter is the type of block quote, with the following optional parameters: `note`, `tip`, `important`, `warning`, `danger`
 
+#### Link Card (v0.14.0+)
+
+```markdown
+{{< link title="?" link/path="?" cover="?" escape="?" >}}
+```
+
+An upgraded version of `externalLinkCard` and `postLinkCard`, recommended for use.
+
+- **title**: The title of the link card. Can be omitted for internal links, in which case the article title will be used automatically.
+- **link/path**: The URL of the link. For compatibility, both `link` and `path` can be used, and they have the same effect.
+- **cover**: The cover image displayed on the card. If set to `auto`, the blog's `banner` or a default cover will be used automatically.
+- **escape**: Whether the article title should be escaped. Values are `true | false`, with `true` as the default.
+
+#### Tabs (v0.14.0+)
+
+```markdown
+{{< tabs [activeTab] ["center"] >}}
+<!-- tabName -->
+Tab content
+<!-- tabName -->
+Tab content
+{{< /tabs >}}
+```
+
+Adapted from the next, volantis, and stellar themes, this feature supports creating tabbed switching effects within articles.
+
+- activeTab: Optional parameter, specifies the default active tab index (counting starts from 1). Default is 1.
+- "center": Optional parameter, specifies that tab titles should be center-aligned. Default is left-aligned.
+- tabName: The title of each tab, must be wrapped in `<!-- tabName -->`. Supports displaying icons using `@` + icon hexadecimal code. Examples:
+  - Title only: `<!-- Title -->`
+  - Icon only: `<!-- @e60c -->`
+  - Icon + Title: `<!-- Title@e60c -->`
+
+#### Gallery Photo Wall (v0.14.0+)
+
+```markdown
+{{< gallery >}}
+![alt text](image_url1)
+![alt text](image_url2)
+...
+{{</gallery>}}
+
+Display multiple images in a photo wall format, supporting automatic arrangement and responsive layout.
+
+#### grid Grid Layout (v0.14.1+)
+
+```markdown
+{{< grid width=? col=? >}}
+<!-- cell -->
+Content 1
+<!-- cell -->
+Content 2
+<!-- cell -->
+Content 3
+{{< /grid >}}
+```
+
+Display content in a grid layout with responsive design.
+
+- width: Optional parameter, sets the minimum column width, e.g., `300` means a minimum column width of 300px. Default is `240`
+- col: Optional parameter, sets a fixed number of columns, e.g., `3` means a fixed 3-column layout. Default is auto column count
+- Use `<!-- cell -->` to separate each grid cell, and each cell's content will be rendered independently
+
+#### details Foldable Panel (v0.14.1+)
+
+```markdown
+{{< details summary="?" >}}
+Content
+{{< /details >}}
+```
+
+Create a foldable panel in the article.
+
+- summary: Optional parameter, set the title of the foldable panel
+
 </details>
 
 <details>
 <summary>Customize theme</summary>
+
+### Customize theme
 
 #### Dynamic Theme Color Adaptation (Experimental Feature in v0.8.0+)
 
@@ -937,8 +1182,6 @@ material_theme:
 #### Manual Customizing Theme Colors
 
 hugo-theme-reimu supports customizing theme colors through CSS variables. You can customize your theme colors by modifying the CSS variables under the `:root` pseudo-class.
-
-~~The variables file is located at `assets/css/_variables.scss`. You can find all CSS variables there, but you only need to modify the variables under these pseudo-classes~~
 
 v0.9.0 added `internal_theme` configuration to customize theme colors. You can change the theme colors by modifying the `internal_theme` configuration in `params.yml`. The default theme colors are as follows:
 
@@ -956,40 +1199,46 @@ internal_theme:
     --color-red-6-shadow: "rgba(255, 78, 78, 0.6)"
     --color-red-3-shadow: "rgba(255, 78, 78, 0.3)"
 
-    --highlight-nav: "#e6e6e6"
+    --highlight-nav: "#f5f5f5"
     --highlight-scrollbar: "#d6d6d6"
-    --highlight-background: "#f7f7f7"
-    --highlight-current-line: "#dadada"
-    --highlight-selection: "#e9e9e9"
-    --highlight-foreground: "#4d4d4d"
+    --highlight-background: "#fdfdfd"
+    --highlight-selection: "#e9e9e988"
+    --highlight-foreground: "#24292e"
     --highlight-comment: "#7d7d7d"
-    --highlight-red: "#c8362b"
-    --highlight-orange: "#b66014"
+    --highlight-red: "#d73a49"
+    --highlight-orange: "#e36209"
     --highlight-yellow: "#cb911d"
-    --highlight-green: "#2ea52e"
-    --highlight-aqua: "#479d9d"
-    --highlight-blue: "#1973b8"
-    --highlight-purple: "#7135ac"
+    --highlight-green: "#22863a"
+    --highlight-aqua: "#005cc5"
+    --highlight-blue: "#032f62"
+    --highlight-purple: "#6f42c1"
+    --highlight-deletion: "#b31d28"
+    --highlight-deletion-bg: "#ffeef0"
+    --highlight-addition: "#22863a"
+    --highlight-addition-bg: "#f0fff4"
   dark:
     --red-4: "rgba(255, 208, 208, 0.5)"
     --red-5: "rgba(255,228,228,0.15)"
     --red-5-5: "rgba(255,236,236,0.05)"
     --red-6: "rgba(255, 243, 243, 0.2)"
 
-    --highlight-nav: "#2e353f"
+    --highlight-nav: "#222830"
     --highlight-scrollbar: "#454d59"
-    --highlight-background: "#22272e"
-    --highlight-current-line: "#393939"
-    --highlight-selection: "#515151"
-    --highlight-foreground: "#cccccc"
-    --highlight-comment: "#999999"
-    --highlight-red: "#f47067"
-    --highlight-orange: "#f69d50"
+    --highlight-background: "#1e2027"
+    --highlight-selection: "#51515155"
+    --highlight-foreground: "#c9d1d9"
+    --highlight-comment: "#8b949e"
+    --highlight-red: "#ff7b72"
+    --highlight-orange: "#ffa657"
     --highlight-yellow: "#ffcc66"
-    --highlight-green: "#99cc99"
-    --highlight-aqua: "#66cccc"
-    --highlight-blue: "#54b6ff"
-    --highlight-purple: "#dcbdfb"
+    --highlight-green: "#7ee787"
+    --highlight-aqua: "#a5d6ff"
+    --highlight-blue: "#79c0ff"
+    --highlight-purple: "#d2a8ff"
+    --highlight-deletion: "#ffa198"
+    --highlight-deletion-bg: "#490202"
+    --highlight-addition: "#7ee787"
+    --highlight-addition-bg: "#04260f"
 ```
 
 #### Customize theme font
@@ -1040,7 +1289,7 @@ custom_font:
 
 ##### Header / Sidebar Icons
 
-The `menu` configuration structure changed in v0.1.0, allowing users to customize icons. When icon is empty, it defaults to using the Taichi icon. You can fill in a hexadecimal number to customize the icon, supporting both FontAwesome and icon font.
+The `menu` configuration structure changed in v0.1.0, allowing users to customize icons. When icon is empty, it defaults to using the Taichi icon. You can fill in a hexadecimal number to customize the icon, supporting both FontAwesome, icon font and `false`.
 
 v0.10.2 icon supports image path, such as `/avatar/avatar.webp`.
 
@@ -1051,7 +1300,7 @@ menu:
     icon: # Default Taichi icon when empty
   - name: archives
     url: /archives
-    icon: f0c1 # You can fill in a hexadecimal number to customize the icon
+    icon: f0c1 # You can fill in a hexadecimal number to customize the icon. If set to false, no icon will be displayed.
   - name: about
     url: /about
     icon:
@@ -1071,7 +1320,7 @@ v0.1.0 added `icon` configuration to `footer`, `top`, and `sponsor` for customiz
 ```yaml
 footer:
   icon:
-    url: "../images/taichi.png" # Path relative to css/main.css
+    url: "../images/taichi.png" # Path relative to css/main.css. If set to false, no icon will be displayed
     rotate: true
     mask: true
 
@@ -1083,7 +1332,7 @@ top:
 
 sponsor:
   icon:
-    url: "../images/taichi.png"
+    url: "../images/taichi.png" # If set to false, no icon will be displayed
     rotate: true
     mask: true
 ```
@@ -1129,6 +1378,36 @@ reimu_cursor:
     text: ../images/cursor/reimu-cursor-text.png
 ```
 
+#### Custom Scroll Animation
+
+Based on [AOS.js](https://github.com/D-Sketon/aos.js) scroll animation effects, default is `true`, you can enable or disable through the following configuration, and set different animation effects for different pages.
+
+```yaml
+animation:
+  enable: true
+  options:
+    header:
+    home:
+    article:
+    archive:
+```
+
+**Available Animation Effects:**
+
+- **Fade**: fade, fade-up, fade-down, fade-left, fade-right, fade-up-right, fade-up-left, fade-down-right, fade-down-left
+- **Flip**: flip-up, flip-down, flip-left, flip-right
+- **Slide**: slide-up, slide-down, slide-left, slide-right
+- **Zoom**: zoom-in, zoom-in-up, zoom-in-down, zoom-in-left, zoom-in-right, zoom-out, zoom-out-up, zoom-out-down, zoom-out-left, zoom-out-right
+
+#### Custom Styles
+
+You can customize the maximum width of the main content area by modifying `layout.max_width`, default is `1350px`.
+
+```yaml
+layout:
+  max_width: 1350px # Maximum width of the main content area
+```
+
 </details>
 
 <details>
@@ -1166,9 +1445,42 @@ Both formats are supported. It's recommended to use SRI verification for externa
 
 </details>
 
+<details>
+<summary>Front-matter Fields</summary>
+
+### Front-matter Fields
+
+| meta        | Description                                                                | Type                         | Value Logic                               | Version       |
+| ----------- | -------------------------------------------------------------------------- | ---------------------------- | ----------------------------------------- | ------------- |
+| title       | Title                                                                      | `string`                     | -                                         | Hugo Built-in |
+| date        | Article creation time                                                      | `datetime`                   | -                                         | Hugo Built-in |
+| lastmod     | Article last modified time                                                 | `datetime`                   | -                                         | Hugo Built-in |
+| summary     | Article summary                                                            | `string`                     | -                                         | Hugo Built-in |
+| weight      | Article weight, used for sorting/pinning                                   | `int`                        | -                                         | Hugo Built-in |
+| categories  | Article categories                                                         | `string[]`                   | -                                         | 0.0.1         |
+| tags        | Article tags                                                               | `string[]`                   | -                                         | 0.0.1         |
+| description | Article description                                                        | `string`                     | -                                         | 0.0.1         |
+| mermaid     | Whether to enable mermaid (requires configuration with `mermaid` settings) | `boolean`                    | `false`                                   | 0.0.1         |
+| math        | Whether to enable LaTeX (requires configuration with `math` settings)      | `boolean`                    | `false`                                   | 0.0.1         |
+| link        | Directs the article to an external link                                    | `string`                     | -                                         | 0.0.1         |
+| copyright   | Whether to enable article copyright notice                                 | `boolean`                    | Defaults to global config if not provided | 0.0.1         |
+| sponsor     | Whether to enable article sponsorship                                      | `boolean`                    | Defaults to global config if not provided | 0.0.1         |
+| comments    | Whether to enable article comments                                         | `boolean`                    | Defaults to global config if not provided | 0.0.1         |
+| photos      | Article photo gallery                                                      | `string[]`                   | -                                         | 0.0.1         |
+| sidebar     | Article sidebar position                                                   | `false \| 'left' \| 'right'` | Defaults to global config if not provided | 0.5.0         |
+| toc         | Whether to enable article table of contents                                | `boolean`                    | Defaults to global config if not provided | 0.7.0         |
+| outdated    | Whether the article is outdated                                            | `boolean`                    | Defaults to global config if not provided | 0.13.1        |
+| author      | Article author (used for article copyright and sharing cards)              | `string`                     | Defaults to global config if not provided | 0.13.2        |
+| keywords    | Article keywords for SEO                                                   | `string[] \| string`         | Defaults to global config if not provided | 0.13.4        |
+</details>
+
 ## Contributors
 
 [![](https://contributors-img.web.app/image?repo=D-Sketon/hugo-theme-reimu)](https://github.com/D-Sketon/hugo-theme-reimu/graphs/contributors)
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=D-Sketon/hugo-theme-reimu&type=date&legend=top-left)](https://www.star-history.com/#D-Sketon/hugo-theme-reimu&type=date&legend=top-left)
 
 ## License
 

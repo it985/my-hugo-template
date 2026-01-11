@@ -10,6 +10,10 @@
   &:hover .archive-year-wrap:after {
     width: 3em;
   }
+
+  @media #{$mg-normal} {
+    padding: 20px 16px;
+  }
 }
 
 .archive-year-wrap {
@@ -111,12 +115,18 @@
   a {
     text-decoration: none;
   }
+
+  @media #{$mg-normal} {
+    padding: 10px 16px;
+  }
 }
 
 .archives-tag-list-item,
 .archives-category-list-item {
   display: flex;
-  text-transform: uppercase;
+  @if $uppercase_capsule {
+    text-transform: uppercase;
+  }
   background: var(--red-5);
   border-radius: $tag-radius;
   padding: 8px 16px;
