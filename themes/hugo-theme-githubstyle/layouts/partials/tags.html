@@ -4,7 +4,7 @@
 <div class="f6 text-gray mt-2 tags border-bottom">
 	{{ range $taxonomy, $terms := site.Taxonomies }}
 	{{ range $term := $terms }}
-	<a class="muted-link mr-3" href="{{ .Page.RelPermalink }}">
+	<a class="muted-link mr-3" href="{{ .Page.Permalink }}">
 		{{ if eq $taxonomy "tags" }}
 		<svg class="octicon octicon-tag" viewBox="0 0 16 16" version="1.1" width="16" height="16">
 			<path fill-rule="evenodd"
