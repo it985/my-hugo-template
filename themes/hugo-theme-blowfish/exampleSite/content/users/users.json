@@ -97,14 +97,6 @@
     ]
   },
   {
-    "title": "cdell.io",
-    "url": "https://cdell.io",
-    "source": "n/a",
-    "tags": [
-      "Personal site"
-    ]
-  },
-  {
     "title": "jam.dsg.li",
     "url": "https://jam.dsg.li",
     "source": "n/a",
@@ -174,14 +166,6 @@
     "source": "n/a",
     "tags": [
       "Business site"
-    ]
-  },
-  {
-    "title": "mariuskimmina.com",
-    "url": "https://mariuskimmina.com/",
-    "source": "n/a",
-    "tags": [
-      "Personal site"
     ]
   },
   {
@@ -462,28 +446,11 @@
     ]
   },
   {
-    "title": "todreamr.github.io",
-    "url": "https://todreamr.github.io/",
-    "source": "n/a",
-    "tags": [
-      "Personal site"
-    ]
-  },
-  {
     "title": "aakashnand.com",
     "url": "https://aakashnand.com/",
     "source": "n/a",
     "tags": [
       "Personal site"
-    ]
-  },
-  {
-    "title": "innerknowing",
-    "url": "https://innerknowing.xyz/en/",
-    "source": "n/a",
-    "tags": [
-      "Personal site",
-      "Modeller"
     ]
   },
   {
@@ -540,14 +507,6 @@
       "Portfolio Site",
       "Software Developer",
       "Videogame Developer"
-    ]
-  },
-  {
-    "title": "Beauty Formulation",
-    "url": "https://www.beautyformulation.com/",
-    "source": "n/a",
-    "tags": [
-      "Company site"
     ]
   },
   {
@@ -684,16 +643,6 @@
       "Technology Blog",
       "Software Developer",
       "Portfolio Site"
-    ]
-  },
-  {
-    "title": "WillHack - service for reality hackers",
-    "url": "https://willhack.top/",
-    "source": "https://github.com/willhack-g/hugo.git",
-    "tags": [
-      "Technology Blog",
-      "News that matters Blog",
-      "AI"
     ]
   },
   {
@@ -874,15 +823,6 @@
     ]
   },
   {
-    "title": "Dan Davidson | Where Crypto, Charts and Curiosity Collide",
-    "url": "https://danly.io",
-    "source": "n/a",
-    "tags": [
-      "Personal site",
-      "Technology Blog"
-    ]
-  },
-  {
     "title": "tbsch.de | Smart Home, Technik, Kram",
     "url": "https://tbsch.de",
     "source": "n/a",
@@ -956,7 +896,7 @@
       "DevOps",
       "Personal site",
       "Technology Blog"
-      ]
+    ]
   },
   {
     "title": "monpetitdev.fr",
@@ -970,6 +910,64 @@
   {
     "title": "Noor Khafidzin",
     "url": "https://noorkhafidzin.com/",
+    "tags": [
+      "Personal site",
+      "Blog"
+    ]
+  },
+  {
+    "title": "Reyneese on WoW",
+    "url": "https://reyneese.com/",
+    "tags": [
+      "Personal site",
+      "WoW",
+      "World of Warcraft",
+      "Blog"
+    ]
+  },
+  {
+    "title": "David Writes",
+    "url": "https://davidwrites.xyz/",
+    "source": "n/a",
+    "tags": [
+      "Personal site",
+      "Blog",
+      "Linux Admin"
+    ]
+  },
+  {
+    "title": "GOODJINC",
+    "url": "https://goodjinc.com/",
+    "source": "https://github.com/GOODJINC/goodjinc.com",
+    "tags": [
+      "Personal site",
+      "Blog",
+      "Tech",
+      "IT"
+    ]
+  },
+  {
+    "title": "Artur Tyloch",
+    "url": "https://tyloch.biz/",
+    "tags": [
+      "Personal site",
+      "Blog",
+      "AI",
+      "Portfolio"
+    ]
+  },
+  {
+    "title": "Tats Shibata",
+    "url": "https://blog.rewse.jp/",
+    "source": "https://github.com/rewse/rewse-blog",
+    "tags": [
+      "Personal site",
+      "Blog"
+    ]
+  },
+  {
+    "title": "Radek Průša",
+    "url": "https://prusa.net/",
     "tags": [
       "Personal site",
       "Blog"

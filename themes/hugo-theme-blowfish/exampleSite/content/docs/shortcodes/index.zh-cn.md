@@ -11,7 +11,7 @@ series_order: 8
 
 除了所有[默认 Hugo 简码](https://gohugo.io/content-management/shortcodes/) 之外，Blowfish 还添加了一些额外的功能。
 
-## Alert
+## 醒目框
 
 `alert` 可以将其中内容输出为文章中的风格化消息框。它对于吸引读者注意您不想让读者错过的重要信息很有用。
 
@@ -64,7 +64,7 @@ This is an error!
 
 <br/><br/><br/>
 
-## Admonition
+## 提示框
 
 Admonition 用于在内容中插入醒目提示。
 
@@ -99,7 +99,7 @@ Admonition 的用途与 alert shortcode 类似，但其实现方式是通过 Hug
 
 <br/><br/><br/>
 
-## Article
+## 文章嵌入
 
 `Article` 将把一篇文章嵌入到一个 markdown 文件中。 参数中的 `link`应该是要嵌入的文件的 `.RelPermalink`。请注意，如果简码引用其父级文件，则它不会显示任何内容。 *注意：如果您在 Blowfish（即 /blowfish/）等子文件夹中运行网站，请在链接中包含该路径。*
 
@@ -121,7 +121,7 @@ Admonition 的用途与 alert shortcode 类似，但其实现方式是通过 Hug
 
 <br/><br/><br/>
 
-## Badge
+## 徽章
 
 `badge` 输出一个美观的徽章组件，该组件对于显示元数据很有用。
 
@@ -139,7 +139,7 @@ New article!
 
 <br/><br/><br/>
 
-## Button
+## 按钮
 
 `button` 输出一个样式化的按钮组件，可用于突出显示主要操作。它有三个可选变量 `href`、`target` 和 `rel`，可用于指定链接的 URL、目标和关系。
 
@@ -157,7 +157,7 @@ Call to action
 
 <br/><br/><br/>
 
-## Carousel
+## 滑动画册
 
 `carousel` 用于生成可交互且具有视觉吸引力的方式展示多个图像的画廊。这允许用户滑动浏览多个图像，同时仅占用单个图像的垂直空间。 所有图像均使用父组件的完整宽度并使用预定义的宽高比 `16:9` 、 `21:9` 或 `32:9` 之一显示。
 
@@ -187,7 +187,7 @@ Call to action
 
 <br/><br/><br/>
 
-## Chart
+## 图表
 
 `chart` 使用 Chart.js 库将图表嵌入到使用简单结构化数据的文章中。它支持多种[不同的图表样式](https://www.chartjs.org/docs/latest/samples/)，并且所有内容都可以在简码中进行配置。只需在简码中提供图表参数，Chart.js 将完成剩下的工作。
 
@@ -225,7 +225,7 @@ data: {
 
 <br/><br/><br/>
 
-## Code Importer
+## 导入源码
 
 此短代码用于轻松从外部源导入代码，无需复制和粘贴
 
@@ -306,7 +306,7 @@ Blowfish 还支持使用标准 Markdown 语法自动转换图像。只需使用�
 ![Alt text](image.jpg "Image caption")
 ```
 
-## Forgejo Card
+## Forgejo 卡片
 
 `forgejo` allows you to quickly link a Forgejo repository via the forgejo API, providing real-time updates on stats such as stars and forks.
 
@@ -345,7 +345,7 @@ Blowfish 还支持使用标准 Markdown 语法自动转换图像。只需使用�
 
 <br/><br/><br/>
 
-## Gallery
+## 排布画册
 
 `gallery` 允许您以响应式一次展示多个图像，并具有更加多样化和有趣的布局的图库。
 
@@ -612,7 +612,7 @@ Blowfish 还支持使用标准 Markdown 语法自动转换图像。只需使用�
 
 <br/><br/><br/>
 
-## Lead
+## 开篇语
 
 `lead` 用于强调文章的开头。它可以用来设计介绍的样式，或者指出一条重要的信息。只需将任何 Markdown 内容包装在 `lead` 简码中即可。
 
@@ -763,7 +763,14 @@ B-->C[Profit]
 
 `tabs` 简码常用于呈现某个步骤的不同变体。例如，可用于展示在不同平台上安装 VS Code 的方式。
 
-**示例**
+| 参数        | 描述                                      |
+| --------- | --------------------------------------- |
+| `group`   | **可选。** 用于同步切换标签页的组名。具有相同组名的所有标签页将一起切换。 |
+| `default` | **可选。** 默认激活的标签页的标签。如果未设置，默认激活第一个标签页。   |
+| `label`   | **必填。** 显示在标签按钮上的文本标签。                  |
+| `icon`    | **可选。** 在标签前显示的图标名称。                    |
+
+**示例 1：基本用法**
 
 ````md
 {{</* tabs */>}}
@@ -824,6 +831,94 @@ B-->C[Profit]
     {{< /tab >}}
 
 {{< /tabs >}}
+
+**示例 2：使用 Group、Default 和 Icon**
+
+`````md
+{{</* tabs group="lang" default="Python" */>}}
+    {{</* tab label="JavaScript" icon="code" */>}}
+    ```javascript
+    console.log("Hello");
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="Python" icon="sun" */>}}
+    ```python
+    print("Hello")
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="Go" icon="moon" */>}}
+    ```go
+    fmt.Println("Hello")
+    ```
+    {{</* /tab */>}}
+{{</* /tabs */>}}
+
+{{</* tabs group="lang" default="Python" */>}}
+    {{</* tab label="JavaScript" icon="code" */>}}
+    ```javascript
+    const add = (a, b) => a + b;
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="Python" icon="sun" */>}}
+    ```python
+    def add(a, b): return a + b
+    ```
+    {{</* /tab */>}}
+
+    {{</* tab label="Go" icon="moon" */>}}
+    ```go
+    func add(a, b int) int { return a + b }
+    ```
+    {{</* /tab */>}}
+{{</* /tabs */>}}
+`````
+
+**Output**
+
+{{< tabs group="lang" default="Python" >}}
+    {{< tab label="JavaScript" icon="code" >}}
+    ```javascript
+    console.log("Hello");
+    ```
+    {{< /tab >}}
+
+    {{< tab label="Python" icon="sun" >}}
+    ```python
+    print("Hello")
+    ```
+    {{< /tab >}}
+
+    {{< tab label="Go" icon="moon" >}}
+    ```go
+    fmt.Println("Hello")
+    ```
+    {{< /tab >}}
+{{< /tabs >}}
+
+{{< tabs group="lang" default="Python" >}}
+    {{< tab label="JavaScript" icon="code" >}}
+    ```javascript
+    const add = (a, b) => a + b;
+    ```
+    {{< /tab >}}
+
+    {{< tab label="Python" icon="sun" >}}
+    ```python
+    def add(a, b): return a + b
+    ```
+    {{< /tab >}}
+
+    {{< tab label="Go" icon="moon" >}}
+    ```go
+    func add(a, b int) int { return a + b }
+    ```
+    {{< /tab >}}
+{{< /tabs >}}
+
+在这个示例中，两个标签组都使用了相同的 `group="lang"` 参数，因此点击任意一个标签时，两个标签组都会同步切换。`default="Python"` 参数用于指定 Python 为初始激活的标签，而 `icon="code"` 会在每个标签标题前添加一个图标。
 
 <br/><br/><br/>
 
