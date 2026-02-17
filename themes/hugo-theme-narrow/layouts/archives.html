@@ -1,8 +1,4 @@
 {{ define "main" }}
-  <!-- 面包屑导航 -->
-  {{ partial "navigation/breadcrumb.html" . }}
-
-
   <!-- 页面标题和描述 -->
   <header class="mb-8">
     <div class="mb-4 flex items-center gap-3">
@@ -24,7 +20,9 @@
 
 
     <!-- 统计信息 -->
-    {{ $allPosts := where .Site.RegularPages "Section" "posts" }}
+    {{/* 使用 MainSections 获取主要内容区域 */}}
+    {{ $mainSections := .Site.MainSections }}
+    {{ $allPosts := where .Site.RegularPages "Section" "in" $mainSections }}
     <div class="text-muted-foreground flex items-center gap-4 text-sm">
       <div class="flex items-center gap-1">
         {{ partial "features/icon.html" (dict "name" "file-text" "size" "sm" "ariaLabel" "") }}
@@ -73,7 +71,7 @@
                 <div class="ml-12">
                   {{ $date := time (printf "%s-01" .Key) }}
                   <h3 class="text-foreground text-lg font-semibold">
-                    {{ $date.Format (i18n "time.month_format" | default "2006年01月") }}
+                    {{ time.Format (i18n "time.month_format" | default "2006年01月") $date }}
                   </h3>
                   <p class="text-muted-foreground text-xs">
                     {{ len .Pages }}
@@ -102,7 +100,7 @@
                           <div class="flex items-center gap-1">
                             {{ partial "features/icon.html" (dict "name" "calendar" "size" "xs" "ariaLabel" "") }}
                             <time datetime="{{ .Date.Format "2006-01-02" }}">
-                              {{ .Date.Format "01-02" }}
+                              {{ dateFormat (i18n "time.date_format_short" | default "01-02") .Date }}
                             </time>
                           </div>
 

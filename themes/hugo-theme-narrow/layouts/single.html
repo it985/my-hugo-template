@@ -1,23 +1,27 @@
 {{ define "main" }}
-  <!-- 面包屑导航 -->
-  {{ partial "navigation/breadcrumb.html" . }}
-
-
-  <!-- 页面标题 -->
+<article class="px-4 py-6">
+  <!-- 页面头部 -->
   <header class="mb-8">
     <h1 class="text-foreground mb-4 text-3xl font-bold md:text-4xl">
       {{ .Title }}
     </h1>
-    {{ if .Params.summary }}
-      <div class="text-muted-foreground mb-6 text-lg leading-relaxed">
-        {{ .Params.summary | plainify }}
-      </div>
+
+    {{ if .Date }}
+    <div class="text-muted-foreground flex items-center gap-2 text-sm">
+      {{ partial "features/icon.html" (dict "name" "calendar" "size" "sm" "ariaLabel" "") }}
+      <time datetime="{{ .Date.Format " 2006-01-02" }}">
+        {{ .Date.Format (i18n "time.date_format" | default "January 02, 2006") }}
+      </time>
+    </div>
     {{ end }}
   </header>
 
   <!-- 页面内容 -->
-  <article class="prose prose-neutral dark:prose-invert max-w-none">
+  <div class="prose prose-neutral dark:prose-invert mb-12 max-w-none">
     {{ .Content }}
-  </article>
+  </div>
+
+  <!-- 评论组件 -->
   {{ partial "features/comments.html" . }}
+</article>
 {{ end }}
