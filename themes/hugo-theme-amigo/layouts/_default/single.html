@@ -1,0 +1,107 @@
+{{ define "main" }}
+    {{/* 详情页顶部导航栏 */}}
+    {{ partial "header-page.html" . }}
+
+    <main class="moments-feed single-view" style="padding-top: 60px;">
+        <article class="single-article">
+            
+            {{/* 文章主体 */}}
+            <div class="article-body">
+                
+                {{/* 标题和元数据（作者、时间、地点） */}}
+                <div class="article-header">
+                    <h1 class="article-title">{{ .Title }}</h1>
+                    <div class="article-meta">
+                        <span class="meta-item author">{{ .Params.author | default .Site.Params.username }}</span>
+                        <span class="meta-dot">·</span>
+                        <span class="meta-item time">{{ .Date.Format "2006-01-02" }}</span>
+                        {{ if .Params.location }}
+                        <span class="meta-dot">·</span>
+                        <span class="meta-item location">{{ .Params.location }}</span>
+                        {{ end }}
+                    </div>
+                </div>
+
+                {{/* 正文内容 */}}
+                <div class="article-text moment-text">
+                    {{/* 这里同样剔除掉正文里的图片标签，图片会统一在下面的画廊里展示 */}}
+                    {{ .Content | replaceRE "(?s)<img[^>]*>" "" | safeHTML }}
+                </div>
+
+                {{/* 图片展示 - 详情页使用大图垂直排列 */}}
+                {{ $images := .Params.images }}
+                {{ if not $images }}
+                    {{/* 如果没有在头部写图片，就去正文里抓 */}}
+                    {{ $imgTags := findRE "<img[^>]+src=\"([^\"]+)\"[^>]*>" .Content }}
+                    {{ if $imgTags }}
+                        {{ $images = slice }}
+                        {{ range $imgTags }}
+                            {{ $src := replaceRE "<img[^>]+src=\"([^\"]+)\"[^>]*>" "$1" . }}
+                            {{ $images = $images | append $src }}
+                        {{ end }}
+                        {{ $images = $images | uniq }}
+                    {{ end }}
+                {{ end }}
+
+                {{ if $images }}
+                {{ $currentPage := . }}
+                <div class="article-gallery">
+                    {{ range $images }}
+                    {{ $imgSrc := . }}
+                    {{ if not (findRE "^(http|/)" $imgSrc) }}
+                        {{ with $currentPage.Resources.GetMatch $imgSrc }}
+                            {{ $imgSrc = .RelPermalink }}
+                        {{ end }}
+                    {{ end }}
+                    <figure class="article-image">
+                        <img src="{{ $imgSrc }}" alt="Image" loading="lazy">
+                    </figure>
+                    {{ end }}
+                </div>
+                {{ end }}
+
+            </div>
+        </article>
+
+        {{/* 评论区逻辑 */}}
+        {{ $showComments := false }}
+        {{ if eq .Section "posts" }}
+            {{ if ne .Params.comments false }}{{ $showComments = true }}{{ end }}
+        {{ else }}
+            {{ if eq .Params.comments true }}{{ $showComments = true }}{{ end }}
+        {{ end }}
+
+        {{ if and $showComments (ne .Site.Params.commentMode "none") }}
+        <div class="comments-container">
+            {{ if eq .Site.Params.commentMode "artalk" }}
+                {{/* Artalk 评论（朋友圈风格） */}}
+                {{ if .Site.Params.artalkServer }}
+                <div class="moment-comments-area single-comments" id="comments-single" data-page-key="{{ .Permalink }}"></div>
+                {{ end }}
+            {{ else if eq .Site.Params.commentMode "giscus" }}
+                {{/* Giscus 评论（GitHub Discussions 风格） */}}
+                {{ if .Site.Params.giscusRepo }}
+                <div class="giscus-comments-area">
+                    <script src="https://giscus.app/client.js"
+                        data-repo="{{ .Site.Params.giscusRepo }}"
+                        data-repo-id="{{ .Site.Params.giscusRepoId }}"
+                        data-category="{{ .Site.Params.giscusCategory }}"
+                        data-category-id="{{ .Site.Params.giscusCategoryId }}"
+                        data-mapping="{{ .Site.Params.giscusMapping | default "pathname" }}"
+                        data-strict="{{ .Site.Params.giscusStrict | default "0" }}"
+                        data-reactions-enabled="{{ .Site.Params.giscusReactionsEnabled | default "1" }}"
+                        data-emit-metadata="{{ .Site.Params.giscusEmitMetadata | default "0" }}"
+                        data-input-position="{{ .Site.Params.giscusInputPosition | default "bottom" }}"
+                        data-theme="{{ if eq .Site.Params.defaultTheme "dark" }}dark{{ else }}light{{ end }}"
+                        data-lang="{{ .Site.Params.giscusLang | default "zh-CN" }}"
+                        data-loading="{{ .Site.Params.giscusLoading | default "lazy" }}"
+                        crossorigin="anonymous"
+                        async>
+                    </script>
+                </div>
+                {{ end }}
+            {{ end }}
+        </div>
+        {{ end }}
+    </main>
+{{ end }}

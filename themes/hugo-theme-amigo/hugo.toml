@@ -1,0 +1,104 @@
+baseURL = 'https://example.com'
+languageCode = 'zh-cn'
+title = '我的朋友圈'
+theme = 'Amigo'
+
+[permalinks]
+  posts = "/:filename.html"
+
+[[menu.main]]
+  name = "首页"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "关于"
+  url = "/about.html"
+  weight = 2
+
+[[menu.main]]
+  name = "友链"
+  url = "/friends.html"
+  weight = 3
+
+[params]
+  # ---------------------------------------------------------------------------------------
+  # 个人信息设置
+  # ---------------------------------------------------------------------------------------
+  username = "您的名字"
+  # 头像地址（可以放本地路径比如 "/images/avatar.jpg"，也可以放网图链接）
+  avatar = "/images/avatar.jpg"
+  
+  # 个人简介，会显示在头像旁边
+  description = "这是我的个人动态展示页"
+  
+  # 首页最上面那张大图
+  cover = "/images/header.png"
+  
+  # ---------------------------------------------------------------------------------------
+  # 网站全局设置
+  # ---------------------------------------------------------------------------------------
+  favicon = "favicon.ico"
+  
+  # 页面最底部的文字，支持写 HTML 代码
+  footerText = "© 2026 Designed by Amigo"
+
+  # ICP 备案号，要是没有就注掉
+  # icp = "京ICP备12345678号"
+  
+  # ---------------------------------------------------------------------------------------
+  # 评论系统设置
+  # ---------------------------------------------------------------------------------------
+  # 评论模式：选 "artalk"、"giscus" 或者 "none"（关掉评论）
+  commentMode = "artalk"
+
+  # 1. Artalk 评论（官方文档：https://artalk.js.org/）
+  artalkServer = "https://your-artalk-server.com"
+  artalkSite = "您的站点名称"
+  
+  # 2. Giscus 评论（官方文档：https://giscus.app/）
+  # 如果上面填了 Artalk，会优先用 Artalk。两个都空着就不显示评论。
+  giscusRepo = ""
+  giscusRepoId = ""
+  giscusCategory = ""
+  giscusCategoryId = ""
+  giscusMapping = "pathname"
+  giscusStrict = "0"
+  giscusReactionsEnabled = "1"
+  giscusEmitMetadata = "0"
+  giscusInputPosition = "bottom"
+  giscusLang = "zh-CN"
+  giscusLoading = "lazy"
+  
+  # ---------------------------------------------------------------------------------------
+  # 字体设置
+  # ---------------------------------------------------------------------------------------
+  # 现在支持这几种："ZQL", "PingFangQiaoMuTi", "AlimamaFangYuanTi"
+  fontFamily = "ZQL"
+
+  # ---------------------------------------------------------------------------------------
+  # 功能开关
+  # ---------------------------------------------------------------------------------------
+  # 开启 PJAX，让页面跳转像单页应用一样丝滑，不刷新整个页面
+  enablePjax = true
+  
+  # 开启图片灯箱，点击图片可以放大看
+  enableLightbox = true
+  
+  # ---------------------------------------------------------------------------------------
+  # 社交链接（想加几个加几个）
+  # ---------------------------------------------------------------------------------------
+  # [[params.social]]
+  #   name = "GitHub"
+  #   icon = "ri-github-line" # 这里填 RemixIcon 的类名
+  #   url = "https://github.com/"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = true
+    lineNumbersInTable = false
+    noClasses = true
+    style = "dracula"
+    tabWidth = 4

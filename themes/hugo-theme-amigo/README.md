@@ -1,0 +1,147 @@
+# Amigo - 极简朋友圈风格 Hugo 主题
+
+[![Hugo](https://img.shields.io/badge/Hugo-%230076D1.svg?style=flat&logo=hugo&logoColor=white)](https://gohugo.io/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+Amigo 是一款为 [Hugo](https://gohugo.io/) 打造的极简博客主题，其设计灵感来源于 **微信朋友圈 (WeChat Moments)**。它旨在提供一个私密、亲切且易于阅读的动态分享空间，支持 PJAX 无刷新加载和多种评论系统。
+
+[English Documentation](./README_EN.md)
+
+---
+
+## 🎯 前置条件
+
+- **Hugo 版本**：建议使用 Hugo 0.128.2版本，以确保兼容性和最佳体验。
+- **Artalk**: 推荐使用2.8.7 版本，以支持朋友圈风格的点赞和评论功能，文档地址：https://artalk.js.org/zh-CN/docs/quick-start，推荐使用官方提供的 `artalk/artalk:2.8.7` 镜像，确保与主题兼容，命令如下：
+```bash
+docker run -d \
+    --name artalk \
+    -p 3378:23366 \
+    -v $(pwd)/data:/data \
+    -e "TZ=Asia/Shanghai" \
+    -e "ATK_LOCALE=zh-CN" \
+    -e "ATK_SITE_DEFAULT=你的站点名称" \
+    -e "ATK_SITE_URL=你的站点URL" \
+    artalk/artalk-go:2.8.7
+```
+- **Giscus**: 推荐使用最新版本，文档地址：https://giscus.app/zh-CN
+- **浏览器**：建议使用现代浏览器（如 Chrome、Firefox、Edge）以获得最佳体验。
+
+## ✨ 主题特性
+
+- 📱 **朋友圈 UI**：高度还原微信朋友圈视觉体验，支持九宫格图片展示。
+- 🚀 **全站 PJAX**：丝滑的无刷新页面切换，提升浏览体验。
+- 🌓 **深色模式**：支持手动切换及系统跟随。
+- 💬 **多评论系统**：内置 **Artalk**（深度适配朋友圈点赞/评论风格）和 **Giscus** 支持。
+- 🖼️ **图片灯箱**：集成 ViewImage.js，点击图片即可放大浏览。
+- 🎨 **精美排版**：本地化中文字体优化（内置 *zql* 字体），阅读体验更佳。
+- 🛠️ **响应式设计**：完美适配手机、平板及桌面端。
+- 🔙 **智能页眉**：滚动自动切换背景及显示标题，集成返回顶部功能。
+
+## 📸 预览站点
+
+https://5b2.cn
+
+## 🚀 快速开始
+
+### 1. 安装
+
+在您的 Hugo 站点目录下执行：
+
+```bash
+git clone https://github.com/zqlit/Hugo-Theme-Amigo.git
+```
+
+### 2. 配置
+
+您可以直接参考并复制主题目录下的 [hugo.toml](./hugo.toml) 文件到您的站点根目录。
+
+或者将以下基本配置添加到您的 `hugo.toml` 中：
+
+```toml
+theme = "Amigo"
+
+[params]
+  username = "您的昵称"
+  avatar = "/images/avatar.jpg"
+  description = "一句话简介"
+  cover = "/images/cover.jpg" # 首页封面
+  
+  # 评论模式: "artalk", "giscus", 或 "none"
+  commentMode = "artalk"
+
+  # 字体设置: "ZQL", "PingFangQiaoMuTi", "AlimamaFangYuanTi"
+  fontFamily = "ZQL"
+
+  # Artalk 配置
+  artalkServer = "您的 Artalk 地址"
+  artalkSite = "您的站点名称"
+  
+  # 功能开关
+  enablePjax = true
+  enableLightbox = true
+```
+
+## 📝 使用指南
+
+### 目录结构
+
+```text
+content/
+├── posts/           # 朋友圈动态 (文章)
+├── about.md         # 关于页面
+└── friends.md       # 友链页面 (layout: "friends")
+```
+
+### 撰写动态 (Posts)
+
+在 `content/posts/` 目录下创建目录（Page Bundles）或直接创建 `.md` 文件。为了更好地管理图片，建议为每篇动态创建一个文件夹：
+
+```markdown
+---
+title: "今天天气不错"
+date: 2024-05-20T12:00:00+08:00
+author: "Vaica"
+location: "武汉·东湖"
+---
+
+这里是动态的正文内容。直接在正文中使用标准的 Markdown 语法插入图片即可：
+
+![图片描述](./image1.jpg)
+![图片描述](./image2.jpg)
+
+主题会自动抓取正文中的图片并生成九宫格预览。
+```
+
+### 评论开关逻辑
+
+- **文章 (Posts)**：默认开启评论。设置 `comments: false` 可关闭。
+- **静态页面 (Pages)**：默认关闭评论。设置 `comments: true` 可开启（如留言板）。
+
+### 友链配置
+
+在站点根目录创建 `data/friends.yml`：
+
+```yaml
+- name: "Vaica"
+  url: "https://usj.cc"
+  avatar: "https://github.com/vaica.png"
+  description: "开发者"
+```
+
+并在 `content/friends.md` 中设置 `layout: "friends"`。
+
+## 🛠️ 技术栈
+
+- **SSG**: [Hugo](https://gohugo.io/)
+- **Icons**: [Remix Icon](https://remixicon.com/)
+- **Comments**: [Artalk](https://artalk.js.org/) / [Giscus](https://giscus.app/)
+- **JS Components**: ViewImage.js, PJAX.js
+
+## 📄 开源协议
+
+本项目采用 [MIT License](LICENSE) 协议。
+
+---
+
+感谢使用 **Amigo**！如果您喜欢这个项目，欢迎点一个 **Star** ⭐️。

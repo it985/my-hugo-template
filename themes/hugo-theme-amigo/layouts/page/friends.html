@@ -1,0 +1,61 @@
+{{ define "main" }}
+    {{ partial "header-page.html" . }}
+
+    <main class="moments-feed single-view" style="padding-top: 60px;">
+        <div class="friends-container">
+            {{ if .Site.Data.friends }}
+            <div class="friends-grid">
+                {{ range .Site.Data.friends }}
+                <a href="{{ .url }}" target="_blank" class="friend-card" rel="noopener">
+                    <div class="friend-avatar">
+                        <img src="{{ .avatar }}" alt="{{ .name }}" loading="lazy">
+                    </div>
+                    <div class="friend-info">
+                        <div class="friend-name">{{ .name }}</div>
+                        <div class="friend-desc">{{ .description }}</div>
+                    </div>
+                </a>
+                {{ end }}
+            </div>
+            {{ else }}
+            <div class="article-body" style="text-align: center; padding: 40px;">
+                <p>暂无友链数据，请在 data/friends.yml 中添加。</p>
+            </div>
+            {{ end }}
+        </div>
+        
+        {{/* Comments Area */}}
+        {{ if and (eq .Params.comments true) (ne .Site.Params.commentMode "none") }}
+        <div class="comments-container">
+            {{ if eq .Site.Params.commentMode "artalk" }}
+                {{/* Artalk - Moments Style */}}
+                {{ if .Site.Params.artalkServer }}
+                <div class="moment-comments-area single-comments" id="comments-single" data-page-key="{{ .Permalink }}"></div>
+                {{ end }}
+            {{ else if eq .Site.Params.commentMode "giscus" }}
+                {{/* Giscus - Standard Style */}}
+                {{ if .Site.Params.giscusRepo }}
+                <div class="giscus-comments-area">
+                    <script src="https://giscus.app/client.js"
+                        data-repo="{{ .Site.Params.giscusRepo }}"
+                        data-repo-id="{{ .Site.Params.giscusRepoId }}"
+                        data-category="{{ .Site.Params.giscusCategory }}"
+                        data-category-id="{{ .Site.Params.giscusCategoryId }}"
+                        data-mapping="{{ .Site.Params.giscusMapping | default "pathname" }}"
+                        data-strict="{{ .Site.Params.giscusStrict | default "0" }}"
+                        data-reactions-enabled="{{ .Site.Params.giscusReactionsEnabled | default "1" }}"
+                        data-emit-metadata="{{ .Site.Params.giscusEmitMetadata | default "0" }}"
+                        data-input-position="{{ .Site.Params.giscusInputPosition | default "bottom" }}"
+                        data-theme="{{ if eq .Site.Params.defaultTheme "dark" }}dark{{ else }}light{{ end }}"
+                        data-lang="{{ .Site.Params.giscusLang | default "zh-CN" }}"
+                        data-loading="{{ .Site.Params.giscusLoading | default "lazy" }}"
+                        crossorigin="anonymous"
+                        async>
+                    </script>
+                </div>
+                {{ end }}
+            {{ end }}
+        </div>
+        {{ end }}
+    </main>
+{{ end }}

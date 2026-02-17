@@ -1,0 +1,27 @@
+{{ define "main" }}
+    {{ partial "header-page.html" . }}
+
+    <main class="moments-feed single-view" style="padding-top: 60px;">
+        <article class="single-article">
+            <div class="article-body">
+                <div class="article-text moment-text">
+                    <h1 style="margin-bottom: 20px;">{{ .Title }}</h1>
+                    {{ .Content }}
+                    
+                    <div class="list-pages" style="margin-top: 20px;">
+                        {{ range .Pages }}
+                        <div class="list-item" style="margin-bottom: 15px;">
+                            <h2 style="font-size: 1.2rem; margin-bottom: 5px;">
+                                <a href="{{ .RelPermalink }}" style="color: var(--text-main); text-decoration: none;">{{ .LinkTitle }}</a>
+                            </h2>
+                            <div class="list-meta" style="font-size: 0.9rem; color: var(--text-muted);">
+                                {{ .Date.Format "2006-01-02" }}
+                            </div>
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+{{ end }}

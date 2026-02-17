@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+    
+    {{- /* 图标设置 */ -}}
+    <link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}" type="image/x-icon">
+    <link rel="icon" href="{{ "favicon.ico" | relURL }}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ "images/avatar.jpg" | relURL }}">
+
+    {{- /* 把所有 CSS 打包到一起 */ -}}
+    {{- $styles := slice (resources.Get "css/remixicon.css") (resources.Get "css/message.min.css") (resources.Get "css/style.css") -}}
+    
+    {{- if .Site.Params.artalkServer -}}
+        {{- $styles = $styles | append (resources.Get "lib/artalk/Artalk.css") -}}
+    {{- end -}}
+
+    {{- $bundleCss := $styles | resources.Concat "css/bundle.css" | minify | fingerprint -}}
+    <link rel="stylesheet" href="{{ $bundleCss.RelPermalink }}" integrity="{{ $bundleCss.Data.Integrity }}">
+
+    {{- /* 把所有 JS 打包到一起 */ -}}
+    {{- $scripts := slice (resources.Get "js/message.min.js") (resources.Get "js/main.js") -}}
+    
+    {{- if ne .Site.Params.enableLightbox false -}}
+        {{- $scripts = $scripts | append (resources.Get "js/view-image.min.js") -}}
+    {{- end -}}
+    
+    {{- if ne .Site.Params.enablePjax false -}}
+        {{- $scripts = $scripts | append (resources.Get "js/pjax.min.js") -}}
+    {{- end -}}
+
+    {{- if .Site.Params.artalkServer -}}
+        {{- $scripts = $scripts | append (resources.Get "lib/artalk/Artalk.js") -}}
+    {{- end -}}
+    
+    {{- $scripts = $scripts | append (resources.Get "js/init.js") -}}
+
+    {{- $bundleJs := $scripts | resources.Concat "js/bundle.js" | minify | fingerprint -}}
+    
+    <script>
+        // 刚加载页面时先判断下主题模式，省得闪屏
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        })();
+        // 全局配置，JS 脚本里会用到
+        window.amigoConfig = {
+            artalkServer: "{{ .Site.Params.artalkServer }}",
+            artalkSite: "{{ .Site.Params.artalkSite }}"
+        };
+    </script>
+
+    {{- /* 根据后台配置动态加载字体 */ -}}
+    <style>
+        :root {
+            {{- $font := .Site.Params.fontFamily | default "ZQL" -}}
+            {{- if eq $font "PingFangQiaoMuTi" -}}
+                --font-family: 'PingFangQiaoMuTi', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            {{- else if eq $font "AlimamaFangYuanTi" -}}
+                --font-family: 'AlimamaFangYuanTi', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            {{- else -}}
+                --font-family: 'ZQL', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            {{- end -}}
+        }
+    </style>
+
+    <script defer src="{{ $bundleJs.RelPermalink }}" integrity="{{ $bundleJs.Data.Integrity }}"></script>
+</head>
+<body>
+    <!-- 整个页面的主包裹层 -->
+    <div class="main-wrapper">
+        <!-- 首页的页眉（带菜单按钮） -->
+        {{ if .IsHome }}
+        <header class="home-header">
+            <button id="menu-toggle" aria-label="Menu" title="菜单">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="header-actions">
+                <button class="nav-btn btn-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="回到顶部">
+                    <i class="ri-arrow-up-line"></i>
+                </button>
+                <button class="nav-btn theme-toggle" title="切换模式">
+                    <i class="ri-sun-line light-icon"></i>
+                    <i class="ri-moon-line dark-icon"></i>
+                </button>
+            </div>
+        </header>
+        {{ end }}
+
+        {{ block "main" . }}{{ end }}
+
+        {{/* 站点页脚 */}}
+        <footer class="site-footer">
+            <div class="footer-content">
+                <p>&copy; {{ now.Year }} {{ .Site.Title }}. Designed by Vaica</p>
+                
+                {{ if .Site.Params.icp }}
+                    <div class="icp-info">
+                        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">{{ .Site.Params.icp }}</a>
+                    </div>
+                {{ end }}
+            </div>
+        </footer>
+    </div>
+
+    <!-- Full Screen Menu Overlay -->
+    <div id="menu-overlay">
+        <div class="menu-content">
+            <nav class="menu-nav">
+                <ul>
+                    {{ range .Site.Menus.main }}
+                    <li>
+                        <a href="{{ .URL | relURL }}" class="menu-link">
+                            {{ .Name }}
+                        </a>
+                    </li>
+                    {{ end }}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>

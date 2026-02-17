@@ -8,44 +8,63 @@
 
 ## hugo-theme-moments
 GitHub 源仓库地址：https://github.com/FarseaSH/hugo-theme-moments
+
 ## hugo-theme-newsroom
 GitHub 源仓库地址：https://github.com/onweru/newsroom
+
 ## hugo-theme-next
 GitHub 源仓库地址：https://github.com/hugo-next/hugo-theme-next
+
 ## hugo-theme-PaperMod
 GitHub 源仓库地址：https://github.com/adityatelange/hugo-PaperMod
+
 ## hugo-theme-reimu
 GitHub 源仓库地址：https://github.com/D-Sketon/hugo-theme-reimu
+
 ## hugo-theme-stack
 GitHub 源仓库地址：https://github.com/CaiJimmy/hugo-theme-stack
+
 ## hugo-theme-WebStack
 GitHub 源仓库地址：https://github.com/shenweiyan/webstack-hugo
+
 ## hugo-theme-autophugo
 GitHub 源仓库地址：https://github.com/kc0bfv/autophugo
+
 ## hugo-theme-blowfish
 GitHub 源仓库地址：https://github.com/nunocoracao/blowfish
+
 ## hugo-theme-bootstrap
 GitHub 源仓库地址：https://github.com/razonyang/hugo-theme-bootstrap
+
 ## hugo-theme-console
 GitHub 源仓库地址：https://github.com/mrmierzejewski/hugo-theme-console
+
 ## hugo-theme-dream
 GitHub 源仓库地址：https://github.com/g1eny0ung/hugo-theme-dream
+
 ## hugo-theme-gallery
-GitHub 源仓库地址：https://github.com/nicokaiser/hugo-theme-gallery/
+GitHub 源仓库地址：https://github.com/nicokaiser/hugo-theme-gallery
+
 ## hugo-theme-gallerydeluxe
 GitHub 源仓库地址：https://github.com/bep/gallerydeluxe
+
 ## hugo-theme-githubstyle
 GitHub 源仓库地址：https://github.com/MeiK2333/github-style
+
 ## hugo-theme-LoveIt
 GitHub 源仓库地址：https://github.com/dillonzq/LoveIt
+
 ## hugo-theme-Berenice
 GitHub 源仓库地址：https://github.com/22decembre/Berenice
+
 ## hugo-theme-narrow
 GitHub 源仓库地址：https://github.com/tom2almighty/hugo-narrow
 
 ## hugo-theme-demius
-
 GitHub 源仓库地址：https://github.com/demius782/demius
+
+## hugo-theme-amigo
+GitHub 源仓库地址：https://github.com/zqlit/Hugo-Theme-Amigo
 
 ## hugo 初始化
 ```ssh
