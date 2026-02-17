@@ -9,5 +9,15 @@
       {{ block "main" . }}{{ end }}
 
     {{ partial "footer.html" . }}
+
+        {{ if .Site.Params.HugoFooter }}
+
+       <p style="text-align: center">Compiled with <a href="http://gohugo.io"  class="font-bold text-blue-600 hover:underline">Hugo</a>, using the <a href="https://github.com/22decembre/Berenice" class="font-bold text-blue-600 hover:underline">Berenice theme</a>, by <a href="https://www.22decembre.eu/" class="font-bold text-blue-600 hover:underline">Stéphane 22Decembre</a>.
+       </p>
+
+       <br>
+
+      {{ end }}
+
   </body>
 </html>

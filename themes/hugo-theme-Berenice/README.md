@@ -37,6 +37,8 @@ The config file is ultra basic as the theme has (at the time of writing) very li
 
 Only options now are the website's title and its URL. The timeout is present here to give time to hugo to process all the pictures it might need.
 
+The HugoFooter option will display a footer at the bottom of all the pages with links to the Hugo website, the theme's github as well as the theme's author's website. Default is to display the footer.
+
     baseURL = 'https://photos.url.com'
     languageCode = 'en-us'
     title = "22Decembre's photos"
@@ -45,6 +47,8 @@ Only options now are the website's title and its URL. The timeout is present her
     timeout = "120s"
 
     [params]
+        HugoFooter = true
+        
         [params.author]
         name = "Your name"
         email = "your@family.name"
