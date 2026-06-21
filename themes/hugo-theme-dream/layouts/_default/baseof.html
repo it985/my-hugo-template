@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ site.LanguageCode }}"
+<html lang="{{ site.Language.Locale }}"
   x-data
   :class="$store.darkMode.isDark() ? 'dark' : 'light'"
   :data-theme="$store.darkMode.theme()">
@@ -35,8 +35,9 @@
   <body x-data="{
     flip: false,
   }">
-    <!-- If backgroundImage defined -->
-    <div id="dream-global-bg"></div>
+    {{ with or site.Params.backgroundImage site.Params.backgroundImageDark }}
+      <div id="dream-global-bg"></div>
+    {{ end }}
 
     {{ partial "nav.html" . }}
 
@@ -49,7 +50,11 @@
             {{ partial "footer.html" . }}
           </div>
         </div>
+        {{ if .IsHome }}
         <div class="back">
+        {{ else }}
+        <div class="back" data-nosnippet>
+        {{ end }}
           <div class="container">
             {{ if site.Params.zenMode }}
             {{ partial "zen-back.html" . }}
