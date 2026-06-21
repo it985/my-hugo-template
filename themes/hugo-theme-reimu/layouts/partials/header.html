@@ -35,8 +35,10 @@
   </nav>
   {{- if and hugo.IsMultilingual (ne "404" .Type) -}}
     {{- $i18nMap := dict -}}
-    {{- range .Site.Languages -}}
-      {{- $i18nMap = merge $i18nMap (dict .Lang .LanguageName) -}}
+    {{- with .Rotate "language" -}}
+      {{- range . -}}
+        {{- $i18nMap = merge $i18nMap (dict .Lang .Site.Language.Label) -}}
+      {{- end -}}
     {{- end -}}
     <nav id="i18n-nav" aria-label="Language selection">
       <div class="custom-dropdown">
@@ -45,8 +47,10 @@
           <span id="selected-lang">{{ index $i18nMap $.Language.Lang }}</span>
         </div>
         <ul class="select-items" id="select-items" role="listbox" aria-label="Languages">
-          {{- range .Site.Languages -}}
-            <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language.Lang .Lang }}class="selected" arial-selected="true"{{ else }}arial-selected="false"{{ end }} >{{ .LanguageName }}</li>
+          {{- with .Rotate "language" -}}
+            {{- range . -}}
+              <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language .Site.Language }}class="selected" aria-selected="true"{{ else }}aria-selected="false"{{ end }} >{{ .Site.Language.Label }}</li>
+            {{- end -}}
           {{- end -}}
         </ul>
       </div>
@@ -106,13 +110,14 @@
   {{- end -}}
 </div>
 <header id="header" aria-label="Site header">
-  {{- if and .Params.cover (strings.HasPrefix .Params.cover "rgb") -}}
+  {{- $headerImage := .Params.banner | default .Params.cover -}}
+  {{- if and $headerImage (strings.HasPrefix $headerImage "rgb") -}}
     <picture></picture>
-    <img style="position: absolute;top: 0;left: 0;width: 100%;height: 180%;z-index: -2;display: block;background: {{ .Params.cover | safeCSS }};mask: linear-gradient(to top, transparent, #fff 50%);"></img>
-  {{- else if .Params.cover -}}
+    <img style="position: absolute;top: 0;left: 0;width: 100%;height: 180%;z-index: -2;display: block;background: {{ $headerImage | safeCSS }};mask: linear-gradient(to top, transparent, #fff 50%);"></img>
+  {{- else if $headerImage -}}
     <picture></picture>
-    <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Params.cover | relURL }}" alt="{{ .Title }}">
-  {{- else if eq .Params.cover false -}}
+    <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ $headerImage | relURL }}" alt="{{ .Title }}">
+  {{- else if or (eq .Params.banner false) (eq .Params.cover false) -}}
     <picture></picture>
     <img style="visibility:hidden"></img>
   {{- else -}}
@@ -207,8 +212,15 @@
         </h2>
       {{- else -}}
         {{- $subtitle := "" -}}
+        {{- $useTyping := false -}}
         {{- if .IsHome -}}
-          {{- $subtitle = .Site.Params.subtitle | default .Site.Params.subtitle -}}
+          {{- if and (reflect.IsMap .Site.Params.subtitle) .Site.Params.subtitle.typing.enable -}}
+            {{- $useTyping = true -}}
+          {{- else if and (reflect.IsMap .Site.Params.subtitle) .Site.Params.subtitle.text -}}
+            {{- $subtitle = .Site.Params.subtitle.text -}}
+          {{- else if .Site.Params.subtitle -}}
+            {{- $subtitle = .Site.Params.subtitle -}}
+          {{- end -}}
         {{- else if and (eq .Type "categories") (not (eq .Title "Categories")) -}}
           {{- $subtitle = .Title -}}
         {{- else if and (eq .Type "tags") (not (eq .Title "Tags")) -}}
@@ -219,7 +231,9 @@
           {{- end -}}
         {{- end -}}
         <h2 id="subtitle-wrap" data-aos="{{ .Site.Params.animation.options.header.subTitle }}">
-          {{- if $subtitle -}}
+          {{- if $useTyping -}}
+            <span id="subtitle"><span></span></span>
+          {{- else if $subtitle -}}
             <span id="subtitle">{{ $subtitle }}</span>
           {{- end -}}
         </h2>

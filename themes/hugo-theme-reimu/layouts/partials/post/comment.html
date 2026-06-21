@@ -1,6 +1,6 @@
 {{- $site := .Site -}}
 {{- $params := .Site.Params -}}
-{{- $js := .Site.Data.vendor.js -}}
+{{- $js := hugo.Data.vendor.js -}}
 
 {{- $commentSystems := dict 
   "valine" (cond (and $params.valine.enable $params.valine.appId $params.valine.appKey) true false)
@@ -10,6 +10,7 @@
   "giscus" (cond $params.giscus.enable true false)
   "disqus" (cond (and $params.disqus.enable $params.disqus.shortname) true false)
   "utterances" (cond (and $params.utterances.enable $params.utterances.repo) true false)
+  "beaudar" (cond (and $params.beaudar.enable $params.beaudar.repo) true false)
 -}}
 
 {{- $activeSystems := slice -}}
@@ -28,7 +29,7 @@
     script.crossOrigin = 'anonymous';
     return script;
   };
-  var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus', 'disqus', 'utterances'];
+  var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus', 'utterances', 'beaudar', 'disqus'];
   var commentConfig = {
     {{- if $commentSystems.valine -}}
     valine: {
@@ -198,7 +199,7 @@
     {{- if $commentSystems.giscus -}}
     giscus: {
       enable: {{ if and $params.giscus.enable }}true{{ else }}false{{ end }},
-      load: () => {
+      load: async () => {
         const container = document.querySelector('.giscus-comment');
         if (!container) return;
         container.style.display = 'block';
@@ -212,6 +213,33 @@
         // 加载 Giscus 脚本
         const giscusScript = document.createElement('script');
         const domMode = document.documentElement.getAttribute("data-theme");
+        const defaultTheme = { dark: 'dark', light: 'light' };
+        const customTheme = {
+          light: '{{ $params.giscus.theme.light }}' ? '{{ $params.giscus.theme.light }}' : new URL('{{- partial "helpers/scss.html" (dict "source" "css/giscus_reimu_light.scss" "temp" "giscus_reimu_light.scss" "target" "css/giscus_reimu_light.css" "ctx" . "permalinkOnly" true) -}}', window.location.origin).href,
+          dark: '{{ $params.giscus.theme.dark }}' ? '{{ $params.giscus.theme.dark }}' : new URL('{{- partial "helpers/scss.html" (dict "source" "css/giscus_reimu_dark.scss" "temp" "giscus_reimu_dark.scss" "target" "css/giscus_reimu_dark.css" "ctx" . "permalinkOnly" true) -}}', window.location.origin).href
+        };
+        const hasGiscusCorsHeader = async (url) => {
+          if (!url) return false;
+          if (!url.startsWith('http')) return true; // not a url, maybe a name of built-in theme
+          try {
+            let response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+            if (response.status === 405) {
+              response = await fetch(url, { method: 'GET', cache: 'no-store' });
+            }
+            const allowOrigin = response.headers.get('access-control-allow-origin') || '';
+            return allowOrigin === '*' || allowOrigin.split(',').map(value => value.trim()).includes('https://giscus.app');
+          } catch {
+            return false;
+          }
+        };
+        let giscusTheme = defaultTheme;
+        const [darkCorsOk, lightCorsOk] = await Promise.all([
+          hasGiscusCorsHeader(customTheme.dark),
+          hasGiscusCorsHeader(customTheme.light)
+        ]);
+        if (darkCorsOk && lightCorsOk) {
+          giscusTheme = customTheme;
+        }
 
         const docLang = document.documentElement.lang || 'en';
         const langBase = docLang.split('-')[0];
@@ -230,7 +258,7 @@
         giscusScript.setAttribute('data-reactions-enabled', '{{ $params.giscus.reactionsEnabled }}');
         giscusScript.setAttribute('data-emit-metadata', '{{ $params.giscus.emitMetadata }}');
         giscusScript.setAttribute('data-input-position', '{{ $params.giscus.inputPosition }}');
-        giscusScript.setAttribute('data-theme', domMode === 'dark' ? 'dark' : 'light');
+        giscusScript.setAttribute('data-theme', domMode === 'dark' ? giscusTheme.dark : giscusTheme.light);
         giscusScript.setAttribute('data-lang', giscusLang);
         giscusScript.setAttribute('crossorigin', 'anonymous');
         giscusScript.async = true;
@@ -242,7 +270,7 @@
             document.body.removeEventListener('reimu:theme-set', themeHandler);
             return;
           }
-          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: isDark ? 'dark' : 'light' } } }, 'https://giscus.app');
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: isDark ? giscusTheme.dark : giscusTheme.light } } }, 'https://giscus.app');
         };
         document.body.addEventListener('reimu:theme-set', themeHandler);
       }
@@ -389,6 +417,49 @@
           document.body.addEventListener('reimu:theme-set', themeHandler);
         }
       }
+    },
+    {{- end -}}
+    {{- if $commentSystems.beaudar -}}
+    beaudar: {
+      enable: {{ if and $params.beaudar.enable $params.beaudar.repo }}true{{ else }}false{{ end }},
+      load: () => {
+        const container = document.querySelector('.beaudar-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = '{{ $params.beaudar.theme | default "github-light" }}';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        const script = document.createElement('script');
+        script.src = 'https://beaudar.lipk.org/client.js';
+        script.setAttribute('repo', '{{ $params.beaudar.repo }}');
+        script.setAttribute('branch', '{{ $params.beaudar.branch | default "main" }}');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        {{- with $params.beaudar.issue_term }}script.setAttribute('issue-term', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.issue_number }}script.setAttribute('issue-number', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.label }}script.setAttribute('label', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.input_position }}script.setAttribute('input-position', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.comment_order }}script.setAttribute('comment-order', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.keep_theme }}script.setAttribute('keep-theme', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.loading }}script.setAttribute('loading', '{{ . }}');{{- end }}
+
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.beaudar-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://beaudar.lipk.org');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
     }
     {{- end -}}
   };
@@ -428,7 +499,10 @@
       waline: false,
       twikoo: false,
       gitalk: false,
-      giscus: false
+      giscus: false,
+      disqus: false,
+      utterances: false,
+      beaudar: false,
     };
 
     // 隐藏所有评论容器

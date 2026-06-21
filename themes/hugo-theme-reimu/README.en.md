@@ -34,7 +34,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 ### Basic Functions
 
 - ✨ Full blog functionality
-- 🔄 Compatible with Hugo 0.124.0+
+- 🔄 Compatible with Hugo 0.158.0+
 - 📱 Responsive layout
 - 🌙 Dark mode support
 - 🅰️ i18n support
@@ -56,6 +56,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - Giscus
   - Disqus
   - Utterances
+  - Beaudar
 
 ### Statistics & Analytics
 
@@ -153,7 +154,7 @@ Copy all files from the theme's `config/data/` folder to the outer `data` folder
 
 #### Static Resource Configuration
 
-The theme's static resources (favicon, header images, etc.) are located in the `static` folder. You can create corresponding folders in the outer `static` folder and copy the files from inside the theme to the outer folders to override the theme's default files.
+The theme's static resources (Favicon, header images, etc.) are located in the `static` folder. You can create corresponding folders in the outer `static` folder and copy the files from inside the theme to the outer folders to override the theme's default files.
 
 > In summary, it's not recommended to modify files directly inside the theme. Instead, create corresponding folders in the outer directory and copy the theme's files there to override the default files. This approach makes theme upgrades easier.
 
@@ -187,7 +188,7 @@ Friend link page
 </details>
 
 <details>
-<summary>Avatar, Cover, Banner, and favicon</summary>
+<summary>Avatar, Cover, Banner, and Favicon</summary>
 
 ### Avatar, Cover, Banner, and Favicon
 
@@ -208,37 +209,30 @@ For random cover images, refer to the file structure in the theme's `data/covers
 - https://example.com/2.jpg
 ```
 
-Cover display logic is as follows:
+`banner` and `cover` behave as follows:
 
-- If the article's Front matter contains a cover url, both the article header and homepage thumbnail will display that url
+- Article header image prefers Front matter `banner`; if `banner` is not set, it falls back to `cover` for backward compatibility
+- List card cover prefers Front matter `cover` (URL only); when `cover` is unset, `false`, or `rgb(...)`, it falls back to random images from `data/covers.yml`
+- If random covers are unavailable, it falls back to the global `banner`
 
-```yaml
----
-title: Hello World
-cover: https://example.com
----
-```
-
-- If the article's Front matter contains cover set to `false`, the article won't display a header image (homepage thumbnail will still show random images)
+Recommended (separate header and card images):
 
 ```yaml
 ---
 title: Hello World
-cover: false
+banner: https://example.com/post-header.webp
+cover: https://example.com/post-card.webp
 ---
 ```
 
-- If the article's Front matter contains cover set to `rgb(xxx,xxx,xxx)`, the article header will be a gradient of that solid color (homepage thumbnail will still show random images)
+Legacy-compatible (cover only):
 
 ```yaml
 ---
 title: Hello World
-cover: rgb(255,117,117)
+cover: https://example.com/cover.webp
 ---
 ```
-
-- Otherwise, the homepage thumbnail will look for `covers.yml` in the `data` folder and randomly select an image; the in-article header image will look for the `cover` configuration in `params.yml`
-- If none of the above files/configurations exist, it will display the `banner` header image as a fallback
 
 #### Banner
 
@@ -250,7 +244,7 @@ banner: "images/banner.webp"
 
 #### Favicon
 
-The favicon is saved at `themes/hugo-theme-reimu/static/favicon.ico`. You can replace it with your own file.
+The Favicon is saved at `themes/hugo-theme-reimu/static/favicon.ico`. You can replace it with your own file.
 
 #### Article Summary
 
@@ -310,13 +304,27 @@ toc: true # true | false
 
 #### Social Links
 
-You can configure the social links in the sidebar in `params.yml`.
+You can configure sidebar social links in `params.yml`, supporting both map and array formats (choose one).
+
+Style 1: map (legacy-compatible)
 
 ```yaml
 social:
-  # github: https://github.com/yourname
-  # bilibili: https://space.bilibili.com/yourname
-  # ...
+  github: https://github.com/yourname
+  bilibili: https://space.bilibili.com/yourname
+  # weixin: https://example.com/your-weixin-link
+  # qq: https://example.com/your-qq-link
+  tiktok: https://www.tiktok.com/@yourname
+```
+
+Style 2: array (newly supported)
+
+```yaml
+social:
+  - name: github
+    url: https://github.com/yourname
+  - name: tiktok
+    url: https://www.tiktok.com/@yourname
 ```
 
 #### Widgets
@@ -514,7 +522,17 @@ giscus:
   reactionsEnabled: 1
   emitMetadata: 0
   inputPosition: bottom
+  theme:
+    light: # optional, supports built-in giscus theme names or custom CSS URL
+    dark: # optional, supports built-in giscus theme names or custom CSS URL
 ```
+
+Notes:
+
+- Giscus is rendered in an iframe and cannot directly inherit global site styles, so it must be themed via `data-theme`.
+- If `theme.light` / `theme.dark` uses URL values, the theme checks whether the URL allows CORS access from `https://giscus.app`; if validation fails, it falls back to built-in `light` / `dark`.
+- If both `theme` values are empty, it will try to use the built-in Reimu-style CSS themes (to align cursor style, fonts, and static tokens with the site; dynamic tokens like `material_theme` are not supported).
+- Local `hugo server` (HTTP, usually without CORS headers) and default `github.io` static hosting commonly fail URL-theme validation; use a CORS-configured asset host (e.g., jsDelivr proxy).
 
 If using [gitalk](https://gitalk.github.io/)  
 Please refer to their [official documentation](https://github.com/gitalk/gitalk?tab=readme-ov-file#usage) to complete repository configuration, then set `gitalk.enable` to `true` in `params.yml` and fill in the corresponding data
@@ -540,7 +558,7 @@ disqus:
   count: true # Whether to enable comment count statistics
 ```
 
-If using utterance [utterances](https://utteranc.es/)  
+If using [utterances](https://utteranc.es/)  
 Please set `utterances.enable` to `true` in `params.yml` and fill in your own `repo`
 
 ```yml
@@ -549,6 +567,23 @@ utterances:
   repo: owner/repo # Change this to "Your GitHub Username/The Repository Name" used for storing blog comments
   issue_term: title
   theme: github-light # You can use auto to automatically adapt to dark and light themes
+```
+
+If using [beaudar](https://beaudar.lipk.org/)  
+Please set `beaudar.enable` to `true` in your theme's `_config.yml` and fill in your own `repo` and `branch`. Then create the [domain whitelist](https://github.com/beaudar/beaudar/blob/master/beaudar.json) in your repository (for Hexo themes, please place this file directly in the `source` directory) and [authorize the installation](https://github.com/apps/beaudar)
+```yml
+beaudar:
+  enable: true
+  repo: owner/repo # Change this to "Your GitHub Username/The Repository Name" used for storing blog comments
+  branch: main # Change this to your repository branch name
+  issue_term: title # Mapping between blog posts and Issues
+  issue_number:
+  theme: auto # You can use auto to automatically adapt to dark and light themes
+  label:
+  input_position: top # top/bottom - Position of the comment box, default is top
+  comment_order: desc # asc/desc - Comment sorting order, default is desc (newest comments on top)
+  keep_theme: # true/false - Save theme settings to the page's sessionStorage, default is true
+  loading: # true/false - Clicking the loading icon redirects to the official page
 ```
 
 </details>
@@ -603,7 +638,7 @@ math: true
 
 > Note: Do not enable both KaTeX and MathJax3 at the same time.
 
-#### KaTex
+#### KaTeX
 
 If using [KaTeX](https://github.com/KaTeX/KaTeX), set `math.katex.enable` to `true` in `params.yml`:
 
@@ -667,10 +702,10 @@ rss:
 
 ### Icon
 
-Icons default to using the iconfont provided by this project:
+Icons default to using the Iconfont provided by this project:
 
 ```yml
-icon_font: 4552607_0khxww3tj3q9
+icon_font: 4552607_a0oqhord1y
 ```
 
 If you want to continue using FontAwesome icons, set `icon_font` to `false`. This will use the corresponding FontAwesome configuration from `vendor.yml`:
@@ -855,6 +890,45 @@ quicklink:
   ignores: [] # Ignore the specified link, only support string array
 ```
 
+#### Paragraph Anchor
+
+Disabled by default
+
+Injects linkable anchor icons into paragraphs, list items, and other block-level elements in the article body. Supports two modes: explicit anchors and auto anchors.
+
+##### Explicit Anchors
+
+Write `{#anchor-xxx}` anywhere inside a Markdown block. The matching element receives `id="anchor-xxx"` and an anchor icon is appended at the end.
+
+```yaml
+anchor:
+  explicit:
+    enable: false    # Whether to enable explicit anchors
+    marker: "{#anchor-" # Anchor placeholder prefix; usually no need to change
+    prefix: "anchor-"   # Prefix of the generated id; final id = prefix + xxx
+```
+
+Example:
+
+```markdown
+- [Reference 1](https://example.com) {#anchor-ref1}
+```
+
+After rendering, the `<li>` element gets `id="anchor-ref1"`, and adding `#anchor-ref1` to the URL navigates directly to it.
+
+##### Auto Anchors
+
+No manual annotation needed. Automatically derives `id` values for direct child paragraphs (`.article-entry > p`) from their text content: lowercased, special characters replaced with hyphens, and truncated to `length`.
+
+```yaml
+anchor:
+  auto:
+    enable: false # Whether to enable auto anchors
+    length: 60    # Maximum length of auto-generated anchor ids
+```
+
+> If a paragraph already has an `id` injected by an explicit anchor, the auto anchor will skip it to avoid duplication.
+
 #### Outdated Notice
 
 Disabled by default
@@ -966,12 +1040,13 @@ player:
 
 #### Share Link / Card (v0.5.0+)
 
-Disabled by default, currently supports `facebook`, `twitter`, `linkedin`, `reddit`, `weibo`, `qq`, `weixin`.
+Disabled by default, currently supports `facebook`, `twitter`, `bluesky`, `linkedin`, `reddit`, `weibo`, `qq`, `weixin`.
 
 ```yaml
 share:
   # - facebook
   # - twitter
+  # - bluesky
   # - linkedin
   # - reddit
   # - weibo
@@ -979,7 +1054,7 @@ share:
   # - weixin
 ```
 
-For `weixin`, it generates a share card with QR code that can be saved locally and shared to WeChat Moments (Note: when the article cover has cross-origin issues, html-to-image cannot correctly generate cards with images!)
+For `weixin`, it generates a share card with QR code that can be saved locally and shared to WeChat Moments (Note: if the article cover has cross-origin issues, the screenshot tool may fail to generate cards with images correctly.)
 
 #### Homepage Category Cards (v0.6.0+)
 
@@ -1017,7 +1092,7 @@ Disabled by default. When enabled, it will display a triangle badge in the upper
 triangle_badge:
   enable: false
   icon: github # Same as the icon in the social config
-  link: https://github.com/D-Sketon/hexo-theme-reimu
+  link: https://github.com/D-Sketon/hugo-theme-reimu
 ```
 
 </details>
@@ -1027,7 +1102,7 @@ triangle_badge:
 
 ### Built-in Shortcodes
 
-#### friendLink Card
+#### friendsLink Card
 
 ```markdown
 {{< friendsLink >}}
@@ -1079,7 +1154,7 @@ tagRoulette is an interactive element that provides a random tag display feature
 ```markdown
 {{< alertBlockquote type="?" >}}
 Your content here
-{{</alertBlockquote>}}
+{{< /alertBlockquote >}}
 ```
 
 It is applicable to scenarios where Hugo v0.132.0 or lower cannot use Hugo Blockquote render hooks.
@@ -1126,7 +1201,8 @@ Adapted from the next, volantis, and stellar themes, this feature supports creat
 ![alt text](image_url1)
 ![alt text](image_url2)
 ...
-{{</gallery>}}
+{{< /gallery >}}
+```
 
 Display multiple images in a photo wall format, supporting automatic arrangement and responsive layout.
 
@@ -1413,7 +1489,7 @@ layout:
 <details>
 <summary>Vendor</summary>
 
-`vendor` is used to store third-party resources such as fontawesome, iconfont, katex, mathjax, etc.
+`vendor` is used to store third-party resources such as FontAwesome, Iconfont, katex, mathjax, etc.
 
 The `vendor` structure in hugo-theme-reimu is very flexible and supports the following formats:
 
@@ -1450,28 +1526,30 @@ Both formats are supported. It's recommended to use SRI verification for externa
 
 ### Front-matter Fields
 
-| meta        | Description                                                                | Type                         | Value Logic                               | Version       |
-| ----------- | -------------------------------------------------------------------------- | ---------------------------- | ----------------------------------------- | ------------- |
-| title       | Title                                                                      | `string`                     | -                                         | Hugo Built-in |
-| date        | Article creation time                                                      | `datetime`                   | -                                         | Hugo Built-in |
-| lastmod     | Article last modified time                                                 | `datetime`                   | -                                         | Hugo Built-in |
-| summary     | Article summary                                                            | `string`                     | -                                         | Hugo Built-in |
-| weight      | Article weight, used for sorting/pinning                                   | `int`                        | -                                         | Hugo Built-in |
-| categories  | Article categories                                                         | `string[]`                   | -                                         | 0.0.1         |
-| tags        | Article tags                                                               | `string[]`                   | -                                         | 0.0.1         |
-| description | Article description                                                        | `string`                     | -                                         | 0.0.1         |
-| mermaid     | Whether to enable mermaid (requires configuration with `mermaid` settings) | `boolean`                    | `false`                                   | 0.0.1         |
-| math        | Whether to enable LaTeX (requires configuration with `math` settings)      | `boolean`                    | `false`                                   | 0.0.1         |
-| link        | Directs the article to an external link                                    | `string`                     | -                                         | 0.0.1         |
-| copyright   | Whether to enable article copyright notice                                 | `boolean`                    | Defaults to global config if not provided | 0.0.1         |
-| sponsor     | Whether to enable article sponsorship                                      | `boolean`                    | Defaults to global config if not provided | 0.0.1         |
-| comments    | Whether to enable article comments                                         | `boolean`                    | Defaults to global config if not provided | 0.0.1         |
-| photos      | Article photo gallery                                                      | `string[]`                   | -                                         | 0.0.1         |
-| sidebar     | Article sidebar position                                                   | `false \| 'left' \| 'right'` | Defaults to global config if not provided | 0.5.0         |
-| toc         | Whether to enable article table of contents                                | `boolean`                    | Defaults to global config if not provided | 0.7.0         |
-| outdated    | Whether the article is outdated                                            | `boolean`                    | Defaults to global config if not provided | 0.13.1        |
-| author      | Article author (used for article copyright and sharing cards)              | `string`                     | Defaults to global config if not provided | 0.13.2        |
-| keywords    | Article keywords for SEO                                                   | `string[] \| string`         | Defaults to global config if not provided | 0.13.4        |
+| meta        | Description                                                                | Type                                               | Value Logic                               | Version       |
+| ----------- | -------------------------------------------------------------------------- | -------------------------------------------------- | ----------------------------------------- | ------------- |
+| title       | Title                                                                      | `string`                                           | -                                         | Hugo Built-in |
+| date        | Article creation time                                                      | `datetime`                                         | -                                         | Hugo Built-in |
+| lastmod     | Article last modified time                                                 | `datetime`                                         | -                                         | Hugo Built-in |
+| summary     | Article summary                                                            | `string`                                           | -                                         | Hugo Built-in |
+| weight      | Article weight, used for sorting/pinning                                   | `int`                                              | -                                         | Hugo Built-in |
+| cover       | Article cover                                                              | `https://example.com \| false \| rgb(255,117,117)` | -                                         | 0.0.1         |
+| categories  | Article categories                                                         | `string[]`                                         | -                                         | 0.0.1         |
+| tags        | Article tags                                                               | `string[]`                                         | -                                         | 0.0.1         |
+| description | Article description                                                        | `string`                                           | -                                         | 0.0.1         |
+| mermaid     | Whether to enable mermaid (requires configuration with `mermaid` settings) | `boolean`                                          | `false`                                   | 0.0.1         |
+| math        | Whether to enable LaTeX (requires configuration with `math` settings)      | `boolean`                                          | `false`                                   | 0.0.1         |
+| link        | Directs the article to an external link                                    | `string`                                           | -                                         | 0.0.1         |
+| copyright   | Whether to enable article copyright notice                                 | `boolean`                                          | Defaults to global config if not provided | 0.0.1         |
+| sponsor     | Whether to enable article sponsorship                                      | `boolean`                                          | Defaults to global config if not provided | 0.0.1         |
+| comments    | Whether to enable article comments                                         | `boolean`                                          | Defaults to global config if not provided | 0.0.1         |
+| photos      | Article photo gallery                                                      | `string[]`                                         | -                                         | 0.0.1         |
+| sidebar     | Article sidebar position                                                   | `false \| 'left' \| 'right'`                     | Defaults to global config if not provided | 0.5.0         |
+| toc         | Whether to enable article table of contents                                | `boolean`                                          | Defaults to global config if not provided | 0.7.0         |
+| outdated    | Whether the article is outdated                                            | `boolean`                                          | Defaults to global config if not provided | 0.13.1        |
+| author      | Article author (used for article copyright and sharing cards)              | `string`                                           | Defaults to global config if not provided | 0.13.2        |
+| keywords    | Article keywords for SEO                                                   | `string[] \| string`                               | Defaults to global config if not provided | 0.13.4        |
+| banner      | Article banner                                                             | `https://example.com \| false \| rgb(255,117,117)` | -                                         | 0.15.2        |
 </details>
 
 ## Contributors

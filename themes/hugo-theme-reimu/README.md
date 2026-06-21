@@ -34,7 +34,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 ### 基础功能
 
 - ✨ 完整的博客功能
-- 🔄 兼容 Hugo 0.124.0 及以上版本
+- 🔄 兼容 Hugo 0.158.0 及以上版本
 - 📱 响应式布局
 - 🌙 暗黑模式支持
 - 🅰️ i18n 支持
@@ -56,6 +56,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - Giscus
   - Disqus
   - Utterances
+  - Beaudar
 
 ### 统计与分析
 
@@ -153,7 +154,7 @@ hugo server
 
 #### 静态资源配置
 
-主题的静态资源（favicon，头图等）位于 `static` 文件夹内，你可以在外层 `static` 文件夹下创建相应的文件夹，然后将主题内的文件复制到外层文件夹下，以覆盖主题内的默认文件
+主题的静态资源（Favicon，头图等）位于 `static` 文件夹内，你可以在外层 `static` 文件夹下创建相应的文件夹，然后将主题内的文件复制到外层文件夹下，以覆盖主题内的默认文件
 
 > 总之一句话，不建议直接修改主题内的文件，而是在外层创建相应的文件夹，然后将主题内的文件复制到外层文件夹下，以覆盖主题内的默认文件，这样便于主题升级
 
@@ -202,7 +203,7 @@ hasCJKLanguage = true
 <details>
 <summary>头像、封面、头图和图标</summary>
 
-### 头像、封面、头图和favicon
+### 头像、封面、头图和Favicon
 
 #### 头像
 
@@ -221,37 +222,30 @@ avatar: "avatar.webp"
 - https://example.com/2.jpg
 ```
 
-封面显示逻辑如下
+`banner` 和 `cover` 的显示逻辑如下：
 
-- 如果文章的 Front matter 中包含 cover 的 url，则该文章头图和首页缩略图均显示该 url
+- 文章页头图优先使用 Front matter 的 `banner`；若未设置 `banner`，则兼容使用 `cover`
+- 列表卡片封面优先使用 Front matter 的 `cover`（仅 URL 生效）；当 `cover` 未设置、为 `false` 或 `rgb(...)` 时，会回退到 `data/covers.yml` 随机图
+- 若随机封面不可用，则回退到全局 `banner`
 
-```yaml
----
-title: Hello World
-cover: https://example.com
----
-```
-
-- 如果文章的 Front matter 中包含 cover 为 `false`，则该文章不显示头图（首页缩略图仍然是随机图片）
+推荐写法（头图与卡片封面分离）：
 
 ```yaml
 ---
 title: Hello World
-cover: false
+banner: https://example.com/post-header.webp
+cover: https://example.com/post-card.webp
 ---
 ```
 
-- 如果文章的 Front matter 中包含 cover 为 `rgb(xxx,xxx,xxx)`，则该文章头图为对应的渐变纯色（首页缩略图仍然是随机图片）
+兼容旧写法（只写 `cover`）：
 
 ```yaml
 ---
 title: Hello World
-cover: rgb(255,117,117)
+cover: https://example.com/cover.webp
 ---
 ```
-
-- 否则首页缩略图查找 `data` 文件夹中的 `covers.yml`，并从中随机挑选图片，文章内头图查找 `params.yml` 中的 `cover` 配置
-- 若上述文件/配置均不存在，则显示 `banner` 头图作为兜底
 
 #### 头图
 
@@ -263,7 +257,7 @@ banner: "images/banner.webp"
 
 #### Favicon
 
-favicon 保存于 `themes/hugo-theme-reimu/static/favicon.ico`，可自行覆盖替换
+Favicon 保存于 `themes/hugo-theme-reimu/static/favicon.ico`，可自行覆盖替换
 
 #### 文章总结
 
@@ -322,13 +316,27 @@ toc: true # true | false
 
 #### 社交链接
 
-可在 `params.yml` 中配置侧边栏中的社交链接
+可在 `params.yml` 中配置侧边栏中的社交链接，支持对象与数组两种写法（二选一）
+
+写法 1：对象（兼容旧格式）
 
 ```yaml
 social:
-  # github: https://github.com/yourname
-  # bilibili: https://space.bilibili.com/yourname
-  # ...
+  github: https://github.com/yourname
+  bilibili: https://space.bilibili.com/yourname
+  # weixin: https://example.com/your-weixin-link
+  # qq: https://example.com/your-qq-link
+  tiktok: https://www.tiktok.com/@yourname
+```
+
+写法 2：数组（新支持）
+
+```yaml
+social:
+  - name: github
+    url: https://github.com/yourname
+  - name: tiktok
+    url: https://www.tiktok.com/@yourname
 ```
 
 #### 侧边栏小部件
@@ -404,7 +412,7 @@ guessSyntax = true
 noClasses = false
 ```
 
-代码块同时提供了代码粘贴功能，点击代码块右上角的复制按钮即可复制代码。在 `params.yml` 中可以对复制功能进行配置。  
+代码块同时提供了代码复制功能，点击代码块右上角的复制按钮即可复制代码。在 `params.yml` 中可以对复制功能进行配置。  
 `success` 为复制成功时的提示，`fail` 为复制失败时的提示。此外，可以配置版权声明，当复制的字符数大于 `count` 时会在复制的内容后面添加版权声明。
 
 ```yaml
@@ -526,7 +534,17 @@ giscus:
   reactionsEnabled: 1
   emitMetadata: 0
   inputPosition: bottom
+  theme:
+    light: # 可选，支持 giscus 内置主题名或自定义 CSS URL
+    dark: # 可选，支持 giscus 内置主题名或自定义 CSS URL
 ```
+
+说明：
+
+- Giscus 基于 iframe 渲染，无法直接继承站点全局样式，需要通过 `data-theme` 覆盖。
+- 若 `theme.light` / `theme.dark` 使用 URL，主题会校验该地址是否允许 `https://giscus.app` 跨域访问；校验失败会自动回退到内置 `light` / `dark`。
+- 两个 `theme` 留空时，会尝试使用主题内置的 Reimu 风格 CSS（与全站保持一致的鼠标样式、字体和静态 token；`material_theme` 等动态 token 不支持）。
+- 本地 `hugo server`（HTTP 且通常无 CORS 头）与 `github.io` 默认静态资源场景通常无法直接通过 URL 主题校验，建议使用可配置 CORS 的资源域名（例如 jsDelivr 代理）。
 
 若基于 [gitalk](https://gitalk.github.io/)  
 请参考其[官方文档](https://github.com/gitalk/gitalk?tab=readme-ov-file#usage)完成仓库的配置，并在 `params.yml` 中将 `gitalk.enable` 改为 `true`，并填入对应的数据
@@ -561,6 +579,23 @@ utterances:
   repo: owner/repo # 这里需要修改为 你的 GitHub 用户名/刚刚创建的，用户保存博客评论的 GitHub 仓库名
   issue_term: title
   theme: github-light # 你可以使用 auto 来自动适配深色和浅色主题
+```
+
+若基于 [beaudar](https://beaudar.lipk.org/)  
+请在内层 `_config.yml` 中将 `beaudar.enable` 改为 `true`，并填入自己的 `repo` 和 `branch`。之后需要在仓库中创建一个[域白名单](https://github.com/beaudar/beaudar/blob/master/beaudar.json) (Hexo 主题请把该文件直接放在 `source` 目录下)，并[授权安装](https://github.com/apps/beaudar)即可
+```yml
+beaudar:
+  enable: true
+  repo: owner/repo # 这里需要修改为 你的 GitHub 用户名/刚刚创建的，用户保存博客评论的 GitHub 仓库名
+  branch: main # 这里修改为你的仓库分支名
+  issue_term: title # 博客文章 与 Issue 的映射
+  issue_number:
+  theme: auto # 你可以使用 auto 来自动适配深色和浅色主题
+  label:
+  input_position: top # top/bottom 评论框的位置，默认顶部 top
+  comment_order: desc # asc/desc 评论排序，默认降序 desc (新评论在顶部)
+  keep_theme: # true/false 主题设置保存到页面的 sessionStorage，默认 true
+  loading: # true/false 点击加载图标可跳转至官方页面
 ```
 
 </details>
@@ -619,7 +654,7 @@ math: true
 
 #### KaTeX
 
-若基于 [Katex](https://github.com/KaTeX/KaTeX)，请在 `params.yml` 中将 `math.katex.enable` 改为 `true`
+若基于 [KaTeX](https://github.com/KaTeX/KaTeX)，请在 `params.yml` 中将 `math.katex.enable` 改为 `true`
 
 ```yaml
 math:
@@ -681,13 +716,13 @@ rss:
 
 ### Icon
 
-Icon 默认使用本项目提供的 iconfont
+Icon 默认使用本项目提供的 Iconfont
 
 ```yml
-icon_font: 4552607_0khxww3tj3q9
+icon_font: 4552607_a0oqhord1y
 ```
 
-如果想要继续使用 fontawesome 图标，请将 `icon_font` 设置为 `false`，此时会使用 `vendor.yml` 中对应的 fontawesome
+如果想要继续使用 FontAwesome 图标，请将 `icon_font` 设置为 `false`，此时会使用 `vendor.yml` 中对应的 FontAwesome
 
 ```yml
 fontawesome:
@@ -867,6 +902,45 @@ copyright: true # 是否展示版权卡片？
 ---
 ```
 
+#### 段落锚点
+
+默认关闭
+
+为文章正文的段落、列表项等块级元素注入可跳转的锚点链接，支持显式锚点与自动锚点两种模式。
+
+##### 显式锚点
+
+在 Markdown 中写 `{#anchor-xxx}`，对应块级元素会获得 `id="anchor-xxx"` 并在末尾追加一个可点击的锚点图标。
+
+```yaml
+anchor:
+  explicit:
+    enable: false # 是否启用显式锚点
+    marker: "{#anchor-" # 锚点占位符前缀，通常无需修改
+    prefix: "anchor-" # 生成的 id 前缀，实际 id = prefix + xxx
+```
+
+示例：
+
+```markdown
+- [参考文献1](https://example.com) {#anchor-ref1}
+```
+
+渲染后，该 `<li>` 会获得 `id="anchor-ref1"`，URL 中加上 `#anchor-ref1` 即可直接跳转。
+
+##### 自动锚点
+
+无需手动标注，自动为文章中的直接子段落（`.article-entry > p`）从文本内容派生 `id`：全小写、特殊字符替换为连字符，并按 `length` 截断。
+
+```yaml
+anchor:
+  auto:
+    enable: false # 是否启用自动锚点
+    length: 60    # 自动生成的 id 最大长度
+```
+
+> 若某段落已通过显式锚点注入了 `id`，自动锚点会跳过该段落，不会重复注入。
+
 #### 文章过期提醒
 
 默认关闭
@@ -899,8 +973,8 @@ sponsor:
     rotate: true # 是否旋转图标
     mask: true # 是否将图片作为遮罩（即只显示 png 图片的轮廓）
   qr:
-    - name: 支付宝 # 二维码名称
-      src: "sponsor/alipay.jpg" # 示例二维码路径，位于 static/sponsor/aliapy.jpg
+      - name: 支付宝 # 二维码名称
+      src: "sponsor/alipay.jpg" # 示例二维码路径，位于 static/sponsor/alipay.jpg
 ```
 
 此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
@@ -913,7 +987,7 @@ sponsor: true # 是否展示赞助二维码？
 
 #### 音乐播放器（v0.4.0+）
 
-> 使用前建议先打开 Pjax，否则会出现播放器自动暂停的问题
+> 使用前建议先打开 PJAX，否则会出现播放器自动暂停的问题
 
 使用Aplayer + Meting（可选）默认关闭
 
@@ -978,12 +1052,13 @@ player:
 
 #### 分享链接/卡片（v0.5.0+）
 
-默认关闭，目前支持 `facebook`、`twitter`、`linkedin`、`reddit`、`weibo`、`qq`、`weixin`。
+默认关闭，目前支持 `facebook`、`twitter`、`bluesky`、`linkedin`、`reddit`、`weibo`、`qq`、`weixin`。
 
 ```yml
 share:
   # - facebook
   # - twitter
+  # - bluesky
   # - linkedin
   # - reddit
   # - weibo
@@ -991,7 +1066,7 @@ share:
   # - weixin
 ```
 
-`weixin` 状态下会生成带有二维码的分享卡片，可保存到本地后分享到微信朋友圈（注意，当文章封面存在跨域问题时无法使用 html-to-image 正确生成含图片的卡片！）
+`weixin` 状态下会生成带有二维码的分享卡片，可保存到本地后分享到微信朋友圈（注意：当文章封面存在跨域问题时，截图工具无法正确生成含图片的卡片）
 
 #### 首页目录卡片（v0.6.0+）
 
@@ -1038,7 +1113,7 @@ pangu:
 triangle_badge:
   enable: false
   icon: github # 与 social 配置里的 icon 相同
-  link: https://github.com/D-Sketon/hexo-theme-reimu
+  link: https://github.com/D-Sketon/hugo-theme-reimu
 ```
 
 </details>
@@ -1048,7 +1123,7 @@ triangle_badge:
 
 ### 内置shortcode
 
-#### friendLink 友链卡片
+#### friendsLink 友链卡片
 
 ```markdown
 {{< friendsLink >}}
@@ -1100,7 +1175,7 @@ tagRoulette 是一个互动元素，提供随机标签展示功能，点击按�
 ```markdown
 {{< alertBlockquote type="?" >}}
 Your content here
-{{</alertBlockquote>}}
+{{< /alertBlockquote >}}
 ```
 
 适用于 Hugo v0.132.0 以下版本不能使用 Hugo Blockquote render hooks 的场景。
@@ -1147,7 +1222,7 @@ Tab content
 ![alt text](image_url1)
 ![alt text](image_url2)
 ...
-{{</gallery>}}
+{{< /gallery >}}
 ```
 
 将多张图片以照片墙的形式展示出来，支持自动排列和响应式布局。
@@ -1311,7 +1386,7 @@ custom_font:
 
 ##### 头部 / 侧边栏图标
 
-v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome，icon font 和 `false`。
+v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 FontAwesome，icon font 和 `false`。
 
 v0.10.2 icon 支持图片路径，如 `/avatar/avatar.webp`。
 
@@ -1322,7 +1397,7 @@ menu:
     icon: # 不填默认使用太极图标
   - name: archives
     url: /archives
-    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 fontawesome 和 icon font，如果填写 false 则不显示图标
+    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 FontAwesome 和 icon font，如果填写 false 则不显示图标
   - name: about
     url: /about
     icon:
@@ -1361,7 +1436,7 @@ sponsor:
 
 ##### 加载图标
 
-v0.1.0 的 `preloader` 配置增加了 `icon` 配置用于自定义图标。icon 为空时默认使用内链的 svg（保证首屏加载速度），你可以填入一个链接来自定义加载图标。
+v0.1.0 的 `preloader` 配置增加了 `icon` 配置用于自定义图标。icon 为空时默认使用内联的 svg（保证首屏加载速度），你可以填入一个链接来自定义加载图标。
 
 不建议使用过大的图标，以免影响加载速度。
 
@@ -1373,13 +1448,13 @@ preloader:
     zh-TW: 少女祈禱中...
     en: Loading...
     ja: 少女祈祷中...
-  icon: # 不填默认使用内链的svg（保证首屏加载速度），你可以填入一个链接来自定义加载图标，如 '/images/taichi.png'
+  icon: # 不填默认使用内联的 svg（保证首屏加载速度），你可以填入一个链接来自定义加载图标，如 '/images/taichi.png'
   rotate: true
 ```
 
 ##### 锚点图标
 
-v0.1.0 增加了 `anchor_icon` 配置用于自定义锚点图标，默认使用 `#` 图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome 和 icon font。
+v0.1.0 增加了 `anchor_icon` 配置用于自定义锚点图标，默认使用 `#` 图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 FontAwesome 和 icon font。
 
 ```yaml
 anchor_icon: # 不填默认使用 # 图标
@@ -1437,7 +1512,7 @@ layout:
 
 ### Vendor
 
-`vendor` 用于存放一些第三方资源，如 fontawesome、iconfont、katex、mathjax 等。
+`vendor` 用于存放一些第三方资源，如 FontAwesome、Iconfont、katex、mathjax 等。
 
 hugo-theme-reimu 的 `vendor` 结构非常灵活，其支持以下几种形式：
 
@@ -1473,28 +1548,30 @@ js:
 
 ### Front-matter 字段
 
-| meta        | 描述                                            | 类型                         | 取值逻辑           | 版本      |
-| ----------- | ----------------------------------------------- | ---------------------------- | ------------------ | --------- |
-| title       | 标题                                            | `string`                     | -                  | Hugo 内置 |
-| date        | 文章创建时间                                    | `datetime`                   | -                  | Hugo 内置 |
-| lastmod     | 文章最后修改时间                                | `datetime`                   | -                  | Hugo 内置 |
-| summary     | 文章摘要                                        | `string`                     | -                  | Hugo 内置 |
-| weight      | 文章权重，用于排序/置顶                         | `int`                        | -                  | Hugo 内置 |
-| categories  | 文章分类                                        | `string[]`                   | -                  | 0.0.1     |
-| tags        | 文章标签                                        | `string[]`                   | -                  | 0.0.1     |
-| description | 文章描述                                        | `string`                     | -                  | 0.0.1     |
-| mermaid     | 是否开启 mermaid，需配合 `mermaid` 配置一起使用 | `boolean`                    | `false`            | 0.0.1     |
-| math        | 是否开启 LaTeX，需配合 `math` 配置一起使用      | `boolean`                    | `false`            | 0.0.1     |
-| link        | 用于文章直接指向外部链接                        | `string`                     | -                  | 0.0.1     |
-| copyright   | 是否开启文章版权声明                            | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
-| sponsor     | 是否开启文章赞助                                | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
-| comments    | 是否开启文章评论                                | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
-| photos      | 文章照片墙                                      | `string[]`                   | -                  | 0.0.1     |
-| sidebar     | 文章侧边栏位置                                  | `false \| 'left' \| 'right'` | 不传默认走全局配置 | 0.5.0     |
-| toc         | 是否开启文章目录                                | `boolean`                    | 不传默认走全局配置 | 0.7.0     |
-| outdated    | 文章是否过期                                    | `boolean`                    | 不传默认走全局配置 | 0.13.1    |
-| author      | 文章作者，用于文章版权和分享卡片                | `string`                     | 不传默认走全局配置 | 0.13.2    |
-| keywords    | 文章关键词                                      | `string[] \| string`         | 不传默认走全局配置 | 0.13.4    |
+| meta        | 描述                                            | 类型                                               | 取值逻辑           | 版本      |
+| ----------- | ----------------------------------------------- | -------------------------------------------------- | ------------------ | --------- |
+| title       | 标题                                            | `string`                                           | -                  | Hugo 内置 |
+| date        | 文章创建时间                                    | `datetime`                                         | -                  | Hugo 内置 |
+| lastmod     | 文章最后修改时间                                | `datetime`                                         | -                  | Hugo 内置 |
+| summary     | 文章摘要                                        | `string`                                           | -                  | Hugo 内置 |
+| weight      | 文章权重，用于排序/置顶                         | `int`                                              | -                  | Hugo 内置 |
+| cover       | 文章封面                                        | `https://example.com \| false \| rgb(255,117,117)` | -                  | 0.0.1     |
+| categories  | 文章分类                                        | `string[]`                                         | -                  | 0.0.1     |
+| tags        | 文章标签                                        | `string[]`                                         | -                  | 0.0.1     |
+| description | 文章描述                                        | `string`                                           | -                  | 0.0.1     |
+| mermaid     | 是否开启 mermaid，需配合 `mermaid` 配置一起使用 | `boolean`                                          | `false`            | 0.0.1     |
+| math        | 是否开启 LaTeX，需配合 `math` 配置一起使用      | `boolean`                                          | `false`            | 0.0.1     |
+| link        | 用于文章直接指向外部链接                        | `string`                                           | -                  | 0.0.1     |
+| copyright   | 是否开启文章版权声明                            | `boolean`                                          | 不传默认走全局配置 | 0.0.1     |
+| sponsor     | 是否开启文章赞助                                | `boolean`                                          | 不传默认走全局配置 | 0.0.1     |
+| comments    | 是否开启文章评论                                | `boolean`                                          | 不传默认走全局配置 | 0.0.1     |
+| photos      | 文章照片墙                                      | `string[]`                                         | -                  | 0.0.1     |
+| sidebar     | 文章侧边栏位置                                  | `false \| 'left' \| 'right'`                       | 不传默认走全局配置 | 0.5.0     |
+| toc         | 是否开启文章目录                                | `boolean`                                          | 不传默认走全局配置 | 0.7.0     |
+| outdated    | 文章是否过期                                    | `boolean`                                          | 不传默认走全局配置 | 0.13.1    |
+| author      | 文章作者，用于文章版权和分享卡片                | `string`                                           | 不传默认走全局配置 | 0.13.2    |
+| keywords    | 文章关键词                                      | `string[] \| string`                               | 不传默认走全局配置 | 0.13.4    |
+| banner      | 文章头图                                        | `https://example.com \| false \| rgb(255,117,117)` | -                  | 0.15.2    |
 </details>
 
 ## 贡献者
@@ -1503,7 +1580,7 @@ js:
 
 ## 赞助 💘
 
-[爱发电-afdian](https://afdian.tv/a/dsketon)
+[爱发电-afdian](https://afdian.com/a/dsketon)
 
 ## Star History
 

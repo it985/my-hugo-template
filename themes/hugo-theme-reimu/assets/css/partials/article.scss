@@ -118,6 +118,25 @@
     margin-bottom: 40px;
   }
 
+  .paragraph-anchor {
+    opacity: 0;
+    text-decoration: none !important;
+    transition: 0.3s;
+  }
+
+  p:hover > .paragraph-anchor,
+  li:hover > .paragraph-anchor,
+  dd:hover > .paragraph-anchor,
+  dt:hover > .paragraph-anchor,
+  td:hover > .paragraph-anchor,
+  th:hover > .paragraph-anchor,
+  blockquote:hover > .paragraph-anchor,
+  details:hover > .paragraph-anchor,
+  figure:hover > .paragraph-anchor,
+  figcaption:hover > .paragraph-anchor {
+    opacity: 0.4;
+  }
+
   a {
     color: var(--color-link);
     text-decoration: none;

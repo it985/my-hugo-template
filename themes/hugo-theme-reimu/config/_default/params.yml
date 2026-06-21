@@ -29,7 +29,25 @@ timeFormat: "2006-01-02 15:04:05"
 author: D-Sketon
 email: xxx@example.com
 description: "少女祈祷中..."
-subtitle: "少女祈祷中..."
+# subtitle: "少女祈祷中..."
+subtitle:
+  typing:
+    enable: false
+    strings:
+      # - Sentence 1
+      # - Sentence 2
+      # - Sentence 3
+      # - Sentence 4
+    typeSpeed: 100              # 打字速度（毫秒/字符） 
+    backSpeed: 50               # 删除速度（毫秒/字符）
+    backDelay: 2000             # 打完一句话后，等待时间
+    startDelay: 300             # 页面加载后，等待时间
+    loop: true                  # 是否循环播放
+    shuffle: true              # 是否随机输出句子
+    showCursor: true            # 是否显示闪烁的字符
+    cursorChar: "|"             # 字符
+    smartBackspace: false       # 智能退格，只删除不同的部分
+  text: "少女祈祷中..."        # 当 typing.enable = false 时使用
 
 banner: "images/banner.webp"
 # You can also write it in the form of the following url
@@ -106,6 +124,7 @@ social:
   # github: https://github.com/yourname
   # google: https://plus.google.com/yourname
   # twitter: https://twitter.com/yourname
+  # bluesky: https://bsky.app/profile/yourname
   # facebook: https://www.facebook.com/yourname
   # instagram: https://www.instagram.com/yourname
   # linkedin: https://www.linkedin.com/in/yourname
@@ -127,6 +146,9 @@ social:
   # telegram: https://t.me/yourname
   # discord: https://discordapp.com/users/yourname
   # steam: https://steamcommunity.com/id/yourname
+  # weixin: 
+  # qq:
+  # tiktok:
 
 widgets:
   - category
@@ -197,7 +219,7 @@ reimu_cursor:
     pointer: ../images/cursor/reimu-cursor-pointer.png
     text: ../images/cursor/reimu-cursor-text.png
 
-icon_font: 4552607_4k4bc36ef96
+icon_font: 4552607_ex15nbittbh
 
 # Font loading strategy
 # Custom Font -> Google Fonts -> Local FallBack Font
@@ -314,6 +336,25 @@ math:
         },
       ]
 
+# Paragraph anchor
+# Injects linkable anchor icons into paragraphs and list items in article body
+# Usage: write {#anchor-xxx} in Markdown; the matching element gets id="anchor-xxx" and an anchor icon
+anchor:
+  # Explicit anchors
+  explicit:
+    # Whether to enable explicit anchors: parse {#anchor-xxx} syntax in Markdown (default false)
+    enable: false
+    # Anchor placeholder: the pattern used to match explicit anchors (no need to change unless it conflicts with article content)
+    marker: "{#anchor-"
+    # Anchor id prefix: generated id = prefix + the xxx part inside the marker (default "anchor-")
+    prefix: "anchor-"
+  # Auto anchors
+  auto:
+    # Whether to enable auto anchors: automatically generate ids for direct child paragraphs, derived from text content (default false)
+    enable: false
+    # Maximum length of auto-generated anchor ids; longer ids will be truncated (only effective when auto.enable = true)
+    length: 60
+
 ########################################
 # Comment system
 ########################################
@@ -321,7 +362,7 @@ math:
 # global control of the comment system
 # you can use multiple comment systems at the same time
 # load order: localStorage(user manually selects) -> default
-# -> valine -> waline -> twikoo -> gitalk -> giscus -> disqus
+# -> valine -> waline -> twikoo -> gitalk -> giscus -> utterances -> beaudar -> disqus
 comment:
   # comment system title
   title:
@@ -401,8 +442,9 @@ giscus:
   reactionsEnabled: 1
   emitMetadata: 0
   inputPosition: bottom
-  # commentTheme: preferred_color_scheme invalid
-  # lang: zh-CN # deprecated, use html.lang instead
+  theme:
+    light:
+    dark:
 
 # https://disqus.com
 disqus:
@@ -416,6 +458,20 @@ utterances:
   repo: owner/repo # Change this to "Your GitHub Username/The Repository Name" used for storing blog comments
   issue_term: title
   theme: auto # auto means to automatically adapt to dark and light themes, you can also use specific themes like github-light, github-dark, preferred-color-scheme, etc.
+
+# https://beaudar.lipk.org/
+beaudar:
+  enable: false
+  repo: owner/repo # Change this to "Your GitHub Username/The Repository Name" used for storing blog comments
+  branch: main # The branch name, default is main
+  issue_term: title # The term to be used to create issues for comments, support pathname, url, title, og:title
+  issue_number:
+  theme: auto # auto means to automatically adapt to dark and light themes, you can also use specific themes like github-light, github-dark, preferred-color-scheme, etc.
+  label:
+  input_position: top # top/bottom, comment input position, default is top
+  comment_order: desc # asc/desc, comment order, asc displays the oldest comments first, while desc displays the newest comments first. The default is desc
+  keep_theme: # true/false, save the theme settings to sessionStorage, default is true
+  loading: # true/false, jump to official website when clicking the loading icon, default is true
 
 ########################################
 # Search
@@ -566,6 +622,7 @@ sponsor:
 share:
   # - facebook
   # - twitter
+  # - bluesky
   # - linkedin
   # - reddit
   # - weibo

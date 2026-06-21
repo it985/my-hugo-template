@@ -236,6 +236,12 @@
   }
 }
 
+@if index($social-keys, "bluesky") {
+  .icon-bluesky {
+    color: #1185fe;
+  }
+}
+
 @if index($social-keys, "instagram") {
   .icon-instagram {
     color: #e1306c;
@@ -357,6 +363,25 @@
 
   [data-theme="dark"] .icon-steam {
     color: #bc88ff;
+  }
+}
+
+@if index($social-keys, "tiktok") {
+  .icon-tiktok {
+    filter: drop-shadow(-1px -1px 0 #69c9d0) drop-shadow(1px 1px 0 #fe2c55);
+    color: #000000;
+  }
+}
+
+@if index($social-keys, "weixin") {
+  .icon-weixin {
+    color: #09b83e;
+  }
+}
+
+@if index($social-keys, "qq") {
+  .icon-qq {
+    color: #12b7f5;
   }
 }
 

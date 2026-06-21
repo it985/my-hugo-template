@@ -1,3 +1,287 @@
+## 0.16.0
+
+**2026-05-16**
+
+### 重大修改
+
+- Hugo 最低版本要求升级至 v0.158.0 及以上
+
+### 特性
+
+- 新增文章段落锚点能力（Paragraph Anchor），支持为段落与列表项生成可跳转锚点
+  ```yaml
+  anchor:
+    explicit:
+      enable: false
+      marker: "{#anchor-"
+      prefix: "anchor-"
+    auto:
+      enable: false
+      length: 60
+  ```
+  - `explicit` 模式支持在 Markdown 中通过 `{#anchor-xxx}` 显式声明锚点
+  - `auto` 模式支持为段落自动生成唯一 ID
+- 调整多语言与数据引用相关逻辑，提升新版本兼容性
+
+---
+
+### Major Changes
+
+- Minimum Hugo version requirement upgraded to v0.158.0 or higher
+
+### Features
+
+- Added paragraph anchor support for article content, enabling jumpable anchors for paragraphs and list items
+  ```yaml
+  anchor:
+    explicit:
+      enable: false
+      marker: "{#anchor-"
+      prefix: "anchor-"
+    auto:
+      enable: false
+      length: 60
+  ```
+  - `explicit` mode supports manually declaring anchors in Markdown via `{#anchor-xxx}`
+  - `auto` mode supports auto-generating unique IDs for paragraphs
+- Adjusted multilingual/data reference logic for better compatibility
+
+## 0.15.5
+
+**2026-05-03**
+
+### 修复
+
+- 修复 `only_show_capsule_in_index` 开启时 taxonomy/term 页面仍显示胶囊列表的问题
+- 修复播放器初始化流程中 `isMobile` 变量缺失导致的异常
+
+### 特性
+
+- 新增 [Beaudar](https://beaudar.lipk.org/) 评论系统支持
+  ```yaml
+  beaudar:
+    enable: true
+    repo: owner/repo
+    branch: main
+    issue_term: pathname
+    issue_number:
+    theme: github-light
+  ```
+- 新增 Bluesky 社交图标与分享链接支持
+  ```yaml
+  social:
+    bluesky: https://bsky.app/profile/yourname
+
+  share:
+    - bluesky
+  ```
+
+---
+
+### Fixes
+
+- Fix capsule lists still showing on taxonomy/term pages when `only_show_capsule_in_index` is enabled
+- Fix missing `isMobile` variable in player initialization flow
+
+### Features
+
+- Added support for the [Beaudar](https://beaudar.lipk.org/) comment system
+  ```yaml
+  beaudar:
+    enable: true
+    repo: owner/repo
+    branch: main
+    issue_term: pathname
+    issue_number:
+    theme: github-light
+  ```
+- Added Bluesky social icon and share link support
+  ```yaml
+  social:
+    bluesky: https://bsky.app/profile/yourname
+
+  share:
+    - bluesky
+  ```
+
+## 0.15.4
+
+**2026-03-30**
+
+### 修复
+
+- 修复 fontawesome css加载失败
+
+---
+
+### Fixes
+
+- Fixed fontawesome css loading failure
+
+## 0.15.3
+
+**2026-03-29**
+
+### 特性
+
+- 增强 Giscus 主题能力：新增 `giscus.theme.light` 与 `giscus.theme.dark`，并内置 Reimu 风格 light/dark 主题作为兜底。由于 Giscus 基于 iframe 渲染，无法继承站点全局样式，内置主题用于尽可能保持与全站一致（鼠标样式、字体、静态主题 token；`material_theme` 等动态 token 暂不支持）。
+  ```yaml
+  giscus:
+    enable: true
+    repo: owner/repo
+    repoId:
+    category:
+    categoryId:
+    theme:
+      light: https://example.com/giscus-light.css
+      dark: https://example.com/giscus-dark.css
+  ```
+  - 自定义主题为 URL 时，会校验是否允许 `https://giscus.app` 跨域访问
+  - 校验失败时自动回退到内置 `light` / `dark` 主题，避免评论样式失效
+  - 注意：本地 `hugo server`（HTTP 且通常无 CORS 头）与 `github.io` 默认静态资源场景通常无法直接通过校验，建议使用可配置 CORS 的资源域名（例如 jsDelivr 代理）
+- 侧边栏社交链接渲染兼容两种 `social` 数据结构（对象与数组）
+  ```yaml
+  # 写法 1：对象（兼容旧格式）
+  social:
+    github: https://github.com/yourname
+    weixin:
+    qq:
+    tiktok: https://www.tiktok.com/@yourname
+
+  # 写法 2：数组（新支持）
+  social:
+    - name: github
+      url: https://github.com/yourname
+    - name: tiktok
+      url: https://www.tiktok.com/@yourname
+  ```
+- 新增 TikTok 社交图标支持，并补充 Weixin/QQ 在社交与三角徽章场景下的图标渲染支持
+
+---
+
+### Features
+
+- Enhanced Giscus theming: added `giscus.theme.light` and `giscus.theme.dark`, with built-in Reimu-style light/dark fallback themes. Since Giscus is rendered in an iframe and cannot inherit global site styles, the built-in themes keep behavior as consistent as possible with the site (cursor style, fonts, and static theme tokens; dynamic tokens like `material_theme` are not supported yet).
+  ```yaml
+  giscus:
+    enable: true
+    repo: owner/repo
+    repoId:
+    category:
+    categoryId:
+    theme:
+      light: https://example.com/giscus-light.css
+      dark: https://example.com/giscus-dark.css
+  ```
+  - For URL-based custom themes, it verifies whether CORS allows `https://giscus.app`
+  - If validation fails, it automatically falls back to built-in `light` / `dark` themes
+  - Note: local `hugo server` (HTTP, usually without CORS headers) and default `github.io` static hosting commonly fail this check; use a CORS-configured asset host (e.g., jsDelivr proxy)
+- Updated sidebar social rendering to support both `social` data structures (map and array)
+  ```yaml
+  # Style 1: map (legacy-compatible)
+  social:
+    github: https://github.com/yourname
+    weixin:
+    qq:
+    tiktok: https://www.tiktok.com/@yourname
+
+  # Style 2: array (newly supported)
+  social:
+    - name: github
+      url: https://github.com/yourname
+    - name: tiktok
+      url: https://www.tiktok.com/@yourname
+  ```
+- Added TikTok social icon support and improved Weixin/QQ icon rendering in social and triangle badge scenarios
+
+## 0.15.2
+
+**2026-03-06**
+
+### 修复
+
+- 修复语言选择下拉 `aria-selected` 属性拼写
+- 修复 `article:tag` meta 输出格式，使用逗号分隔标签
+
+### 特性
+
+- 支持区分文章背景图与卡片封面：front-matter 新增 `banner` 用于文章头图，`cover` 用于卡片封面/OG 图片，兼容旧格式
+- 增强 Open Graph / Twitter meta：使用绝对链接，并支持通过 `open_graph.options.twitter_image` 覆盖默认图片
+
+### 重构
+
+- 新增 CDN 辅助 partial，统一 JS/CSS 引用方式，减少重复逻辑
+
+---
+
+### Fixes
+
+- Fix language selector `aria-selected` attribute
+- Fix `article:tag` meta formatting with comma-delimited tags
+
+### Features
+
+- Separate article banner and card cover: add `banner` front-matter for article headers, keep `cover` for card/OG images, with backward compatibility
+- Improve Open Graph/Twitter meta tags: use absolute URLs and allow `open_graph.options.twitter_image` to override the default image
+
+### Refactor
+
+- Add CDN helper partials to unify JS/CSS includes and reduce duplication
+
+## 0.15.1
+
+**2026-02-23**
+
+### 特性
+
+- 新增副标题打字效果配置，支持动态打字动画和静态文本两种模式，同时兼容旧格式
+  ```yaml
+  subtitle:
+    typing:
+      enable: false
+      strings:
+        # - Sentence 1
+        # - Sentence 2
+        # - Sentence 3
+        # - Sentence 4
+      typeSpeed: 100              # 打字速度（毫秒/字符） 
+      backSpeed: 50               # 删除速度（毫秒/字符）
+      backDelay: 2000             # 打完一句话后，等待时间
+      startDelay: 300             # 页面加载后，等待时间
+      loop: true                  # 是否循环播放
+      shuffle: true              # 是否随机输出句子
+      showCursor: true            # 是否显示闪烁的字符
+      cursorChar: "|"             # 字符
+      smartBackspace: false       # 智能退格，只删除不同的部分
+    text: "少女祈祷中..."        # 当 typing.enable = false 时使用
+  ```
+
+---
+
+### Features
+
+- Added subtitle typing effect configuration, supporting both dynamic typing animation and static text modes, while maintaining compatibility with the old format
+  ```yaml
+  subtitle:
+    typing:
+      enable: false
+      strings:
+        # - Sentence 1
+        # - Sentence 2
+        # - Sentence 3
+        # - Sentence 4
+      typeSpeed: 100              # Typing speed (ms/character) 
+      backSpeed: 50               # Deletion speed (ms/character)
+      backDelay: 2000             # Wait time after completing a sentence
+      startDelay: 300             # Wait time after page load
+      loop: true                  # Whether to loop playback
+      shuffle: true              # Whether to randomly output sentences
+      showCursor: true            # Whether to show the blinking cursor
+      cursorChar: "|"             # Cursor character
+      smartBackspace: false       # Smart backspace, only delete different parts
+    text: "Loading..."           # Used when typing.enable = false
+  ```
+
 ## 0.15.0
 
 **2026-01-18**

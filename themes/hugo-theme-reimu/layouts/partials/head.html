@@ -50,8 +50,8 @@
   {{- partialCached "helpers/vendorGoogleFont.html" . -}}
 {{- end -}}
 
-{{- $js := .Site.Data.vendor.js -}}
-{{- $css := .Site.Data.vendor.css -}}
+{{- $js := hugo.Data.vendor.js -}}
+{{- $css := hugo.Data.vendor.css -}}
 <!-- icon -->
 {{- if .Site.Params.icon_font -}}
   <link
@@ -63,10 +63,10 @@
   />
 {{- else -}}
   {{- range $css.fontawesome.high_priority -}}
-    {{- partial "helpers/css.html" (dict "raw" . "src" (index (partial "helpers/vendorCdn.html" (dict "item" . "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" .)) 0)) -}}
+    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" $) -}}
   {{- end -}}
   {{- range $css.fontawesome.low_priority -}}
-    {{- partial "helpers/asyncCss.html" (dict "raw" . "src" (index (partial "helpers/vendorCdn.html" (dict "item" . "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" .)) 0)) -}}
+    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" $ "async" true) -}}
   {{- end -}}
 {{- end -}}
 <!-- loader -->
@@ -75,6 +75,15 @@
 {{- end -}}
 <!-- open-graph -->
 {{- if .Site.Params.open_graph.enable -}}
+  {{- $openGraphOptions := .Site.Params.open_graph.options -}}
+  {{- $ogImage := "" -}}
+  {{- if and .Params.cover (not (strings.HasPrefix .Params.cover "rgb")) -}}
+    {{- $ogImage = .Params.cover | absURL -}}
+  {{- else if and .Params.banner (not (strings.HasPrefix .Params.banner "rgb")) -}}
+    {{- $ogImage = .Params.banner | absURL -}}
+  {{- else -}}
+    {{- $ogImage = .Site.Params.banner | absURL -}}
+  {{- end -}}
   <meta property="og:type" content="website" />
   <meta property="og:title" content="{{ $title | safeHTML }}" />
   <meta
@@ -86,19 +95,19 @@
     property="og:site_name"
     content="{{ .Site.Params.title | default .Site.Title | safeHTML }}"
   />
-  <meta
-    property="og:image"
-    content="{{ (.Params.cover | relURL) | default (.Site.Params.banner | relURL) }}"
-  />
+  <meta property="og:image" content="{{ $ogImage }}" />
   <meta property="article:author" content="{{ .Site.Params.author | safeHTML }}" />
   <meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}" />
   <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" }}" />
   {{- if .Params.tags -}}
-    <meta property="article:tag" content="{{ range .Params.tags }}{{ . }}{{ end }}" />
+    <meta property="article:tag" content="{{ delimit .Params.tags ", " }}" />
   {{- end -}}
-  {{- $openGraphOptions := .Site.Params.open_graph.options -}}
   <meta name="twitter:card" content="{{ $openGraphOptions.twitter_card | default "summary" }}" />
-  <meta name="twitter:image" content="{{ $openGraphOptions.twitter_image | default (.Params.cover | relURL) | default (.Site.Params.banner | relURL) }}" />
+  {{- if $openGraphOptions.twitter_image -}}
+    <meta name="twitter:image" content="{{ $openGraphOptions.twitter_image | absURL }}" />
+  {{- else -}}
+    <meta name="twitter:image" content="{{ $ogImage }}" />
+  {{- end -}}
   {{- if $openGraphOptions.twitter_site -}}
     <meta name="twitter:site" content="{{ $openGraphOptions.twitter_site }}" />
   {{- end -}}
@@ -123,26 +132,26 @@
 <link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}">
 {{- partial "helpers/scss.html" (dict "source" "css/main.scss" "temp" "main.scss" "target" "css/main.css" "ctx" .) -}}
 <!-- photo-swipe -->
-{{- partial "helpers/asyncCss.html" (dict "raw" $css.photoswipe "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.photoswipe "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.photoswipe)) 0)) -}}
+{{- partial "helpers/cdnCss.html" (dict "name" "photoswipe" "ctx" . "async" true) -}}
 <!-- katex -->
-{{- partial "helpers/asyncCss.html" (dict "raw" $css.katex "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.katex "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.katex)) 0)) -}}
+{{- partial "helpers/cdnCss.html" (dict "name" "katex" "ctx" . "async" true) -}}
 <!-- waline -->
 {{- if and .Site.Params.waline.enable .Site.Params.waline.serverURL -}}
-  {{- partial "helpers/css.html" (dict "raw" $css.waline "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.waline "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.waline)) 0)) -}}
+  {{- partial "helpers/cdnCss.html" (dict "name" "waline" "ctx" .) -}}
 {{- end -}}
 <!-- gitalk -->
 {{- if and .Site.Params.gitalk.enable .Site.Params.gitalk.clientID .Site.Params.gitalk.clientSecret -}}
-  {{- partial "helpers/css.html" (dict "raw" $css.gitalk "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.gitalk "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.gitalk)) 0)) -}}
+  {{- partial "helpers/cdnCss.html" (dict "name" "gitalk" "ctx" .) -}}
 {{- end -}}
 <!-- pace -->
 {{- if .Site.Params.pace.enable -}}
-  {{- partial "helpers/js.html" (dict "raw" $js.pace "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.pace "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.pace)) 0)) -}}
+  {{- partial "helpers/cdnJs.html" (dict "name" "pace" "ctx" .) -}}
 {{- end -}}
 <!-- aos -->
 {{- if .Site.Params.animation.enable -}}
-  {{- partial "helpers/css.html" (dict "raw" $css.aos "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.aos "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.aos)) 0)) -}}
+  {{- partial "helpers/cdnCss.html" (dict "name" "aos" "ctx" .) -}}
 {{- end -}}
 
 {{- if .Site.Params.player.aplayer.enable -}}
-  {{- partial "helpers/css.html" (dict "raw" $css.aplayer "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.aplayer "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.aplayer)) 0)) -}}
+  {{- partial "helpers/cdnCss.html" (dict "name" "aplayer" "ctx" .) -}}
 {{- end -}}
