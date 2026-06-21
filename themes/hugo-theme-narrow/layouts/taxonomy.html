@@ -2,28 +2,16 @@
   <!-- 页面标题和描述 -->
   <header class="mb-8">
     <h1 class="text-foreground mb-4 text-3xl font-bold">
-      {{ if eq .Data.Singular "tag" }}
-        {{ i18n "nav.tags" | default "标签" }}
-      {{ else if eq .Data.Singular "category" }}
-        {{ i18n "nav.categories" | default "分类" }}
-      {{ else }}
-        {{ .Title }}
-      {{ end }}
+      {{ .Title }}
     </h1>
 
     {{ if .Content }}
       <div class="prose prose-neutral dark:prose-invert mb-6 max-w-none">
         {{ .Content }}
       </div>
-    {{ else }}
+    {{ else if .Description }}
       <p class="text-muted-foreground mb-6">
-        {{ if eq .Data.Singular "tag" }}
-          {{ i18n "taxonomy.tags_desc" | default "浏览所有标签，发现感兴趣的内容。" }}
-        {{ else if eq .Data.Singular "category" }}
-          {{ i18n "taxonomy.categories_desc" | default "浏览所有分类，发现感兴趣的内容。" }}
-        {{ else }}
-          {{ i18n "taxonomy.desc" | default "浏览所有分类，发现感兴趣的内容。" }}
-        {{ end }}
+        {{ .Description }}
       </p>
     {{ end }}
 
@@ -33,13 +21,7 @@
       <div class="flex items-center gap-1">
         {{ partial "features/icon.html" (dict "name" "tag" "size" "sm" "ariaLabel" "") }}
         <span>
-          {{ if eq .Data.Singular "tag" }}
-            {{ i18n "taxonomy.total_tags" (dict "count" (len .Data.Terms)) | default (printf "共 %d 个标签" (len .Data.Terms)) }}
-          {{ else if eq .Data.Singular "category" }}
-            {{ i18n "taxonomy.total_categories" (dict "count" (len .Data.Terms)) | default (printf "共 %d 个分类" (len .Data.Terms)) }}
-          {{ else }}
-            {{ i18n "taxonomy.total_terms" (dict "count" (len .Data.Terms)) | default (printf "共 %d 个%s" (len .Data.Terms) .Data.Singular) }}
-          {{ end }}
+          {{ T "list.pages" (dict "count" (len .Data.Terms)) }}
         </span>
       </div>
     </div>
@@ -80,13 +62,14 @@
         <a
           href="{{ .Page.RelPermalink }}"
           class="bg-card border-border group {{ $sizeClass }} hover:bg-primary/10 hover:text-primary hover:border-primary/50 focus:ring-primary/20 inline-flex items-center gap-2 rounded-lg border px-3 py-2 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 focus:ring-2 focus:outline-none"
-          data-taxonomy="{{ $taxonomySingular }}">
+          data-taxonomy="{{ $taxonomySingular }}"
+        >
           <span
-            class="text-foreground group-hover:text-primary font-medium transition-colors duration-200">
+            class="text-foreground group-hover:text-primary font-medium transition-colors duration-200"
+          >
             {{ .Page.LinkTitle }}
           </span>
-          <span
-            class="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs font-medium">
+          <span class="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs font-medium">
             {{ .Count }}
           </span>
         </a>
@@ -95,16 +78,12 @@
   {{ else }}
     <!-- 空状态 -->
     <div class="py-16 text-center">
-      <div
-        class="bg-muted/50 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full">
+      <div class="bg-muted/50 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full">
         {{ partial "features/icon.html" (dict "name" "tag" "size" "xl" "ariaLabel" "") }}
       </div>
       <h2 class="text-foreground mb-3 text-xl font-medium">
-        {{ i18n "taxonomy.no_terms" | default "暂无分类" }}
+        {{ T "article.empty" }}
       </h2>
-      <p class="text-muted-foreground mb-6">
-        {{ i18n "taxonomy.no_terms_desc" | default "还没有创建任何分类，请稍后再来查看。" }}
-      </p>
     </div>
   {{ end }}
 

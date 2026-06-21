@@ -25,7 +25,7 @@
         el: '#{{ $id }}',
         {{ if $config.region }}region: '{{ $config.region }}',{{ end }}
         {{ if $config.path }}path: '{{ $config.path }}',{{ else }}path: '{{ .Page.RelPermalink }}',{{ end }}
-        lang: '{{ $config.lang | default .Site.Language.LanguageCode | default "zh-CN" }}',
+        lang: '{{ $config.lang | default .Site.Language.Locale | default "zh-CN" }}',
       });
 
       // 主题切换支持
@@ -57,16 +57,5 @@
     })();
   </script>
 {{ else }}
-  <div id="{{ $id }}" class="py-8 text-center">
-    <div
-      class="bg-muted/50 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
-      {{ partial "features/icon.html" (dict "name" "cloud" "size" "lg" "ariaLabel" "") }}
-    </div>
-    <h3 class="text-foreground mb-2 text-lg font-medium">
-      {{ i18n "comments.twikoo_not_configured" | default "Twikoo 未配置" }}
-    </h3>
-    <p class="text-muted-foreground text-sm">
-      {{ i18n "comments.twikoo_config_desc" | default "请在站点配置中设置 Twikoo 环境 ID" }}
-    </p>
-  </div>
+  {{ partial "features/comments/notice.html" (dict "id" $id "icon" "message-circle") }}
 {{ end }}

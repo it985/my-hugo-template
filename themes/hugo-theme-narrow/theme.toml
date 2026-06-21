@@ -3,7 +3,7 @@ license = "MIT"
 licenselink = "https://github.com/tom2almighty/hugo-narrow/blob/main/LICENSE"
 description = "A modern, clean, and minimal Hugo theme built with Tailwind CSS 4.0. Support custom themes, dark mode, and responsive design."
 homepage = "https://github.com/tom2almighty/hugo-narrow"
-demosite = "https://hugo-narrow.vercel.app/"
+demosite = "https://tom2almighty.github.io/hugo-narrow/"
 tags = [
   "blog",
   "personal",
@@ -30,7 +30,7 @@ features = [
   "math support",
   "Mermaid support"
 ]
-min_version = "0.146.0"
+min_version = "0.158.0"
 browser_support = [
   "Chrome >= 90",
   "Firefox >= 88",
@@ -48,13 +48,10 @@ name = "Tailwind CSS"
 version = "^4.0.0"
 description = "CSS framework"
 
-[[dependencies]]
-name = "@tailwindcss/typography"
-version = "^0.5.0"
-description = "Typography plugin"
+
 
 [hugo]
-min = "0.146.0"
+min = "0.158.0"
 extended = true
 
 [theme_features]

@@ -1,0 +1,280 @@
+{{ define "main" }}
+  {{- $p := .Params -}}
+
+
+  <article class="py-6">
+    <!-- 页眉：姓名、职位、联系方式 -->
+    <header class="mb-8">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h1 class="text-foreground mb-1 text-3xl font-bold md:text-4xl">
+            {{ $p.name | default .Title }}
+          </h1>
+          {{ with $p.jobtitle }}
+            <p class="text-primary mb-3 text-lg font-medium">{{ . }}</p>
+          {{ end }}
+          <!-- 联系方式 -->
+          <div class="text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-sm">
+            {{ with $p.location }}
+              <span class="flex items-center gap-1">
+                {{ partial "features/icon.html" (dict "name" "location" "size" "xs" "ariaLabel" "") }}
+                {{ . }}
+              </span>
+            {{ end }}
+            {{ with $p.email }}
+              <a
+                href="mailto:{{ . }}"
+                class="hover:text-primary flex items-center gap-1 transition-colors"
+              >
+                {{ partial "features/icon.html" (dict "name" "email" "size" "xs" "ariaLabel" "") }}
+                {{ . }}
+              </a>
+            {{ end }}
+            {{ with $p.phone }}
+              <a
+                href="tel:{{ . | replaceRE `\s+` `` }}"
+                class="hover:text-primary flex items-center gap-1 transition-colors"
+              >
+                {{ partial "features/icon.html" (dict "name" "phone" "size" "xs" "ariaLabel" "") }}
+                {{ . }}
+              </a>
+            {{ end }}
+            {{ with $p.website }}
+              <a
+                href="{{ . }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-primary flex items-center gap-1 transition-colors"
+              >
+                {{ partial "features/icon.html" (dict "name" "external-link" "size" "xs" "ariaLabel" "") }}
+                {{ . | strings.TrimPrefix "https://" | strings.TrimPrefix "http://" }}
+              </a>
+            {{ end }}
+            {{ with $p.github }}
+              <a
+                href="{{ . }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-primary flex items-center gap-1 transition-colors"
+              >
+                {{ partial "features/icon.html" (dict "name" "github" "size" "xs" "ariaLabel" "GitHub") }}
+                {{ . | replaceRE `https?://github\.com/` "" }}
+              </a>
+            {{ end }}
+            {{ with $p.linkedin }}
+              <a
+                href="{{ . }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-primary flex items-center gap-1 transition-colors"
+              >
+                {{ partial "features/icon.html" (dict "name" "linkedin" "size" "xs" "ariaLabel" "LinkedIn") }}
+                {{ . | replaceRE `https?://(www\.)?linkedin\.com/in/` "" }}
+              </a>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 概要 -->
+    {{ with $p.summary }}
+      <section class="mb-8">
+        <div class="bg-card border-border rounded-lg border p-6 shadow-sm">
+          <p class="text-foreground leading-relaxed">{{ . }}</p>
+        </div>
+      </section>
+    {{ end }}
+
+
+    <!-- 工作经历 -->
+    {{ with $p.experience }}
+      <section class="mb-8">
+        <h2 class="text-foreground mb-4 flex items-center gap-2 text-xl font-bold">
+          {{ partial "features/icon.html" (dict "name" "briefcase" "size" "md" "ariaLabel" "") }}
+          {{ T "resume.experience" | default "Experience" }}
+        </h2>
+        <div class="space-y-4">
+          {{ range . }}
+            <div class="resume-entry bg-card border-border rounded-lg border p-6 shadow-sm">
+              <div class="mb-3 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                <div class="flex-1">
+                  <h3 class="text-foreground font-semibold">{{ .title }}</h3>
+                  <p class="text-primary text-sm font-medium">{{ .company }}</p>
+                  {{ with .location }}
+                    <p class="text-muted-foreground text-xs">{{ . }}</p>
+                  {{ end }}
+                </div>
+                <div class="text-muted-foreground shrink-0 text-sm">
+                  {{ .start }} –
+                  {{ .end }}
+                </div>
+              </div>
+              {{ with .description }}
+                <p class="text-foreground mb-3 text-sm leading-relaxed">{{ . }}</p>
+              {{ end }}
+              {{ with .highlights }}
+                <ul class="space-y-1">
+                  {{ range . }}
+                    <li class="text-muted-foreground flex items-baseline gap-2 text-sm">
+                      <span class="text-primary shrink-0">▸</span>
+                      {{ . }}
+                    </li>
+                  {{ end }}
+                </ul>
+              {{ end }}
+              {{ with .stack }}
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                  {{ range . }}
+                    <span
+                      class="bg-primary/10 text-primary rounded-md px-2 py-0.5 text-xs font-medium"
+                      >{{ . }}</span
+                    >
+                  {{ end }}
+                </div>
+              {{ end }}
+            </div>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+
+
+    <!-- 教育经历 -->
+    {{ with $p.education }}
+      <section class="mb-8">
+        <h2 class="text-foreground mb-4 flex items-center gap-2 text-xl font-bold">
+          {{ partial "features/icon.html" (dict "name" "book-open" "size" "md" "ariaLabel" "") }}
+          {{ T "resume.education" | default "Education" }}
+        </h2>
+        <div class="space-y-4">
+          {{ range . }}
+            <div class="resume-entry bg-card border-border rounded-lg border p-6 shadow-sm">
+              <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                <div class="flex-1">
+                  <h3 class="text-foreground font-semibold">{{ .degree }}</h3>
+                  <p class="text-primary text-sm font-medium">{{ .institution }}</p>
+                  {{ with .location }}
+                    <p class="text-muted-foreground text-xs">{{ . }}</p>
+                  {{ end }}
+                  {{ with .description }}
+                    <p class="text-muted-foreground mt-2 text-sm">{{ . }}</p>
+                  {{ end }}
+                </div>
+                <div class="text-muted-foreground shrink-0 text-sm">
+                  {{ .start }} –
+                  {{ .end }}
+                </div>
+              </div>
+            </div>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+
+
+    <!-- 技能 -->
+    {{ with $p.skills }}
+      <section class="mb-8">
+        <h2 class="text-foreground mb-4 flex items-center gap-2 text-xl font-bold">
+          {{ partial "features/icon.html" (dict "name" "star" "size" "md" "ariaLabel" "") }}
+          {{ T "resume.skills" | default "Skills" }}
+        </h2>
+        <div class="bg-card border-border rounded-lg border p-6 shadow-sm">
+          <div class="space-y-3">
+            {{ range . }}
+              <div class="flex flex-wrap items-baseline gap-2">
+                <span class="text-muted-foreground w-28 shrink-0 text-sm font-medium"
+                  >{{ .category }}</span
+                >
+                <div class="flex flex-wrap gap-2">
+                  {{ range .items }}
+                    <span
+                      class="bg-muted text-foreground rounded-md px-2.5 py-0.5 text-sm font-medium"
+                      >{{ . }}</span
+                    >
+                  {{ end }}
+                </div>
+              </div>
+            {{ end }}
+          </div>
+        </div>
+      </section>
+    {{ end }}
+
+
+    <!-- 证书与语言能力（两列布局） -->
+    {{ $hasCerts := $p.certifications }}
+    {{ $hasLangs := $p.languages }}
+    {{ if or $hasCerts $hasLangs }}
+      <div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <!-- 证书 -->
+        {{ with $hasCerts }}
+          <section class="flex flex-col">
+            <h2 class="text-foreground mb-4 flex items-center gap-2 text-xl font-bold">
+              {{ partial "features/icon.html" (dict "name" "file-text" "size" "md" "ariaLabel" "") }}
+              {{ T "resume.certifications" | default "Certifications" }}
+            </h2>
+            <div class="bg-card border-border flex-1 rounded-lg border p-6 shadow-sm">
+              <ul class="space-y-3">
+                {{ range . }}
+                  <li>
+                    {{ if .url }}
+                      <a
+                        href="{{ .url }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-primary text-foreground font-medium transition-colors"
+                        >{{ .name }}</a
+                      >
+                    {{ else }}
+                      <span class="text-foreground font-medium">{{ .name }}</span>
+                    {{ end }}
+                    <p class="text-muted-foreground text-sm">
+                      {{ .issuer }}
+                      {{ with .date }}
+                        ·
+                        {{ . }}
+                      {{ end }}
+                    </p>
+                  </li>
+                {{ end }}
+              </ul>
+            </div>
+          </section>
+        {{ end }}
+
+
+        <!-- 语言能力 -->
+        {{ with $hasLangs }}
+          <section class="flex flex-col">
+            <h2 class="text-foreground mb-4 flex items-center gap-2 text-xl font-bold">
+              {{ partial "features/icon.html" (dict "name" "language" "size" "md" "ariaLabel" "") }}
+              {{ T "resume.languages" | default "Languages" }}
+            </h2>
+            <div class="bg-card border-border flex-1 rounded-lg border p-6 shadow-sm">
+              <ul class="space-y-2">
+                {{ range . }}
+                  <li class="flex items-center justify-between">
+                    <span class="text-foreground font-medium">{{ .language }}</span>
+                    <span class="text-muted-foreground text-sm">{{ .level }}</span>
+                  </li>
+                {{ end }}
+              </ul>
+            </div>
+          </section>
+        {{ end }}
+
+      </div>
+    {{ end }}
+
+
+    <!-- 页面正文（可选额外 Markdown 内容） -->
+    {{ with .Content }}
+      <div class="prose prose-neutral dark:prose-invert max-w-none">
+        {{ . }}
+      </div>
+    {{ end }}
+
+  </article>
+{{ end }}

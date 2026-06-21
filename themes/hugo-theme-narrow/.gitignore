@@ -8,8 +8,6 @@ npm-debug.log
 node_modules
 builds
 package-lock.json
-package.json
-pnpm-lock.yaml
 public
 resources
 .hugo_build.lock
@@ -17,7 +15,6 @@ jsconfig.json
 hugo_stats.json
 go.sum
 yarn.lock
-.prettierrc
-.prettierignore
-.agent/
-workflows/
+
+.agents/
+.worktrees/

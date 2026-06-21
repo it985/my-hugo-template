@@ -1,43 +1,72 @@
 main:
-  - identifier: nav.posts
-    name: Posts
+  - name: Posts
     pageRef: /posts
     weight: 10
     params:
       icon: posts
 
-  - identifier: nav.categories
-    name: Categories
-    pageRef: /categories
-    weight: 20
-    params:
-      icon: categories
-  - identifier: nav.tags
-    name: Tags
-    pageRef: /tags
-    weight: 30
-    params:
-      icon: tags
-  - identifier: nav.archives
-    name: Archives
+  - name: Archives
     pageRef: /archives
-    weight: 40
+    weight: 20
     params:
       icon: archive
 
-# footer menu
-footer:
-  - identifier: nav.projects
-    name: Projects
+  # Example: parent item with dropdown submenu children
+  - name: More
+    weight: 30
+    params:
+      icon: layers
+
+  - name: Categories
+    weight: 1
+    pageRef: /categories
+    parent: More
+    params:
+      icon: categories
+
+  - name: Tags
+    weight: 2
+    pageRef: /tags
+    parent: More
+    params:
+      icon: tags
+
+  - name: Series
+    weight: 3
+    pageRef: /series
+    parent: More
+    params:
+      icon: bookmark
+
+  - name: Projects
+    weight: 4
     pageRef: /projects
-    weight: 10
+    parent: More
     params:
       icon: projects
+
+
+
+# footer menu
+footer:
+  - name: Timeline
+    pageRef: /timeline
+    weight: 10
+    params:
+      icon: chart
+
   - name: About
     pageRef: /about
     weight: 20
     params:
       icon: about
+
+  - name: Resume
+    pageRef: /resume
+    weight: 25
+    params:
+      icon: file-text
+
   - name: RSS Feed
     url: /index.xml
     weight: 30
@@ -66,4 +95,3 @@ social:
     weight: 40
     params:
       icon: email
-

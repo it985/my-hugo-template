@@ -1,5 +1,5 @@
-baseURL: https://hugo-narrow.vercel.app/
-languageCode: en-US
+baseURL: https://example.org/
+locale: en
 defaultContentLanguage: en
 defaultContentLanguageInSubdir: false
 title: Hugo Narrow
@@ -73,5 +73,4 @@ outputFormats:
 module:
   hugoVersion:
     extended: true
-    min: 0.146.0
-
+    min: 0.158.0

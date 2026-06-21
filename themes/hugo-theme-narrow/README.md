@@ -1,9 +1,10 @@
-<img src="https://cdn.jsdelivr.net/gh/tom2almighty/hugo-narrow@main/images/home.png"/>
+<img src="https://cdn.jsdelivr.net/gh/tom2almighty/hugo-narrow@main/images/screenshot.png"/>
 
 # Hugo Narrow
 
 A Modern Hugo Theme with Multiple Color Schemes - Built on TailwindCSS 4.
 
+**[Documentation](https://tom2almighty.github.io/hugo-narrow-docs)** · **[Demo](https://tom2almighty.github.io/hugo-narrow)** · **[中文](README.zh-Hans.md)**
 
 ## ✨ Features
 
@@ -19,18 +20,8 @@ A Modern Hugo Theme with Multiple Color Schemes - Built on TailwindCSS 4.
 - Multilingual Support
 - Katex Support
 - Mermaid Support
-- Lightbox by GLightbox
-- Justified Gallery with markdown
-- Masonry Gallery with shortcode
-
-## 📕 Documentation
-
-Please visit [Hugo Narrow Docs](https://hugo-narrow-docs.vercel.app/) get full documentation.
-
-## 🔗 Demo
-
-This demo site is hosted by Vercel, click to visit [Demo](https://hugo-narrow.vercel.app/).
-
+- Lightbox
+- Justified/Masonry/Grid Gallery with markdown
 
 ## 📄 License
 
@@ -38,22 +29,20 @@ This project is open source under the [MIT License](LICENSE).
 
 ## 🙏 Acknowledgments
 
-- [Hugo](https://gohugo.io/) - Static site generator.
-- [Tailwind CSS](https://tailwindcss.com/) - CSS framework.
-- [KaTeX](https://katex.org/) - Math formula rendering.
-- [gumshoe](https://github.com/cferdinandi/gumshoe) - TOC scrollspy.
-- [Mermaid](https://mermaid.js.org/) - Chart library.
-- [Daisyui](https://daisyui.com/) - Color Scheme reference.
-- [Tweakcn](https://tweakcn.com/) - Color Scheme reference.
-- [Hexo Theme icarus](https://github.com/ppoffice/hexo-theme-icarus) - Search functionality reference.
-- [Hugo Theme Stack](https://stack.jimmycai.com/) - Bilibili and Tencent Video shortcodes.
-- [Vercel](https://vercel.com) - Demo Site.
-- [iconify](https://iconify.design/) - Get icons here, thanks to all open source icon sets.
-- [Glightbox](https://github.com/biati-digital/glightbox) - Lightbox library.
-- [flickr-justified-gallery](https://github.com/nk-o/flickr-justified-gallery) - Justified image gallery.
-- [Macy.js](https://github.com/bigbite/macy.js) - Masonry layout library.
-- [Augment Code](https://www.augmentcode.com/) - Programming assistant.
+- [Hugo](https://gohugo.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [KaTeX](https://katex.org/)
+- [Mermaid](https://mermaid.js.org/)
+- [Daisyui](https://daisyui.com/)
+- [Tweakcn](https://tweakcn.com/)
+- [Hexo Theme icarus](https://github.com/ppoffice/hexo-theme-icarus)
+- [Hugo Theme Stack](https://stack.jimmycai.com/)
+- [Vercel](https://vercel.com)
+- [iconify](https://iconify.design/)
+- [Awesome-Merge-Picture](https://github.com/XiCheng148/Awesome-Merge-Picture)
 
 ---
 
-⭐ If this theme helps you, please give it a Star!
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/image?repos=tom2almighty/hugo-narrow&type=timeline&legend=top-left)](https://www.star-history.com/?repos=tom2almighty%2Fhugo-narrow&type=timeline&legend=top-left)

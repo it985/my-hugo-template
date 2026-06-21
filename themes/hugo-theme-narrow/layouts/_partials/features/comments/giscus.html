@@ -23,10 +23,11 @@
       data-emit-metadata="{{ $config.emitMetadata | default "0" }}"
       data-input-position="{{ $config.inputPosition | default "bottom" }}"
       data-theme="{{ $config.theme | default "preferred_color_scheme" }}"
-      data-lang="{{ $config.lang | default .Site.Language.LanguageCode | default "zh-CN" }}"
+      data-lang="{{ $config.lang | default .Site.Language.Locale | default "zh-CN" }}"
       data-loading="lazy"
       crossorigin="anonymous"
-      async></script>
+      async
+    ></script>
   </div>
 
   {{/* 主题切换支持 */}}
@@ -41,17 +42,17 @@
         if (savedTheme) {
           return savedTheme;
         }
-        
+
         // 检查系统主题偏好
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
           return 'dark';
         }
-        
+
         // 检查 HTML 元素的 class
         if (document.documentElement.classList.contains('dark')) {
           return 'dark';
         }
-        
+
         // 默认返回 light
         return 'light';
       }
@@ -62,7 +63,7 @@
         if (!iframe) return;
 
         const theme = getCurrentTheme();
-        
+
         // 发送主题更新消息
         iframe.contentWindow.postMessage({
           giscus: {
@@ -80,12 +81,12 @@
           const iframe = document.querySelector('#{{ $id }} iframe.giscus-frame');
           if (iframe) {
             clearInterval(checkIframe);
-            
+
             // 确保 iframe 内容已加载
             iframe.addEventListener('load', () => {
               updateGiscusTheme();
             });
-            
+
             // 如果 iframe 已经加载完成，直接更新主题
             if (iframe.contentWindow && iframe.contentWindow.postMessage) {
               updateGiscusTheme();
@@ -152,16 +153,5 @@
     })();
   </script>
 {{ else }}
-  <div id="{{ $id }}" class="py-8 text-center">
-    <div
-      class="bg-muted/50 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
-      {{ partial "features/icon.html" (dict "name" "github" "size" "lg" "ariaLabel" "") }}
-    </div>
-    <h3 class="text-foreground mb-2 text-lg font-medium">
-      {{ i18n "comments.giscus_not_configured" | default "Giscus 未配置" }}
-    </h3>
-    <p class="text-muted-foreground text-sm">
-      {{ i18n "comments.giscus_config_desc" | default "请在站点配置中设置 GitHub 仓库信息" }}
-    </p>
-  </div>
+  {{ partial "features/comments/notice.html" (dict "id" $id "icon" "github") }}
 {{ end }}

@@ -12,12 +12,7 @@ categories:
   - projects
 cover: ""
 # Project-specific fields
-github: ""
-demo: ""
-website: ""
-tech_stack:
-  - Technology 1
-  - Technology 2
+link: "" # Project link 
 status: "completed"  # Options: completed, in_progress, planning
 ---
 

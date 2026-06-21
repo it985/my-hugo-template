@@ -1,22 +1,92 @@
-[archive]
-  other = "Archive"
-[archive_text]
-  other = "View Archive"
-[author_profile]
-  other = "Profil de {{ . }}"
-[designed_by]
-  other = "Conçu par  <a href = '{{ .url }}' target = '_blank' title = 'Profil Linkedin' rel = 'nonopener'>{{ .name }}</a>"
-[go_back]
-  other = "Go Back"
-[latest_posts]
-  other = "Latest Posts"
-[link_copied]
-  other = "Lien copié"
-[not_found_text]
-  other = "We couldn't find the page you're looking for"
-[not_found_title]
-  other = "Uh Ohhh!"
-[share_story]
-  other = "Partager l'histoire"
-[toggle_dark_mode]
-  other = "Toggle Dark Mode"
+[list]
+    [list.pages]
+        one = "{{ .count }} page"
+        other = "{{ .count }} pages"
+
+[article]
+    empty          = "Aucun contenu"
+    relatedContent = "Contenu associé"
+    prev           = "Précédent"
+    next           = "Suivant"
+    noPrev         = "Aucun précédent"
+    noNext         = "Aucun suivant"
+
+    [article.alert]
+        note      = "Note"
+        tip       = "Astuce"
+        important = "Important"
+        caution   = "Attention"
+        warning   = "Avertissement"
+
+    [article.readingTime]
+        one = "{{ .count }} min"
+        other = "{{ .count }} min"
+
+    [article.wordCount]
+        one = "{{ .count }} mot"
+        other = "{{ .count }} mots"
+
+[code]
+  copy            = "Copier"
+  copied          = "Copié"
+  expand          = "Déployer"
+  collapse        = "Replier"
+
+[nav]
+    anchor        = "Lien vers cette section"
+    backHome      = "Retour à l'accueil"
+    breadcrumb    = "Fil d’Ariane"
+    menu          = "Menu"
+    prev          = "Précédent"
+    next          = "Suivant"
+    pageInfo      = "Page {{ .current }} sur {{ .total }}"
+
+[ui]
+    dockAriaLabel = "Barre d’actions rapides"
+    dockBack      = "Retour"
+    dockSearch    = "Recherche"
+    dockComments  = "Commentaires"
+    dockBackToTop = "Haut de page"
+    dockTop       = "Haut"
+    toc           = "Table des matières"
+
+    searchClear        = "Effacer"
+    searchPlaceholder  = "Rechercher des articles..."
+    searchClose        = "Fermer"
+    searchEmpty        = "Commencer la recherche"
+    searchLoading      = "Recherche..."
+    searchNoResults    = "Aucun résultat"
+    searchResultsCount = "%d résultats"
+    searchHints        = "Naviguer|Sélectionner|Fermer|Raccourci"
+
+    themeDark    = "Sombre"
+    themeLight   = "Clair"
+    themeSystem  = "Système"
+    themeToggle  = "Changer de thème"
+
+    languageToggle = "Changer de langue"
+
+[license]
+    title  = "Licence"
+    author = "Auteur"
+    link   = "Lien"
+    type   = "Licence"
+
+
+[comments]
+    title          = "Commentaires"
+    notConfigured  = "Système de commentaires non configuré"
+
+
+
+[home]
+    featuredProjects = "Projets en vedette"
+    viewAll          = "Tout voir"
+    recentPosts      = "Articles récents"
+
+[resume]
+  experience     = "Expérience"
+  education      = "Formation"
+  skills         = "Compétences"
+  certifications = "Certifications"
+  languages      = "Langues"

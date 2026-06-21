@@ -12,9 +12,7 @@
 {{ if $config.server }}
   <div id="{{ $id }}" class="artalk-container"></div>
   {{/* 加载 Artalk CSS */}}
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/artalk/2.9.1/Artalk.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/artalk/2.9.1/Artalk.css" />
 
   <script type="module">
     import Artalk from 'https://esm.sh/artalk@2.9.1'
@@ -26,7 +24,7 @@
       pageTitle: '{{ .Page.Title | safeJS }}',
       server: '{{ $config.server }}',
       site: '{{ $config.site | default .Site.Title }}',
-      locale: '{{ $config.locale | default .Site.Language.LanguageCode | default "zh-CN" }}',
+      locale: '{{ $config.locale | default .Site.Language.Locale | default "zh-CN" }}',
       darkMode: '{{ $config.darkMode | default "auto" }}',
       gravatar: {
         mirror: '{{ $config.gravatar.mirror | default "https://cravatar.cn/avatar/" }}'
@@ -62,18 +60,6 @@
     // 初始化时设置主题
     updateArtalkTheme();
   </script>
-  
 {{ else }}
-  <div id="{{ $id }}" class="py-8 text-center">
-    <div
-      class="bg-muted/50 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
-      {{ partial "features/icon.html" (dict "name" "server" "size" "lg" "ariaLabel" "") }}
-    </div>
-    <h3 class="text-foreground mb-2 text-lg font-medium">
-      {{ i18n "comments.artalk_not_configured" | default "Artalk 未配置" }}
-    </h3>
-    <p class="text-muted-foreground text-sm">
-      {{ i18n "comments.artalk_config_desc" | default "请在站点配置中设置 Artalk 服务器地址和站点名称" }}
-    </p>
-  </div>
+  {{ partial "features/comments/notice.html" (dict "id" $id "icon" "message-circle") }}
 {{ end }}
