@@ -1,5 +1,5 @@
 module newsroom
 
-go 1.19
+go 1.26.1
 
-require github.com/onweru/newsroom v0.0.0-20250714145732-9200ab8c3f10 // indirect
+require github.com/onweru/newsroom v0.0.0-20260312180229-cd62612d66fc // indirect
