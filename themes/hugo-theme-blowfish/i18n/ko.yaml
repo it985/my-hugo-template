@@ -26,6 +26,7 @@ article:
   this_article: "이 글"
   related_articles: "관련 글"
   reply_by_email: "이메일로 답장"
+  reply_to: "{{ .Title }}에 대한 답장"
 
 a11y:
   title: "접근성 설정"

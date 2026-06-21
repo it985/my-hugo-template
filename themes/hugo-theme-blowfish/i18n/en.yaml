@@ -26,6 +26,7 @@ article:
   this_article: "This Article"
   related_articles: "Related"
   reply_by_email: "Reply by Email"
+  reply_to: "Reply to {{ .Title }}"
   zen_mode_title:
     enable: "Enable zen mode"
     disable: "Disable zen mode"

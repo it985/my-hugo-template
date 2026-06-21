@@ -26,6 +26,7 @@ article:
   this_article: "This Article"
   related_articles: "Related"
   reply_by_email: "Ответить по электронной почте"
+  reply_to: "Ответ на {{ .Title }}"
 
 a11y:
   title: "Настройки доступности"

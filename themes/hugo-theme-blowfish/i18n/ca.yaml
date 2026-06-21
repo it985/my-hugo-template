@@ -26,6 +26,7 @@ article:
   this_article: "Aquest article"
   related_articles: "Relacionats"
   reply_by_email: "Respon per correu electrònic"
+  reply_to: "Resposta a {{ .Title }}"
   zen_mode_title:
     enable: "Habilita el mode zen"
     disable: "Inhabilita el mode zen"

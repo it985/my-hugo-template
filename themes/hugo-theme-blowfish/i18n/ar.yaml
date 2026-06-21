@@ -26,6 +26,7 @@ article:
   this_article: "هذه المقالة"
   related_articles: "مقالات ذات صلة"
   reply_by_email: "الرد عبر البريد الإلكتروني"
+  reply_to: "رد على {{ .Title }}"
 
 a11y:
   title: "إعدادات إمكانية الوصول"

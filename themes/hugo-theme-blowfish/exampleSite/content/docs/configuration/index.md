@@ -67,6 +67,7 @@ The theme currently supports the following languages by default:
 | Language                     | Code    |
 | ---------------------------- | ------- |
 | Arabic                       | `ar`    |
+| Basque                       | `eu`    |
 | Bulgarian                    | `bg`    |
 | Bengali                      | `bn`    |
 | Catalan                      | `ca`    |
@@ -185,6 +186,7 @@ Many of the article defaults here can be overridden on a per article basis by sp
 | `showViews` | _Not set_ | Whether or not articles and list views are displayed. This requires firebase integrations to be enabled, look below. |
 | `showLikes` | _Not set_ | Whether or not articles and list likes are displayed. This requires firebase integrations to be enabled, look below. |
 | `robots` | _Not set_ | String that indicates how robots should handle your site. If set, it will be output in the page head. Refer to [Google's docs](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag#directives) for valid values. |
+| `seo.metaDescriptionOrder` | `["summary", "description", "site"]` | Controls the fallback order for the HTML meta description. Valid values are `summary`, `description`, and `site`. Use `["description", "summary", "site"]` if you want front matter `description` to take precedence over `summary`. |
 | `disableImageZoom` | `false` | Disables image zoom feature across all the images in the site. |
 | `disableImageOptimization` | `false` | Disables image resize and optimization features across all the images in the site, except images using markdown syntax (`![](image.jpg)`) |
 | `disableImageOptimizationMD` | `false` | Disables image resize and optimization features only for images using markdown syntax (`![](image.jpg)`). |
@@ -244,8 +246,8 @@ Many of the article defaults here can be overridden on a per article basis by sp
 | `article.showAuthorBottom` | `false` | Author boxes are displayed at the bottom of each page instead of the top. |
 | `article.showHero` | `false` | Whether the thumbnail image will be shown as a hero image within each article page. |
 | `article.heroStyle` | _Not set_ | Style to display the hero image, valid options are: `basic`, `big`, `background`, `thumbAndBackground`. Effective only if `article.showHero = true`. |
-| `article.layoutBackgroundBlur` | `true` | Makes the background image in the background article heroStyle blur with the scroll |
-| `article.layoutBackgroundHeaderSpace` | `true` | Add space between the header and the body. |
+| `article.layoutBackgroundBlur` | `true` | Makes the background image in the background article heroStyle blur with the scroll. Only used when `heroStyle` equals `background` or `thumbAndBackground`. |
+| `article.layoutBackgroundHeaderSpace` | `true` | Add space between the header and the body. Only used when `heroStyle` equals `background`. |
 | `article.showBreadcrumbs` | `false` | Whether or not breadcrumbs are displayed in the article header. |
 | `article.showDraftLabel` | `true` | Whether or not the draft indicator is shown next to articles when site is built with `--buildDrafts`. |
 | `article.showEdit` | `false` | Whether or not the link to edit the article content should be displayed. |
@@ -260,7 +262,9 @@ Many of the article defaults here can be overridden on a per article basis by sp
 | `article.showRelatedContent` | `false` | Display related content for each post. Might required additional configuration to your `hugo.toml`. Please check the theme `hugo.toml` if you want to enable this feature and copy all the relevant _related_ entries. Also check [Hugo's docs](https://gohugo.io/content-management/related/) on related content. |
 | `article.relatedContentLimit` | `3` | Limit of related articles to display if `showRelatedContent` is turned on. |
 | `article.showTaxonomies` | `false` | Whether or not all the taxonomies related to this article are displayed. |
-| `article.showCategoryOnly` | `false` | Whether or not the "category" taxonomy is displayed. `showTaxonomies` should be `false` when this param is used, otherwise duplicates will appear. |
+| `article.showCategories` | `true` | Whether or not the `category` taxonomies are displayed. Requires `showTaxonomies` to be `true`. |
+| `article.showTags` | `true` | Whether or not the `tag` taxonomies are displayed. Requires `showTaxonomies` to be `true`. |
+| `article.showCategoriesInSecondaryColor` | `false` | This will make the `category` taxonomy badges to show in a secondary color, so the user can better distinguish between categories and tags. Requires `showTaxonomies` to be `true`. |
 | `article.showAuthorsBadges` | `false` | Whether the `authors` taxonomies are are displayed in the article or list header. This requires the setup of `multiple authors` and the `authors` taxonomy. Check [this page]({{< ref "multi-author" >}}) for more details on how to configure that feature. |
 | `article.showWordCount` | `false` | Whether or not article word counts are displayed. |
 | `article.showComments` | `false` | Whether or not the [comments partial]({{< ref "partials#comments" >}}) is included after the article footer. |
@@ -274,9 +278,9 @@ Many of the article defaults here can be overridden on a per article basis by sp
 | --- | --- | --- |
 | `list.showHero` | `false` | Whether the thumbnail image will be shown as a hero image within each list page. |
 | `list.heroStyle` | _Not set_ | Style to display the hero image, valid options are: `basic`, `big`, `background`, `thumbAndBackground`. Effective only if `list.showHero = true`. |
+| `list.layoutBackgroundBlur` | `true` | Makes the background image in the background list heroStyle blur with the scroll. Only used when `heroStyle` equals `background` or `thumbAndBackground`. |
+| `list.layoutBackgroundHeaderSpace` | `true` | Add space between the header and the body. Only used when `heroStyle` equals `background`. |
 | `list.showBreadcrumbs` | `false` | Whether or not breadcrumbs are displayed in the header on list pages. |
-| `list.layoutBackgroundBlur` | `true` | Makes the background image in the background list heroStyle blur with the scroll |
-| `list.layoutBackgroundHeaderSpace` | `true` | Add space between the header and the body. |
 | `list.showTableOfContents` | `false` | Whether or not the table of contents is displayed on list pages. |
 | `list.showSummary` | `false` | Whether or not article summaries are displayed on list pages. If a summary is not provided in the [front matter]({{< ref "front-matter" >}}), one will be auto generated using the `summaryLength` parameter in the [site configuration](#site-configuration). |
 | `list.showViews` | `false` | Whether or not list views are displayed. This requires firebase integrations to be enabled, look below. |
@@ -302,6 +306,8 @@ Many of the article defaults here can be overridden on a per article basis by sp
 | `taxonomy.showTermCount` | `true` | Whether or not the number of articles within a taxonomy term is displayed on the taxonomy listing. |
 | `taxonomy.showHero` | `false` | Whether the thumbnail image will be shown as a hero image within each taxonomy page. |
 | `taxonomy.heroStyle` | _Not set_ | Style to display the hero image, valid options are: `basic`, `big`, `background`, `thumbAndBackground`. Effective only if `taxonomy.showHero = true`. |
+| `taxonomy.layoutBackgroundBlur` | `true` | Makes the background image in the background taxonomy heroStyle blur with the scroll. Only used when `heroStyle` equals `background` or `thumbAndBackground`. |
+| `taxonomy.layoutBackgroundHeaderSpace` | `true` | Add space between the header and the body. Only used when `heroStyle` equals `background`. |
 | `taxonomy.showBreadcrumbs` | `false` | Whether or not breadcrumbs are displayed in the taxonomy header. |
 | `taxonomy.showViews` | `false` | Whether or not article views are displayed. This requires firebase integrations to be enabled, look below. |
 | `taxonomy.showLikes` | `false` | Whether or not article likes are displayed. This requires firebase integrations to be enabled, look below. |
@@ -314,6 +320,8 @@ Many of the article defaults here can be overridden on a per article basis by sp
 | --- | --- | --- |
 | `term.showHero` | `false` | Whether the thumbnail image will be shown as a hero image within each term page. |
 | `term.heroStyle` | _Not set_ | Style to display the hero image, valid options are: `basic`, `big`, `background`, `thumbAndBackground`. Effective only if `term.showHero = true`. |
+| `term.layoutBackgroundBlur` | `true` | Makes the background image in the background term heroStyle blur with the scroll. Only used when `heroStyle` equals `background` or `thumbAndBackground`. |
+| `term.layoutBackgroundHeaderSpace` | `true` | Add space between the header and the body. Only used when `heroStyle` equals `background`. |
 | `term.showBreadcrumbs` | `false` | Whether or not breadcrumbs are displayed in the term header. |
 | `term.showViews` | `false` | Whether or not article views are displayed. This requires firebase integrations to be enabled, look below. |
 | `term.showLikes` | `false` | Whether or not article likes are displayed. This requires firebase integrations to be enabled, look below. |

@@ -26,6 +26,7 @@ article:
   this_article: "Tiu ĉi artikolo"
   related_articles: "Rilataj"
   reply_by_email: "Respondu per retpoŝto"
+  reply_to: "Respondo al {{ .Title }}"
   zen_mode_title:
     enable: "Ŝalti zen-reĝimon"
     disable: "Malŝalti zen-reĝimon"

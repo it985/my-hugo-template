@@ -20,6 +20,7 @@ article:
   this_article: "This Article"
   related_articles: "Related"
   reply_by_email: "Vastaa sähköpostitse"
+  reply_to: "Vastaus: {{ .Title }}"
 
 a11y:
   title: "Esteettömyysasetukset"

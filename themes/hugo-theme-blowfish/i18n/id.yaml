@@ -26,6 +26,7 @@ article:
   this_article: "Artikel ini"
   related_articles: "Terkait"
   reply_by_email: "Balas melalui email"
+  reply_to: "Balasan untuk {{ .Title }}"
 
 a11y:
   title: "Pengaturan aksesibilitas"

@@ -26,6 +26,7 @@ article:
   this_article: "This Article"
   related_articles: "Related"
   reply_by_email: "ইমেইলে উত্তর দিন"
+  reply_to: "উত্তর: {{ .Title }}"
 
 a11y:
   title: "অ্যাক্সেসিবিলিটি সেটিংস"

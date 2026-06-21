@@ -23,6 +23,7 @@ article:
   this_article: "Este artigo"
   related_articles: "Relacionados"
   reply_by_email: "Responder por email"
+  reply_to: "Resposta a {{ .Title }}"
 
 a11y:
   title: "Definições de acessibilidade"

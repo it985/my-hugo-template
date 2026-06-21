@@ -20,6 +20,7 @@ article:
   this_article: "This Article"
   related_articles: "Related"
   reply_by_email: "Válasz emailben"
+  reply_to: "Válasz erre: {{ .Title }}"
 
 a11y:
   title: "Akadálymentességi beállítások"

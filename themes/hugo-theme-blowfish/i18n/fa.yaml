@@ -26,6 +26,7 @@ article:
   this_article: "همین مقاله"
   related_articles: "مقاله‌های مرتبط"
   reply_by_email: "پاسخ از طریق ایمیل"
+  reply_to: "پاسخ به {{ .Title }}"
   zen_mode_title:
     enable: "فعال کردن حالت تمام متن"
     disable: "غیر فعال کردن حالت تمام متن"

@@ -26,6 +26,7 @@ article:
   this_article: "Denne artikel"
   related_articles: "Relateret"
   reply_by_email: "Svar via email"
+  reply_to: "Svar på {{ .Title }}"
   zen_mode_title:
     enable: "Aktiver zen mode"
     disable: "Deaktiver zen mode"

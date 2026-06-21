@@ -26,6 +26,7 @@ article:
   this_article: "Tento článek"
   related_articles: "Related"
   reply_by_email: "Odpovědět e-mailem"
+  reply_to: "Odpověď na {{ .Title }}"
 
 a11y:
   title: "Nastavení přístupnosti"

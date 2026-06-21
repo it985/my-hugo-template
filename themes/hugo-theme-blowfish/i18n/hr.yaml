@@ -26,6 +26,7 @@ article:
   this_article: "This Article"
   related_articles: "Related"
   reply_by_email: "Odgovori e-poštom"
+  reply_to: "Odgovor na {{ .Title }}"
 
 a11y:
   title: "Postavke pristupačnosti"

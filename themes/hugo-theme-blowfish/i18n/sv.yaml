@@ -20,6 +20,7 @@ article:
   this_article: "Denna artikel"
   related_articles: "Relaterade"
   reply_by_email: "Svara via email"
+  reply_to: "Svar på {{ .Title }}"
 
 a11y:
   title: "Tillgänglighetsinställningar"

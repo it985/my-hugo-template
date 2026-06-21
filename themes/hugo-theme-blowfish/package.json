@@ -1,6 +1,6 @@
 {
   "name": "hugo-blowfish-theme",
-  "version": "2.98.0",
+  "version": "2.103.0",
   "description": "Blowfish theme for Hugo.",
   "scripts": {
     "postinstall": "vendor-copy",
@@ -36,21 +36,21 @@
   },
   "homepage": "https://github.com/nunocoracao/blowfish#readme",
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/cli": "^4.3.0",
     "@tailwindcss/typography": "^0.5.19",
     "chart.js": "^4.5.1",
-    "fuse.js": "^7.1.0",
-    "katex": "^0.16.28",
+    "fuse.js": "~7.3.0",
+    "katex": "^0.16.45",
     "lite-youtube-embed": "^0.3.4",
     "medium-zoom": "^1.1.0",
-    "mermaid": "^10.9.5",
+    "mermaid": "^11.14.0",
     "packery": "^3.0.0",
-    "prettier": "^3.8.1",
+    "prettier": "^3.8.3",
     "prettier-plugin-go-template": "^0.0.15",
-    "puppeteer": "^24.37.2",
-    "rimraf": "^6.1.2",
+    "puppeteer": "^24.42.0",
+    "rimraf": "^6.1.3",
     "tailwind-scrollbar": "^4.0.2",
-    "tailwindcss": "^4.1.18",
+    "tailwindcss": "^4.3.0",
     "tw-elements": "2.0.0",
     "typeit": "^8.8.7",
     "vendor-copy": "^3.0.1"
@@ -82,8 +82,8 @@
       "to": "assets/lib/katex/fonts/"
     },
     {
-      "from": "node_modules/fuse.js/dist/fuse.min.js",
-      "to": "assets/lib/fuse/fuse.min.js"
+      "from": "node_modules/fuse.js/dist/fuse.min.cjs",
+      "to": "assets/lib/fuse/fuse.min.cjs"
     },
     {
       "from": "node_modules/typeit/dist/index.umd.js",
@@ -115,9 +115,8 @@
     }
   ],
   "dependencies": {
-    "@headlessui/react": "^2.2.9",
+    "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
-    "@iamtraction/google-translate": "^1.1.2",
     "@tailwindcss/forms": "^0.5.11",
     "commander": "^14.0.3"
   }

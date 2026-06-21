@@ -20,6 +20,7 @@ article:
   this_article: "This Article"
   related_articles: "Related"
   reply_by_email: "השב בדוא\"ל"
+  reply_to: "תגובה ל-{{ .Title }}"
 
 a11y:
   title: "הגדרות נגישות"

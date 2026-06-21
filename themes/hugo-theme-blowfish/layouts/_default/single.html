@@ -51,13 +51,21 @@
           {{ $defaultReplyByEmail := site.Params.replyByEmail }}
           {{ $replyByEmail := default $defaultReplyByEmail .Params.replyByEmail }}
           {{ if $replyByEmail }}
+            {{ $replySubject := i18n "article.reply_to" (dict "Title" .Title) | default (printf "Reply to %s" .Title) }}
             <strong class="block mt-8">
               <a
-                target="_blank"
-                class="m-1 rounded bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
-                href="mailto:{{ site.Params.Author.email }}?subject={{ replace (printf "Reply to %s" .Title) "\"" "'" }}">
+                class="email-link m-1 rounded bg-neutral-300 p-1.5 text-neutral-700 hover:bg-primary-500 hover:text-neutral dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800"
+                href="#"
+                data-email="{{ site.Params.Author.email | base64Encode }}"
+                data-subject="{{ replace $replySubject "\"" "'" }}">
                 {{ i18n "article.reply_by_email" | default "Reply by Email" }}
               </a>
+              <noscript>
+                <span
+                  class="m-1 rounded bg-neutral-300 p-1.5 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                  {{ i18n "article.reply_by_email" | default "Reply by Email" }} (require JavaScript)
+                </span>
+              </noscript>
             </strong>
           {{ end }}
         </div>
@@ -76,7 +84,7 @@
       {{ if .Params.showComments | default (site.Params.article.showComments | default false) }}
         {{ if templates.Exists "partials/comments.html" }}
           <div class="pt-3">
-            <hr class="border-dotted border-neutral-300 dark:border-neutral-600">
+            <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
             <div class="pt-3">
               {{ partial "comments.html" . }}
             </div>
@@ -90,7 +98,7 @@
 {{ end }}
 
 {{ define "SingleAuthor" }}
-  {{ $authorsData := site.Data.authors }}
+  {{ $authorsData := hugo.Data.authors }}
   {{ $taxonomies := site.Taxonomies.authors }}
   {{ $baseURL := site.BaseURL }}
   {{ $taxonomyLink := 0 }}
@@ -116,7 +124,7 @@
       {{ end }}
 
       {{ $finalLink := $taxonomyLink }}
-      {{ $currentLang := site.Language.Lang }}
+      {{ $currentLang := site.Language.Name }}
       {{ if eq site.LanguagePrefix "" }}
         {{ $finalLink = printf "%sauthors/%s/" $baseURL $author }}
       {{ else }}

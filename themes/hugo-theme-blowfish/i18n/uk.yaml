@@ -30,6 +30,7 @@ article:
   this_article: "This Article"
   related_articles: "Related"
   reply_by_email: "Відповісти електронною поштою"
+  reply_to: "Відповідь на {{ .Title }}"
   zen_mode_title:
     enable: "Enable zen mode"
     disable: "Disable zen mode"
