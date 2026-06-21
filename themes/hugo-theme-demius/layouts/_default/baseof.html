@@ -2,7 +2,7 @@
 <html lang="zh-CN" data-theme="{{ if site.Params.darkMode }}dark{{ else }}light{{ end }}"{{ if site.Params.grayscaleMode }} class="grayscale-mode"{{ end }}>
   <head>
     <meta charset="utf-8">
-    <title>{{ block "title" . }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+    <title>{{ block "title" . }}{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}{{ end }}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="author" content="{{ .Site.Params.author }}">
     <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
@@ -38,6 +38,11 @@
     {{ end }}
     {{ end }}
     <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css">
+
+    {{/* KaTeX 支持（用于渲染正文里的 `$...$` / `$$...$$` 行内/行间公式） */}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
     
     {{/* 自定义字体加载 */}}
     {{ if and .Site.Params.font.enable (eq .Site.Params.font.type "online") .Site.Params.font.onlineUrl }}
