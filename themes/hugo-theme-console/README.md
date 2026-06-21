@@ -2,7 +2,7 @@
 
 A minimal and responsive Hugo theme inspired by the system console, crafted for optimal performance with an average page load time of under one second.
 
-Theme is based on a modern and minimal [Terminal CSS](https://terminalcss.xyz/) framework.
+The theme is based on a modern and minimal [Terminal CSS](https://terminalcss.xyz/) framework.
 
 ## Features
 
@@ -27,7 +27,7 @@ Theme is based on a modern and minimal [Terminal CSS](https://terminalcss.xyz/) 
 From the root of your Hugo site, clone the theme into `themes/hugo-theme-console` by running:
 
 ```bash
-$ git submodule add https://github.com/mrmierzejewski/hugo-theme-console.git hugo-theme-console
+$ git submodule add https://github.com/mrmierzejewski/hugo-theme-console.git themes/hugo-theme-console
 ```
     
 See the [Hugo documentation](https://gohugo.io/hugo-modules/theme-components/) for more information.
@@ -41,7 +41,7 @@ $ hugo mod init github.com/my-username/my-new-site
 
 ```
 
-Next declare the `Console` theme module as a dependency for your site.
+Next, declare the `Console` theme module as a dependency for your site.
 
 ```bash
 $ hugo mod get github.com/mrmierzejewski/hugo-theme-console
@@ -84,6 +84,66 @@ Add these parameters to your `hugo.toml` file for basic customization:
   url = "/photos/"
 ```
 
+### Custom styles
+
+On your main directory add `assets/css/custom.css`. Now you can overwrite default styles, i.e:
+
+```css
+
+:root {
+    --global-font-size: 16px;
+    --global-font-color: #444;
+    --mono-font-stack: Roboto Mono, Menlo, Monaco, Lucida Console,
+        Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono,
+        Courier New, monospace, serif;
+    --font-stack: Roboto Mono, Menlo, Monaco, Lucida Console, Liberation Mono,
+        DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace,
+        serif;
+    --global-line-height: 1.6em;
+    --page-width: 70em;
+    --display-h1-decoration: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--background-color: #222225;
+	--page-width: 60em;
+	--font-color: #e8e9ed;
+	--invert-font-color: #222225;
+	--secondary-color: #a3abba;
+	--tertiary-color: #a3abba;
+	--primary-color: #62c4ff;
+	--error-color: #ff3c74;
+	--progress-bar-background: #3f3f44;
+	--progress-bar-fill: #62c4ff;
+	--code-bg-color: #3f3f44;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+	--background-color:#fff;
+	--font-color:#151515;
+	--invert-font-color:#fff;
+	--primary-color:#1a95e0;
+	--secondary-color:#727578;
+	--error-color:#d20962;
+	--progress-bar-background:#727578;
+	--progress-bar-fill:#151515;
+	--code-bg-color:#e8eff2;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    :root {
+        --global-font-size: 14px;
+        --global-font-color: #444;
+        --global-line-height: 1.6em;
+        --page-width: 70em;
+    }
+}
+```
+
 ## Quick Start
 
 After installation, take a look in the `exampleSite` folder. This directory contains an example config file and the content for the demo.
@@ -115,7 +175,7 @@ Hugo includes a development server, so you can view your changes as you go—ver
 hugo serve
 ```
 
-Now you can go to [http://localhost:1313](http://localhost:1313) and the theme should be visible.
+Now you can go to [http://localhost:1313](http://localhost:1313), and the theme should be visible.
 
 ### Building for Production
 
@@ -141,4 +201,4 @@ This theme has been updated to be compatible with Hugo v0.146.0 and the new temp
 
 ## License
 
-Copyright &copy; 2024 [Marcin Mierzejewski](https://mrmierzejewski.com/). This theme is released under the [MIT License](https://github.com/panr/hugo-theme-terminal/blob/master/LICENSE.md).
+Copyright &copy; 2026 [Marcin Mierzejewski](https://mrmierzejewski.com/). This theme is released under the [MIT License](https://github.com/panr/hugo-theme-terminal/blob/master/LICENSE.md).
