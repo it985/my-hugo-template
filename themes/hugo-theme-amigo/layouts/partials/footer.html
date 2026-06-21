@@ -1,1 +1,14 @@
-<p>Copyright {{ now.Year }}. All rights reserved.</p>
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-links">
+            <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a></span>
+            <span class="footer-dot">·</span>
+            <span>Theme <a href="https://github.com/zqlit/Hugo-Theme-Amigo" target="_blank" rel="noopener">Amigo</a></span>
+        </div>
+        {{ if .Site.Params.icp }}
+        <div class="footer-icp">
+            &copy; {{ now.Year }} {{ .Site.Title }} · <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">{{ .Site.Params.icp }}</a>
+        </div>
+        {{ end }}
+    </div>
+</footer>

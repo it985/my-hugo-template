@@ -1,0 +1,33 @@
+{{ $src := .Get "src" | default "" }}
+{{ $cover := .Get "cover" | default "/images/default-cover.jpg" }}
+{{ $name := .Get "name" | default "未知歌曲" }}
+{{ $artist := .Get "artist" | default "未知艺术家" }}
+{{ $accent := .Get "accent" | default "#d43c33" }}
+{{ $isApi := strings.HasPrefix $src "https://open.motues.top/music" }}
+
+<div class="amigo-music-card-mark amigo-music-card" data-amigo-music-card="1" data-src="{{ $src }}" data-name="{{ $name }}" data-artist="{{ $artist }}" data-is-api="{{ if $isApi }}true{{ else }}false{{ end }}" style="--music-accent:{{ $accent }}">
+    <div class="amigo-music-card__hero">
+        <div class="amigo-music-card__art">
+            <img class="amigo-music-card__cover amigo-music-card__cover--image" src="{{ $cover }}" alt="{{ $name }} cover" loading="lazy" data-keep="1">
+            <button type="button" class="amigo-music-card__play" aria-label="播放《{{ $name }}》" aria-pressed="false">
+                <span class="amigo-music-card__play-icon" aria-hidden="true"></span>
+            </button>
+            <span class="amigo-music-card__equalizer" aria-hidden="true"><span></span><span></span><span></span></span>
+        </div>
+        <div class="amigo-music-card__meta">
+            <strong class="amigo-music-card__title">{{ $name }}</strong>
+            <span class="amigo-music-card__subtitle">
+                <span class="amigo-music-card__artist">{{ $artist }}</span>
+            </span>
+            <div class="amigo-music-card__timeline">
+                <span class="amigo-music-card__time amigo-music-card__time--current">0:00</span>
+                <label class="amigo-music-card__seek-wrap">
+                    <span class="sr-only">调整《{{ $name }}》的播放进度</span>
+                    <input class="amigo-music-card__seek" type="range" min="0" max="1000" step="1" value="0" aria-label="调整《{{ $name }}》的播放进度">
+                    <span class="amigo-music-card__seek-thumb" aria-hidden="true"></span>
+                </label>
+                <span class="amigo-music-card__time amigo-music-card__time--duration">--:--</span>
+            </div>
+        </div>
+    </div>
+</div>

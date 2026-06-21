@@ -1,0 +1,63 @@
+{{ $src := .Get "src" | default "" }}
+{{ $video := .Get "video" | default "" }}
+{{ $caption := .Get "caption" | default "" }}
+{{ $id := printf "live-card-%d" .Ordinal }}
+
+<div class="live-card" id="{{ $id }}" data-src="{{ $src }}" data-video="{{ $video }}">
+    {{/* 图片/视频容器 */}}
+    <div class="live-card-container">
+        {{/* 静态图片 */}}
+        {{ if $src }}
+        <img class="live-card-img" src="{{ $src }}" alt="{{ $caption }}" loading="lazy">
+        {{ end }}
+
+        {{/* 视频 */}}
+        {{ if $video }}
+        <video
+            class="live-card-video"
+            src="{{ $video }}"
+            loop
+            muted
+            playsinline
+            preload="none"
+        ></video>
+        {{ end }}
+
+        {{/* LIVE 标签 */}}
+        <div class="live-card-badge">
+            <span class="live-badge-dot"></span>
+            <span class="live-badge-text">LIVE</span>
+        </div>
+
+        {{/* 播放按钮 */}}
+        <button class="live-card-play-btn" aria-label="播放">
+            <i class="ri-play-fill"></i>
+        </button>
+
+        {{/* 控制栏 */}}
+        <div class="live-card-controls">
+            {{/* 音量控制 */}}
+            <button class="live-ctrl-btn live-card-volume" aria-label="音量">
+                <i class="ri-volume-up-line"></i>
+                <i class="ri-volume-mute-line" style="display:none"></i>
+            </button>
+
+            {{/* 循环控制 */}}
+            <button class="live-ctrl-btn live-card-loop" aria-label="循环" data-loop="true">
+                <i class="ri-repeat-2-line"></i>
+            </button>
+        </div>
+
+        {{/* 进度条 */}}
+        <div class="live-card-progress">
+            <div class="live-card-progress-bar"></div>
+        </div>
+    </div>
+
+    {{/* 说明文字 */}}
+    {{ if $caption }}
+    <div class="live-card-caption">
+        {{ $caption }}
+    </div>
+    {{ end }}
+</div>

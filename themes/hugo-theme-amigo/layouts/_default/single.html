@@ -25,14 +25,19 @@
                 {{/* 正文内容 */}}
                 <div class="article-text moment-text">
                     {{/* 这里同样剔除掉正文里的图片标签，图片会统一在下面的画廊里展示 */}}
-                    {{ .Content | replaceRE "(?s)<img[^>]*>" "" | safeHTML }}
+                    {{ $content := .Content }}
+                    {{ $content = $content | replaceRE "<img([^>]*data-keep=\"1\"[^>]*)>" "<keepimg$1>" }}
+                    {{ $content = $content | replaceRE "(?s)<img[^>]*>" "" }}
+                    {{ $content = $content | replaceRE "<keepimg([^>]*)>" "<img$1>" }}
+                    {{ $content | safeHTML }}
                 </div>
 
                 {{/* 图片展示 - 详情页使用大图垂直排列 */}}
                 {{ $images := .Params.images }}
                 {{ if not $images }}
                     {{/* 如果没有在头部写图片，就去正文里抓 */}}
-                    {{ $imgTags := findRE "<img[^>]+src=\"([^\"]+)\"[^>]*>" .Content }}
+                    {{ $contentForImages := .Content | replaceRE "<img[^>]*data-keep=\"1\"[^>]*>" "" }}
+                    {{ $imgTags := findRE "<img[^>]+src=\"([^\"]+)\"[^>]*>" $contentForImages }}
                     {{ if $imgTags }}
                         {{ $images = slice }}
                         {{ range $imgTags }}
@@ -45,17 +50,36 @@
 
                 {{ if $images }}
                 {{ $currentPage := . }}
+                {{ $len := len $images }}
                 <div class="article-gallery">
-                    {{ range $images }}
-                    {{ $imgSrc := . }}
-                    {{ if not (findRE "^(http|/)" $imgSrc) }}
-                        {{ with $currentPage.Resources.GetMatch $imgSrc }}
-                            {{ $imgSrc = .RelPermalink }}
-                        {{ end }}
-                    {{ end }}
-                    <figure class="article-image">
-                        <img src="{{ $imgSrc }}" alt="Image" loading="lazy">
-                    </figure>
+                    {{ if eq $len 1 }}
+                        {{/* 只有一张图时居中显示 */}}
+                        <div class="gallery-single">
+                            {{ range $images }}
+                                {{ $imgSrc := . }}
+                                {{ if not (findRE "^(http|/)" $imgSrc) }}
+                                    {{ with $currentPage.Resources.GetMatch $imgSrc }}
+                                        {{ $imgSrc = .RelPermalink }}
+                                    {{ end }}
+                                {{ end }}
+                                <img src="{{ $imgSrc }}" alt="Image" loading="lazy">
+                            {{ end }}
+                        </div>
+                    {{ else }}
+                        {{/* 多张图时的网格布局 */}}
+                        <div class="gallery-grid {{ if or (eq $len 2) (eq $len 4) }}cols-2{{ else }}cols-3{{ end }}">
+                            {{ range $images }}
+                                {{ $imgSrc := . }}
+                                {{ if not (findRE "^(http|/)" $imgSrc) }}
+                                    {{ with $currentPage.Resources.GetMatch $imgSrc }}
+                                        {{ $imgSrc = .RelPermalink }}
+                                    {{ end }}
+                                {{ end }}
+                                <div class="gallery-item">
+                                    <img src="{{ $imgSrc }}" alt="Image" loading="lazy">
+                                </div>
+                            {{ end }}
+                        </div>
                     {{ end }}
                 </div>
                 {{ end }}
@@ -66,17 +90,35 @@
         {{/* 评论区逻辑 */}}
         {{ $showComments := false }}
         {{ if eq .Section "posts" }}
-            {{ if ne .Params.comments false }}{{ $showComments = true }}{{ end }}
+            {{ if .Params.isAd }}
+                {{ if eq .Params.comments true }}{{ $showComments = true }}{{ end }}
+            {{ else }}
+                {{ if ne .Params.comments false }}{{ $showComments = true }}{{ end }}
+            {{ end }}
         {{ else }}
             {{ if eq .Params.comments true }}{{ $showComments = true }}{{ end }}
         {{ end }}
 
         {{ if and $showComments (ne .Site.Params.commentMode "none") }}
         <div class="comments-container">
+            {{/* 文章详情页点赞按钮（仅Artalk模式） */}}
+            {{ if and (eq .Site.Params.commentMode "artalk") .Site.Params.artalkServer }}
+            <div class="single-like-area">
+                <button class="single-like-btn" id="single-like-btn" aria-label="点赞">
+                    <i class="ri-heart-line"></i>
+                    <span class="single-like-text">赞</span>
+                </button>
+            </div>
+            {{ end }}
+
             {{ if eq .Site.Params.commentMode "artalk" }}
                 {{/* Artalk 评论（朋友圈风格） */}}
                 {{ if .Site.Params.artalkServer }}
                 <div class="moment-comments-area single-comments" id="comments-single" data-page-key="{{ .Permalink }}"></div>
+                {{ end }}
+            {{ else if eq .Site.Params.commentMode "twikoo" }}
+                {{ if .Site.Params.twikooEnvId }}
+                <div class="twikoo-comments-area" id="tcomment" data-page-key="{{ .RelPermalink }}"></div>
                 {{ end }}
             {{ else if eq .Site.Params.commentMode "giscus" }}
                 {{/* Giscus 评论（GitHub Discussions 风格） */}}

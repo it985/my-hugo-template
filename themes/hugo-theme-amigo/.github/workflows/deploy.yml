@@ -1,0 +1,27 @@
+name: Deploy to Edgeone
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.128.2'
+          extended: true
+
+      - name: Build
+        run: |
+          rm -rf public
+          hugo --minify --baseURL "/"
+
+      - name: Deploy to EdgeOne Pages
+        run: npx edgeone pages deploy ./public --name 5b2-site --token ${{ secrets.EDGEONE_API_TOKEN }}

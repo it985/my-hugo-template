@@ -1,0 +1,44 @@
+{{ $src := .Get "src" | default "" }}
+{{ $cover := .Get "cover" | default "/images/default-cover.jpg" }}
+{{ $name := .Get "name" | default "未知歌曲" }}
+{{ $artist := .Get "artist" | default "未知艺术家" }}
+
+<div class="music-player" data-src="{{ $src }}" data-cover="{{ $cover }}" data-name="{{ $name }}" data-artist="{{ $artist }}">
+    <div class="music-player-container">
+        <div class="music-cover-wrapper">
+            <img class="music-cover" src="{{ $cover }}" alt="{{ $name }}">
+            <div class="music-cover-overlay">
+                <button class="music-btn music-btn-play" aria-label="播放">
+                    <i class="ri-play-fill"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="music-info">
+            <div class="music-name">{{ $name }}</div>
+            <div class="music-artist">{{ $artist }}</div>
+        </div>
+
+        <div class="music-progress">
+            <div class="music-progress-bar">
+                <div class="music-progress-current"></div>
+            </div>
+            <div class="music-time">
+                <span class="music-time-current">0:00</span>
+                <span class="music-time-total">0:00</span>
+            </div>
+        </div>
+
+        <div class="music-controls">
+            <button class="music-btn music-btn-prev" aria-label="上一首">
+                <i class="ri-skip-back-fill"></i>
+            </button>
+            <button class="music-btn music-btn-play-main" aria-label="播放">
+                <i class="ri-play-fill"></i>
+            </button>
+            <button class="music-btn music-btn-next" aria-label="下一首">
+                <i class="ri-skip-forward-fill"></i>
+            </button>
+        </div>
+    </div>
+</div>

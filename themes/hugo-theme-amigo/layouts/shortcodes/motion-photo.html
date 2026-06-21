@@ -1,0 +1,24 @@
+{{ $image := .Get "image" | default "" }}
+{{ $video := .Get "video" | default "" }}
+{{ $alt := .Get "alt" | default "" }}
+{{ $ratio := .Get "ratio" | default "3/4" }}
+{{ $delay := .Get "delay" | default "500" }}
+
+{{/* 如果没指定 video，尝试从 image 路径推导 */}}
+{{ if and (not $video) $image }}
+    {{ $video = replace $image (path.Ext $image) ".mp4" }}
+{{ end }}
+
+<div class="amigo-motion-photo-mark live-photo-container" style="aspect-ratio:{{ $ratio | safeCSS }}" data-hover-delay="{{ $delay }}" data-preload-margin="200" data-play-label="Play Motion Photo" data-pause-label="Pause Motion Photo" data-mute-label="Unmute Motion Photo" data-unmute-label="Mute Motion Photo">
+    <video class="live-photo-video" data-src="{{ $video }}" poster="{{ $image }}" muted playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-player-fullscreen="false" loop preload="metadata" aria-label="{{ $alt }}">
+        您的浏览器不支持 HTML5 视频。
+    </video>
+    <div class="live-photo-controls-group">
+        <button type="button" class="live-photo-control-btn live-photo-toggle-btn" data-state="static" aria-label="Play Motion Photo" aria-pressed="false">
+            <i class="icon-live" aria-hidden="true"></i><span>LIVE</span>
+        </button>
+        <button type="button" class="live-photo-control-btn live-photo-mute-btn" data-muted="true" aria-label="Unmute Motion Photo" aria-pressed="false">
+            <i class="icon-muted" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>

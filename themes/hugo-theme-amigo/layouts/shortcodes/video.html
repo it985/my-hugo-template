@@ -1,0 +1,81 @@
+{{- $src := .Get "src" | default "" -}}
+{{- $poster := .Get "poster" | default "" -}}
+{{- $alt := .Get "alt" | default "" -}}
+{{- $ratio := .Get "ratio" | default "16/9" -}}
+{{- $autoplay := .Get "autoplay" | default "false" -}}
+{{- $loop := .Get "loop" | default "false" -}}
+{{- $muted := .Get "muted" | default "false" -}}
+{{- $page := .Get "page" | default "1" -}}
+
+{{- $isBilibili := or (findRE "bilibili\\.com" $src) (findRE "player\\.bilibili\\.com" $src) -}}
+
+{{- if $isBilibili -}}
+  {{/* 哔哩哔哩嵌入 */}}
+  {{- $bvid := "" -}}
+  {{- $bvid = replaceRE ".*bilibili\\.com/video/(BV[0-9a-zA-Z]+).*" "$1" $src -}}
+  {{- if eq $bvid $src }}{{ $bvid = "" }}{{ end -}}
+  {{- $aid := "" -}}
+  {{- $aid = replaceRE ".*[?&]aid=([0-9]+).*" "$1" $src -}}
+  {{- if eq $aid $src }}{{ $aid = "" }}{{ end -}}
+  {{- $embedSrc := $src -}}
+  {{- if $bvid -}}
+    {{- $embedSrc = printf "https://player.bilibili.com/player.html?bvid=%s&page=%s&autoplay=0" $bvid $page -}}
+  {{- else if $aid -}}
+    {{- $embedSrc = printf "https://player.bilibili.com/player.html?aid=%s&page=%s&autoplay=0" $aid $page -}}
+  {{- end -}}
+  <div class="amigo-video-container amigo-video-bilibili" style="aspect-ratio: {{ $ratio | safeCSS }};">
+      <iframe
+          src="{{ $embedSrc }}"
+          scrolling="no"
+          border="0"
+          frameborder="no"
+          framespacing="0"
+          allowfullscreen="true"
+          loading="lazy"
+          aria-label="{{ $alt }}"
+      ></iframe>
+  </div>
+{{- else -}}
+  {{/* 普通视频 */}}
+  {{- if and $src (not (findRE "^(https?://|/)" $src)) -}}
+    {{- with .Page.Resources.GetMatch $src -}}
+      {{- $src = .RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if and $poster (not (findRE "^(https?://|/)" $poster)) -}}
+    {{- with .Page.Resources.GetMatch $poster -}}
+      {{- $poster = .RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+
+  <div class="amigo-video-container" style="aspect-ratio: {{ $ratio | safeCSS }};">
+      <video
+          class="amigo-video"
+          src="{{ $src }}"
+          {{ if $poster }}poster="{{ $poster }}"{{ end }}
+          {{ if eq $autoplay "true" }}autoplay{{ end }}
+          {{ if eq $loop "true" }}loop{{ end }}
+          {{ if eq $muted "true" }}muted{{ end }}
+          playsinline
+          preload="metadata"
+          aria-label="{{ $alt }}"
+      ></video>
+      <div class="amigo-video-controls">
+          <button type="button" class="amigo-video-play-btn" aria-label="播放">
+              <i class="ri-play-fill"></i>
+          </button>
+          <div class="amigo-video-progress">
+              <div class="amigo-video-progress-bar"></div>
+          </div>
+          <span class="amigo-video-time">0:00</span>
+          <button type="button" class="amigo-video-mute-btn" aria-label="静音">
+              <i class="ri-volume-up-line"></i>
+              <i class="ri-volume-mute-line" style="display:none"></i>
+          </button>
+          <button type="button" class="amigo-video-fullscreen-btn" aria-label="全屏">
+              <i class="ri-fullscreen-line"></i>
+          </button>
+      </div>
+  </div>
+{{- end -}}

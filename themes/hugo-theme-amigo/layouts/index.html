@@ -1,14 +1,29 @@
 {{ define "main" }}
-    {{/* 顶部页眉 / 封面图区域 */}}
-    <header class="moments-header" style="background-image: url('{{ .Site.Params.cover | default ( "images/cover.jpg" | relURL ) }}');">
+    {{/* 顶部页眉 / 封面图区域：支持图片和视频 */}}
+    {{- $media := .Site.Params.headerMedia | default .Site.Params.cover -}}
+    {{- $isVideo := false -}}
+    {{- if $media -}}
+        {{- if or (strings.HasSuffix (lower $media) ".mp4") (strings.HasSuffix (lower $media) ".webm") (strings.HasSuffix (lower $media) ".ogg") -}}
+            {{- $isVideo = true -}}
+        {{- end -}}
+    {{- end -}}
+    <header class="moments-header" {{ if not $isVideo }}style="background-image: url('{{ $media | default ( "images/cover.jpg" | relURL ) }}');"{{ end }}>
+        {{ if and $media $isVideo }}
+        <video class="moments-header-video" src="{{ $media }}" autoplay muted loop playsinline preload="auto"></video>
+        {{ end }}
         <div class="header-user">
             <div class="header-avatar">
                 <img src="{{ .Site.Params.avatar | default ( "images/avatar.jpg" | relURL ) }}" alt="Avatar">
             </div>
             <div class="header-info">
-                <h1 class="header-name">{{ .Site.Params.username | default .Site.Title }}</h1>
+                <h1 class="header-name">
+                    <a href="{{ "posts" | relURL }}">{{ .Site.Params.username | default .Site.Title }}</a>
+                </h1>
             </div>
         </div>
+        {{ if and .Site.Params.artalkServer (eq .Site.Params.commentMode "artalk") (ne .Site.Params.enableDanmaku false) }}
+        <div id="danmaku-root" class="danmaku-root"></div>
+        {{ end }}
     </header>
     
     {{/* 个人签名（放在封面图下面） */}}
@@ -18,33 +33,99 @@
 
     {{/* 动态列表（信息流） */}}
     <main class="moments-feed">
-        {{ range (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
-        <article class="moment-card" id="post-{{ .File.UniqueID }}">
-            
+        {{ $pages := where .Site.RegularPages "Section" "posts" }}
+        {{ $items := slice }}
+        {{ range $pages }}
+            {{ $wInv := sub 999999999 .Weight }}
+            {{ $tsInv := sub 9999999999 .Date.Unix }}
+            {{ $key := printf "%09d-%010d" $wInv $tsInv }}
+            {{ $items = $items | append (dict "key" $key "page" .) }}
+        {{ end }}
+
+        {{ range sort $items "key" }}
+        {{ with .page }}
+        {{ $isAd := or .Params.isAd (eq .Layout "ad") (eq .Params.layout "ad") }}
+        {{ $feedShowComments := false }}
+        {{ if $isAd }}
+            {{ if eq .Params.comments true }}{{ $feedShowComments = true }}{{ end }}
+        {{ else }}
+            {{ if ne .Params.comments false }}{{ $feedShowComments = true }}{{ end }}
+        {{ end }}
+        {{ $isPinned := and (not $isAd) (gt .Weight 0) }}
+
+        {{/* 判断是否为长文章 */}}
+        {{ $plainLen := .Content | plainify | len }}
+        {{ $isLong := or .Params.isLongArticle (gt $plainLen 500) }}
+
+        <article class="moment-card{{ if $isAd }} moment-card-ad{{ end }}{{ if $isLong }} moment-card-long{{ end }}" id="post-{{ .File.UniqueID }}">
+            {{ $currentPage := . }}
+
             {{/* 左侧：头像 */}}
             <aside class="moment-aside">
-                <img class="avatar-img" src="{{ .Params.avatar | default $.Site.Params.avatar | default ( "images/avatar.jpg" | relURL ) }}" alt="User" loading="lazy">
+                <a class="avatar-link" href="{{ "posts" | relURL }}?author={{ .Params.author | default $.Site.Params.username }}">
+                    <img class="avatar-img" src="{{ .Params.avatar | default $.Site.Params.avatar | default ( "images/avatar.jpg" | relURL ) }}" alt="User" loading="lazy">
+                </a>
             </aside>
 
             {{/* 右侧：动态主体 */}}
             <div class="moment-body">
-                <h2 class="moment-author">{{ .Params.author | default $.Site.Params.username }}</h2>
-                
+                <h2 class="moment-author">
+                    {{ .Params.author | default $.Site.Params.username }}
+                    {{ if $isAd }}<span class="moment-ad-badge">广告</span>{{ end }}
+                </h2>
+
+                {{ if $isLong }}
+                {{/* ========== 长文章卡片模式 ========== */}}
+                {{/* 封面图：cover → images[0] → 正文第一张图 */}}
+                {{ $coverSrc := "" }}
+                {{ if .Params.cover }}
+                    {{ $coverSrc = .Params.cover }}
+                {{ else if .Params.images }}
+                    {{ $coverSrc = index .Params.images 0 }}
+                {{ else }}
+                    {{ $contentForCover := .Content | replaceRE "<img[^>]*data-keep=\"1\"[^>]*>" "" }}
+                    {{ $coverImgTags := findRE "<img[^>]+src=\"([^\"]+)\"[^>]*>" $contentForCover }}
+                    {{ if $coverImgTags }}
+                        {{ $coverSrc = index $coverImgTags 0 | replaceRE "<img[^>]+src=\"([^\"]+)\"[^>]*>" "$1" }}
+                    {{ end }}
+                {{ end }}
+                {{ if and $coverSrc (not (findRE "^(https?://|/)" $coverSrc)) }}
+                    {{ with $currentPage.Resources.GetMatch $coverSrc }}
+                        {{ $coverSrc = .RelPermalink }}
+                    {{ end }}
+                {{ end }}
+
+                <a class="long-card-link" href="{{ .RelPermalink }}">
+                    {{ if $coverSrc }}
+                    <div class="long-card-thumb">
+                        <img src="{{ $coverSrc }}" alt="{{ .Title }}" loading="lazy">
+                    </div>
+                    {{ end }}
+                    <div class="long-card-info">
+                        <span class="long-card-title">{{ .Title }}</span>
+                        <span class="long-card-excerpt">{{ .Content | plainify | truncate 100 }}</span>
+                    </div>
+                </a>
+                {{ else }}
+                {{/* ========== 普通朋友圈模式 ========== */}}
+
                 {{/* 文字内容 */}}
                 <div class="moment-text-wrapper">
                     <div class="moment-text is-collapsed">
-                        {{/* 剔除正文里已经渲染的 <img> 标签，防止首页预览时图片重复显示 */}}
-                        {{ .Content | replaceRE "(?s)<img[^>]*>" "" | replaceRE "<p>\\s*</p>" "" | safeHTML }}
+                        {{ $content := .Content }}
+                        {{ $content = $content | replaceRE "<img([^>]*data-keep=\"1\"[^>]*)>" "<keepimg$1>" }}
+                        {{ $content = $content | replaceRE "(?s)<img[^>]*>" "" }}
+                        {{ $content = $content | replaceRE "<keepimg([^>]*)>" "<img$1>" }}
+                        {{ $content | safeHTML }}
                     </div>
                     <button class="text-toggle" style="display: none;">全文</button>
                 </div>
 
                 {{/* 图片画廊（九宫格） */}}
                 {{ $images := .Params.images }}
-                {{/* 如果 Front Matter 里没写图片，就从正文里抓取 */}}
                 {{ if not $images }}
-                    {{/* 这里的正则会匹配所有 <img> 的 src 属性 */}}
-                    {{ $imgTags := findRE "<img[^>]+src=\"([^\"]+)\"[^>]*>" .Content }}
+                    {{ $contentForImages := .Content | replaceRE "<img[^>]*data-keep=\"1\"[^>]*>" "" }}
+                    {{ $imgTags := findRE "<img[^>]+src=\"([^\"]+)\"[^>]*>" $contentForImages }}
                     {{ if $imgTags }}
                         {{ $images = slice }}
                         {{ range $imgTags }}
@@ -60,7 +141,6 @@
                 <div class="moment-gallery">
                     {{ $len := len $images }}
                     {{ if eq $len 1 }}
-                        {{/* 只有一张图时的展示方式 */}}
                         <div class="gallery-single">
                             {{ range $images }}
                                 {{ $imgSrc := . }}
@@ -73,7 +153,6 @@
                             {{ end }}
                         </div>
                     {{ else }}
-                        {{/* 多张图时的九宫格布局 */}}
                         <div class="gallery-grid {{ if or (eq $len 2) (eq $len 4) }}cols-2{{ else }}cols-3{{ end }}">
                             {{ range $images }}
                                 {{ $imgSrc := . }}
@@ -90,45 +169,62 @@
                     {{ end }}
                 </div>
                 {{ end }}
+                {{ end }}
 
                 {{/* 时间、地点与操作按钮 */}}
                 <footer class="moment-footer">
                     <div class="footer-meta">
-                        <span class="moment-time">{{ .Date.Format "2006年1月2号" }}</span>
-                        {{ if .Params.location }}
+                        <span class="moment-time" data-moment-time="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date.Format "2006年1月2号" }}</span>
+                        {{ if and .Site.Params.showLocation .Params.location }}
                         <span class="moment-location">{{ .Params.location }}</span>
                         {{ end }}
-                    </div>
-                    
-                    {{/* 右侧的操作菜单（点赞/评论） */}}
-                    <div class="action-wrapper">
-                        {{ if and (eq .Site.Params.commentMode "artalk") .Site.Params.artalkServer }}
-                        <button class="action-toggle" aria-label="Toggle Actions">
-                            <i class="ri-more-fill"></i>
-                        </button>
-                        
-                        {{/* 弹出的小黑框 */}}
-                        <div class="action-popover">
-                            <button class="popover-btn btn-like">
-                                <i class="ri-heart-line"></i>
-                                赞
-                            </button>
-                            <span class="popover-divider"></span>
-                            <a href="{{ .Permalink }}#comments-single" class="popover-btn">
-                                <i class="ri-chat-3-line"></i>
-                                评论
-                            </a>
-                        </div>
-                        {{ else }}
-                        <a href="{{ .Permalink }}" class="action-link-more" title="查看详情">
-                            <i class="ri-more-fill"></i>
-                        </a>
+                        {{ if and .Site.Params.showTags .Params.tags }}
+                        <span class="moment-tags">
+                            {{ range .Params.tags }}
+                            <span class="moment-tag">#{{ . }}</span>
+                            {{ end }}
+                        </span>
                         {{ end }}
+                    </div>
+
+                    {{/* 右侧的操作菜单（点赞/评论） */}}
+                    <div class="footer-actions">
+                        {{ if $isPinned }}
+                        <span class="moment-pin-badge" title="置顶">
+                            <i class="ri-pushpin-2-fill"></i>
+                            置顶
+                        </span>
+                        {{ end }}
+
+                        <div class="action-wrapper">
+                            {{ if and (eq .Site.Params.commentMode "artalk") .Site.Params.artalkServer $feedShowComments }}
+                            <button class="action-toggle" aria-label="Toggle Actions">
+                                <i class="ri-more-fill"></i>
+                            </button>
+
+                            {{/* 弹出的小黑框 */}}
+                            <div class="action-popover">
+                                <button class="popover-btn btn-like">
+                                    <i class="ri-heart-line"></i>
+                                    赞
+                                </button>
+                                <span class="popover-divider"></span>
+                                <a href="{{ .RelPermalink }}#comments-single" class="popover-btn">
+                                    <i class="ri-chat-3-line"></i>
+                                    评论
+                                </a>
+                            </div>
+                            {{ else }}
+                            <a href="{{ .RelPermalink }}" class="action-link-more" title="查看详情">
+                                <i class="ri-more-fill"></i>
+                            </a>
+                            {{ end }}
+                        </div>
                     </div>
                 </footer>
 
                 {{/* 首页评论展示区 - 朋友圈风格（只读） */}}
-                {{ if and (eq .Site.Params.commentMode "artalk") .Site.Params.artalkServer }}
+                {{ if and (eq .Site.Params.commentMode "artalk") .Site.Params.artalkServer $feedShowComments }}
                 <div class="moment-comments-area feed-comments" id="comments-{{ .File.UniqueID }}" data-page-key="{{ .Permalink }}">
                     <div class="moment-likes">
                         <i class="ri-heart-3-line"></i>
@@ -138,6 +234,7 @@
                 {{ end }}
             </div>
         </article>
+        {{ end }}
         {{ end }}
     </main>
 {{ end }}

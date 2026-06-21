@@ -33,7 +33,7 @@ theme = 'Amigo'
   description = "这是我的个人动态展示页"
   
   # 首页最上面那张大图
-  cover = "/images/header.png"
+  # cover = "/images/header.png"
   
   # ---------------------------------------------------------------------------------------
   # 网站全局设置
@@ -49,12 +49,18 @@ theme = 'Amigo'
   # ---------------------------------------------------------------------------------------
   # 评论系统设置
   # ---------------------------------------------------------------------------------------
-  # 评论模式：选 "artalk"、"giscus" 或者 "none"（关掉评论）
+  # 评论模式：选 "artalk"、"twikoo"、"giscus" 或者 "none"（关掉评论）
   commentMode = "artalk"
 
   # 1. Artalk 评论（官方文档：https://artalk.js.org/）
   artalkServer = "https://your-artalk-server.com"
   artalkSite = "您的站点名称"
+  # 是否开启底部评论弹幕（true 开启，false 关闭）
+  enableDanmaku = true
+
+  # 首页顶部封面：可以是图片或视频
+  # headerMedia = "/images/header.png"
+  headerMedia = "/videos/2792755201.mp4"
   
   # 2. Giscus 评论（官方文档：https://giscus.app/）
   # 如果上面填了 Artalk，会优先用 Artalk。两个都空着就不显示评论。
@@ -69,6 +75,10 @@ theme = 'Amigo'
   giscusInputPosition = "bottom"
   giscusLang = "zh-CN"
   giscusLoading = "lazy"
+
+  # 3. Twikoo 评论（后端 envId：腾讯云环境填 envId；Vercel/自建填地址）
+  twikooEnvId = ""
+  twikooLang = "zh-CN"
   
   # ---------------------------------------------------------------------------------------
   # 字体设置

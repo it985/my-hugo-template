@@ -1,0 +1,17 @@
+{{- $src := .Get "src" | default "" -}}
+
+{{- if and $src (not (findRE "^(https?://|/)" $src)) -}}
+  {{- with .Page.Resources.GetMatch $src -}}
+    {{- $src = .RelPermalink -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $isToday := eq (.Page.Date.Format "2006-01-02") (now.Format "2006-01-02") -}}
+
+<div class="amigo-voice-bubble" data-src="{{ $src }}">
+    <div class="amigo-voice-icon">
+        <span></span><span></span><span></span>
+    </div>
+    <span class="amigo-voice-duration">″</span>
+    {{ if $isToday }}<i class="amigo-voice-unread"></i>{{ end }}
+</div>

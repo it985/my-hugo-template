@@ -1,0 +1,35 @@
+{{- $imageRaw := .Get "image" | default (.Get "src") -}}
+{{- $alt := .Get "alt" | default "Live Photo" -}}
+{{- $videoRaw := .Get "video" | default (replaceRE "\\.(avif|webp|jpg|jpeg|png|gif)$" ".mp4" $imageRaw) -}}
+{{- $image := $imageRaw -}}
+{{- $video := $videoRaw -}}
+
+{{- if and $imageRaw (not (findRE "^(https?://|/)" $imageRaw)) -}}
+  {{- with .Page.Resources.GetMatch $imageRaw -}}
+    {{- $image = .RelPermalink -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and $videoRaw (not (findRE "^(https?://|/)" $videoRaw)) -}}
+  {{- with .Page.Resources.GetMatch $videoRaw -}}
+    {{- $video = .RelPermalink -}}
+  {{- end -}}
+{{- end -}}
+{{- $style := .Get "style" -}}
+
+<div class="live-photo"{{ with $style }}{{ printf " style=%q" (. | safeCSS) | safeHTMLAttr }}{{ end }}>
+  <img class="live-photo-poster" src="{{ $image }}" alt="{{ $alt }}" loading="lazy" data-keep="1" no-view>
+  <video class="live-photo-video" data-src="{{ $video }}" poster="{{ $image }}" muted playsinline loop preload="metadata" aria-label="{{ $alt }}"></video>
+  <div class="live-photo-controls-group">
+    <button type="button" class="live-photo-control-btn live-photo-toggle-btn" data-state="static" aria-label="Toggle Live Photo">
+      <i class="icon-live" aria-hidden="true"></i>
+      <span class="live-photo-live-label">实况</span>
+    </button>
+    <button type="button" class="live-photo-control-btn live-photo-mute-btn" data-muted="true" aria-label="Toggle Mute">
+      <i class="ri-volume-up-line live-photo-mute-icon icon-unmuted" aria-hidden="true"></i>
+      <i class="ri-volume-mute-line live-photo-mute-icon icon-muted" aria-hidden="true"></i>
+      <span class="live-photo-mute-label">静音</span>
+    </button>
+  </div>
+  <div class="warning" style="opacity: 0;"></div>
+</div>

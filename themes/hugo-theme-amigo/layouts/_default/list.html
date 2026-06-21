@@ -1,26 +1,63 @@
 {{ define "main" }}
     {{ partial "header-page.html" . }}
 
-    <main class="moments-feed single-view" style="padding-top: 60px;">
+    <main class="moments-feed single-view archive-view" style="padding-top: 60px;">
         <article class="single-article">
             <div class="article-body">
                 <div class="article-text moment-text">
                     <h1 style="margin-bottom: 20px;">{{ .Title }}</h1>
                     {{ .Content }}
-                    
-                    <div class="list-pages" style="margin-top: 20px;">
-                        {{ range .Pages }}
-                        <div class="list-item" style="margin-bottom: 15px;">
-                            <h2 style="font-size: 1.2rem; margin-bottom: 5px;">
-                                <a href="{{ .RelPermalink }}" style="color: var(--text-main); text-decoration: none;">{{ .LinkTitle }}</a>
-                            </h2>
-                            <div class="list-meta" style="font-size: 0.9rem; color: var(--text-muted);">
-                                {{ .Date.Format "2006-01-02" }}
-                            </div>
-                        </div>
-                        {{ end }}
+                </div>
+
+                {{ if eq .Section "posts" }}
+                <div class="archive-header" id="archive-header">
+                    所有文章
+                </div>
+
+                <div class="archive-author-card" id="archive-author-card" style="background-image: url('{{ .Site.Params.cover | default ( "images/cover.jpg" | relURL ) }}');">
+                    <div class="archive-author-avatar">
+                        <img src="" alt="">
+                    </div>
+                    <div class="archive-author-info">
+                        <div class="archive-author-name"></div>
+                        <div class="archive-author-meta"></div>
                     </div>
                 </div>
+
+                <div class="archive-timeline">
+                    {{ range $group := (.Pages.ByDate.Reverse).GroupByDate "2006" }}
+                    <section class="archive-year-block">
+                        <header class="archive-year-header">
+                            <span class="archive-year">{{ $group.Key }}</span>
+                            <span class="archive-year-count">{{ len $group.Pages }} 条记录</span>
+                        </header>
+                        <div class="archive-year-list">
+                            {{ range $group.Pages }}
+                            <a class="archive-item"
+                               href="{{ .RelPermalink }}"
+                               data-author="{{ .Params.author | default .Site.Params.username }}"
+                               data-avatar="{{ .Params.avatar | default .Site.Params.avatar | default ( "images/avatar.jpg" | relURL ) }}">
+                                <span class="archive-item-date">{{ .Date.Format "01-02" }}</span>
+                                <span class="archive-item-title">{{ .LinkTitle }}</span>
+                            </a>
+                            {{ end }}
+                        </div>
+                    </section>
+                    {{ end }}
+                </div>
+                {{ else }}
+                <div class="archive-header">
+                    所有内容
+                </div>
+                <div class="archive-list">
+                    {{ range .Pages.ByDate.Reverse }}
+                    <a class="archive-item" href="{{ .RelPermalink }}">
+                        <span class="archive-item-date">{{ .Date.Format "2006-01-02" }}</span>
+                        <span class="archive-item-title">{{ .LinkTitle }}</span>
+                    </a>
+                    {{ end }}
+                </div>
+                {{ end }}
             </div>
         </article>
     </main>

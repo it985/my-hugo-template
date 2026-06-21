@@ -1,0 +1,69 @@
+name: Release Theme
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "版本号 (如 v1.0.0)，留空则自动生成"
+        required: false
+        type: string
+      body:
+        description: "Release 说明"
+        required: false
+        type: string
+        default: "Theme update"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine version
+        id: version
+        run: |
+          INPUT_VERSION="${{ github.event.inputs.version }}"
+          if [ -n "$INPUT_VERSION" ]; then
+            echo "Using provided version: $INPUT_VERSION"
+            echo "tag=$INPUT_VERSION" >> $GITHUB_OUTPUT
+          else
+            # 自动生成版本号
+            LATEST_TAG=$(git tag --sort=-v:refname | head -n 1)
+            if [ -z "$LATEST_TAG" ]; then
+              LATEST_TAG="v0.0.0"
+            fi
+            echo "Latest tag: $LATEST_TAG"
+
+            VERSION=${LATEST_TAG#v}
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+            MAJOR=${MAJOR:-0}
+            MINOR=${MINOR:-0}
+            PATCH=${PATCH:-0}
+
+            PATCH=$((PATCH + 1))
+            NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+            echo "New tag: $NEW_TAG"
+            echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Tag
+        run: |
+          git tag ${{ steps.version.outputs.tag }}
+          git push origin ${{ steps.version.outputs.tag }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          body: ${{ github.event.inputs.body || 'Theme update' }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

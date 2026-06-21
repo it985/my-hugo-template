@@ -32,6 +32,10 @@
                 {{ if .Site.Params.artalkServer }}
                 <div class="moment-comments-area single-comments" id="comments-single" data-page-key="{{ .Permalink }}"></div>
                 {{ end }}
+            {{ else if eq .Site.Params.commentMode "twikoo" }}
+                {{ if .Site.Params.twikooEnvId }}
+                <div class="twikoo-comments-area" id="tcomment" data-page-key="{{ .RelPermalink }}"></div>
+                {{ end }}
             {{ else if eq .Site.Params.commentMode "giscus" }}
                 {{/* Giscus - Standard Style */}}
                 {{ if .Site.Params.giscusRepo }}

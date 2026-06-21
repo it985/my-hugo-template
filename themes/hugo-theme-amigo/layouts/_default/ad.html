@@ -1,0 +1,53 @@
+{{ define "main" }}
+    {{ partial "header-page.html" . }}
+
+    {{ $adUrl := .Params.adlink | default .Params.link | default "" }}
+    {{ $adBadge := .Params.badge | default "广告" }}
+    {{ $adBrand := .Params.brand | default .Params.author | default .Site.Params.username }}
+    {{ $adCta := .Params.cta | default "了解更多" }}
+    {{ $adImg := .Params.image | default .Params.cover | default "" }}
+    {{ $adAvatar := .Params.avatar | default .Site.Params.avatar | default ( "images/avatar.jpg" | relURL ) }}
+    {{ if and $adImg (not (findRE "^(http|/)" $adImg)) }}
+        {{ with .Resources.GetMatch $adImg }}
+            {{ $adImg = .RelPermalink }}
+        {{ end }}
+    {{ end }}
+    {{ if and $adAvatar (not (findRE "^(http|/)" $adAvatar)) }}
+        {{ with .Resources.GetMatch $adAvatar }}
+            {{ $adAvatar = .RelPermalink }}
+        {{ end }}
+    {{ end }}
+
+    <main class="moments-feed single-view ad-view" style="padding-top: 60px;">
+        <article class="ad-article">
+            <div class="ad-header">
+                <div class="ad-badge">{{ $adBadge }}</div>
+                <div class="ad-brand-row">
+                    <div class="ad-brand-avatar">
+                        <img src="{{ $adAvatar }}" alt="Ad" loading="lazy">
+                    </div>
+                    <div class="ad-brand-info">
+                        <div class="ad-brand-name">{{ $adBrand }}</div>
+                        <div class="ad-brand-sub">{{ .Date.Format "2006-01-02" }}</div>
+                    </div>
+                </div>
+                <h1 class="ad-title">{{ .Title }}</h1>
+                {{ if $adImg }}
+                <div class="ad-hero">
+                    <img src="{{ $adImg }}" alt="Ad" loading="lazy">
+                </div>
+                {{ end }}
+            </div>
+
+            <div class="ad-body">
+                {{ .Content }}
+            </div>
+
+            {{ if $adUrl }}
+            <div class="ad-actions">
+                <a class="ad-cta" href="{{ $adUrl | safeURL }}" target="_blank" rel="noopener nofollow">{{ $adCta }}</a>
+            </div>
+            {{ end }}
+        </article>
+    </main>
+{{ end }}
