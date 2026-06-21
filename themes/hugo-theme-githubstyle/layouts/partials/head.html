@@ -22,6 +22,9 @@
     {{ range .Site.Params.custom_js -}}
     <script type="text/javascript" src="{{ . | absURL }}"></script>
     {{- end }}
+    {{ range .Site.Params.defer_custom_js -}}
+    <script defer type="text/javascript" src="{{ . | absURL }}"></script>
+    {{- end }}
 
     <!-- Extended head section-->
     {{ partial "extended_head.html" . }}

@@ -148,6 +148,8 @@ For example, with static/css/custom.css and static/js/custom.js, add to `config.
 [params]
   custom_css = ["css/custom.css"]
   custom_js = ["js/custom.js"]
+  # custom script with defer attribute
+  defer_custom_js = ["js/defer_custom.js"]
 ```
 
 ## config.toml example
