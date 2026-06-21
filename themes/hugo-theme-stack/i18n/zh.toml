@@ -13,6 +13,17 @@ darkMode   = "暗色模式"
     lastUpdatedOn   = "最后更新于"
     readingTime     = "阅读时长: {{ .Count }} 分钟"
 
+    [article.alert]
+        note      = "备注"
+        tip       = "提示"
+        important = "重要"
+        warning   = "警告"
+        caution   = "注意"
+
+    [article.codeblock]
+        copy   = "复制"
+        copied = "已复制！"
+
 [notFound]
     title    = "404 错误"
     subtitle = "页面不存在"
@@ -36,3 +47,32 @@ darkMode   = "暗色模式"
 [footer]
     builtWith  = "使用 {{ .Generator }} 构建"
     designedBy = "主题 {{ .Theme }} 由 {{ .DesignedBy }} 设计"
+
+[cookies]
+    title             = "Cookie 同意"
+    text              = "我们使用 Cookie 来增强您的浏览体验并分析网站流量。"
+    acceptAll         = "接受所有"
+    deny              = "拒绝"
+    managePreferences = "管理偏好设置"
+    settingsTitle     = "Cookie 偏好设置"
+    savePreferences   = "保存偏好设置"
+    cancel            = "取消"
+    footerLink        = "Cookie 设置"
+    commentsDisabled  = "评论已禁用，直到您接受功能性 Cookie。"
+
+    [cookies.necessary]
+        title = "必要"
+        text  = "这些 Cookie 是网站运行所必需的，无法禁用。"
+
+    [cookies.analytics]
+        title = "分析"
+        text  = "这些 Cookie 帮助我们了解访问者如何与我们的网站互动。"
+
+    [cookies.functional]
+        title = "功能性"
+        text  = "这些 Cookie 启用评论和嵌入内容等功能."
+
+[pagination]
+    jumpToPage = "跳转到页码"
+    jump       = "跳转"
+    pressEnter = "按 Enter 键跳转"

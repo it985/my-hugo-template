@@ -8,6 +8,7 @@
 
 @import "breakpoints.scss";
 @import "variables.scss";
+@import "mixins.scss";
 @import "grid.scss";
 
 @import "external/normalize.scss";
@@ -23,6 +24,7 @@
 @import "partials/layout/list.scss";
 @import "partials/layout/404.scss";
 @import "partials/layout/search.scss";
+@import "partials/cookies.scss";
 
 @import "general.scss";
 @import "custom.scss";
